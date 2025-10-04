@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Themeleaf
+server:
+  port: 8090
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+  web:
+   resources:
+     static-locations: classpath:/static/
+
