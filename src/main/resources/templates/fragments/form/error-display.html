@@ -1,0 +1,24 @@
+<th:block th:fragment="error-display (components, showErrors)">
+    <div th:if="${showErrors}">
+        <div th:each="component : ${components}">
+            <th:block th:switch="${component.getType()}">
+                <th:block th:case="radios">
+                    <div th:if="${#fields.hasErrors('__${component.getId()}__')}">
+                        <a class="govuk-error-message"
+                           th:each="err : ${#fields.errors('__${component.getId()}__')}"
+                           th:text="${err}"
+                           th:href="@{#{'#__' + ${component.getId()} + '__' + ${component.getOptions().getFirst().value}}"></a>
+                    </div>
+                </th:block>
+                <th:block th:case="*">
+                    <div th:if="${#fields.hasErrors('__${component.getId()}__')}">
+                        <a class="govuk-error-message"
+                           th:each="err : ${#fields.errors('__${component.getId()}__')}"
+                           th:text="${err}"
+                           th:href="@{#{'#_' + ${component.getId()} + '__'}}"></a>
+                    </div>
+                </th:block>
+            </th:block>
+        </div>
+    </div>
+</th:block>

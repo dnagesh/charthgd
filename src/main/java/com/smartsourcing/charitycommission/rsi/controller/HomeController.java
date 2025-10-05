@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping("/form")
+    @GetMapping("/form1")
     public String showForm(Model model) {
         model.addAttribute("user", new User());
         return "home";  // must match the template name
     }
 
-    @PostMapping("/form")
+    @PostMapping("/form1")
     public String submitForm(@Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "form1";

@@ -1,0 +1,22 @@
+<th:block th:fragment="radios (component, userPageOneData)">
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend">th:text="${component.getLabel()}"Choose one</legend>
+            <div class="govuk-hint" th:if="${component.getHint()}" th:text="${component.getHint()}"></div>
+            <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item" th:each="opt : ${component.getOptions()}">
+                    <input class="govuk-radios__input"
+                           type="radio"
+                           th:id="${component.getId() + '-' + opt.value}"
+                           th:name="${component.getName()}"
+                           th:value="${opt.value}"
+                           th:checked="${userPageOneData?.getRadios() == opt.value} ? 'true' : 'false'"
+                           th:attr="aria-controls=${component.getControlsID()}">
+                    <label class="govuk-label govuk-radios__label"
+                           th:for="${component.getId() + '-' + opt.value}"
+                           th:text="${opt.label}">Option</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</th:block>
