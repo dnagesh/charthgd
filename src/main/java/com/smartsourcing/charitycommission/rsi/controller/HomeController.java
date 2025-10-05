@@ -8,12 +8,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 @Controller
-public class FormController {
+public class HomeController {
 
     @GetMapping("/form")
     public String showForm(Model model) {
         model.addAttribute("user", new User());
-        return "form1";  // must match the template name
+        return "home";  // must match the template name
     }
 
     @PostMapping("/form")

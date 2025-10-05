@@ -2,7 +2,7 @@ spring:
   application:
     name: Themeleaf
 server:
-  port: 8090
+  port: 8081
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
