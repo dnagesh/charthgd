@@ -12,12 +12,3 @@ server:
   web:
    resources:
      static-locations: classpath:/static/
-radio:
-    options: Option A,Option B,Option C
-
-initial:
-  1:
-    1:
-      options: Option A,Option B,Option C
-
-
