@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" name="application-name" content="Report Serious Incident">
+    <link rel="stylesheet" th:href="@{/css/govuk-frontend-5.11.1.min.css}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <title>Congrats</title>
+</head>
+<body class="govuk-template__body">
+<script>
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+</script>
+
+<th:block th:insert="~{fragments/common :: header}"></th:block>
+<th:block th:insert="~{fragments/common :: banner}"></th:block>
+
+
+<h2 class="govuk-heading-m">Submitted Data</h2>
+
+<details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                            View JSON payload
+                        </span>
+    </summary>
+    <div class="govuk-details__text">
+        <pre class="govuk-body" style="background-color: #f3f2f1; padding: 20px; overflow-x: auto; border-left: 4px solid #1d70b8;"><code th:text="${jsonData}">JSON</code></pre>
+    </div>
+</details>
+
+
+
+<th:block th:insert="~{fragments/common :: footer}"></th:block>
+<script type="module" th:src="@{/js/govuk-frontend-5.11.1.min.js}"></script>
+<script type="module" th:inline="javascript">
+    import {initAll} from /*[[@{/js/govuk-frontend-5.11.1.min.js}]]*/ '/js/govuk-frontend-5.11.1.min.js';
+    initAll();
+</script>
+</body>
+</html>

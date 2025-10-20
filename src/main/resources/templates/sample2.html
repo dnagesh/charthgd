@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="application-name" content="Report Serious Incident">
+    <link rel="stylesheet" href="/static/css/govuk-frontend-5.11.1.min.css">
+    <link rel="stylesheet" th:href="@{/css/govuk-frontend-5.11.1.min.css}">
+    <title>Sample Page</title>
+</head>
+<body class="govuk-template__body">
+<script>
+    document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+</script>
+
+<th:block th:insert="~{fragments/common :: header}"></th:block>
+<th:block th:insert="~{fragments/common :: banner}"></th:block>
+
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-width-container">
+        <form method="post" th:action="@{/submit}">
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+
+                    <!-- Date Input -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="page1.1-date-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">
+                                    When did the incident occur?
+                                </h1>
+                            </legend>
+                            <div id="page1.1-date-hint" class="govuk-hint">
+                                For example, 27 3 2024
+                            </div>
+                            <div class="govuk-date-input" id="page1.1-date">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="page1.1-date-day">
+                                            Day
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="page1.1-date-day"
+                                               name="page1.1-date-day"
+                                               type="text"
+                                               inputmode="numeric"
+                                               pattern="[0-9]*"
+                                               th:value="${data['page1.1-date-day'] ?: ''}">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="page1.1-date-month">
+                                            Month
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
+                                               id="page1.1-date-month"
+                                               name="page1.1-date-month"
+                                               type="text"
+                                               inputmode="numeric"
+                                               pattern="[0-9]*"
+                                               th:value="${data['page1.1-date-month'] ?: ''}">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="page1.1-date-year">
+                                            Year
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4"
+                                               id="page1.1-date-year"
+                                               name="page1.1-date-year"
+                                               type="text"
+                                               inputmode="numeric"
+                                               pattern="[0-9]*"
+                                               th:value="${data['page1.1-date-year'] ?: ''}">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Radio Buttons - Question 1 -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="page1.1-radio-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+                                    Has this been reported to the police?
+                                </h2>
+                            </legend>
+                            <div id="page1.1-radio-hint" class="govuk-hint">
+                                Select one option
+                            </div>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input"
+                                           id="page1.1-radio-yes"
+                                           name="page1.1-radio"
+                                           type="radio"
+                                           value="yes"
+                                           th:checked="${data['page1.1-radio'] == 'yes'}">
+                                    <label class="govuk-label govuk-radios__label" for="page1.1-radio-yes">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input"
+                                           id="page1.1-radio-no"
+                                           name="page1.1-radio"
+                                           type="radio"
+                                           value="no"
+                                           th:checked="${data['page1.1-radio'] == 'no'}">
+                                    <label class="govuk-label govuk-radios__label" for="page1.1-radio-no">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Radio Buttons - Question 2 -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="page1.1-radio2-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+                                    Are there any safeguarding concerns?
+                                </h2>
+                            </legend>
+                            <div id="page1.1-radio2-hint" class="govuk-hint">
+                                Select one option
+                            </div>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input"
+                                           id="page1.1-radio2-yes"
+                                           name="page1.1-radio2"
+                                           type="radio"
+                                           value="yes"
+                                           th:checked="${data['page1.1-radio2'] == 'yes'}">
+                                    <label class="govuk-label govuk-radios__label" for="page1.1-radio2-yes">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input"
+                                           id="page1.1-radio2-no"
+                                           name="page1.1-radio2"
+                                           type="radio"
+                                           value="no"
+                                           th:checked="${data['page1.1-radio2'] == 'no'}">
+                                    <label class="govuk-label govuk-radios__label" for="page1.1-radio2-no">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Checkboxes - Question 1 -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="page1.1-checkbox-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+                                    Does the incident involve financial loss?
+                                </h2>
+                            </legend>
+                            <div id="page1.1-checkbox-hint" class="govuk-hint">
+                                Select if applicable
+                            </div>
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input"
+                                           id="page1.1-checkbox-yes"
+                                           name="page1.1-checkbox"
+                                           type="checkbox"
+                                           value="yes"
+                                           th:checked="${data['page1.1-checkbox'] == 'yes'}">
+                                    <label class="govuk-label govuk-checkboxes__label" for="page1.1-checkbox-yes">
+                                        Yes
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Checkboxes - Question 2 -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="page1.1-checkbox2-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+                                    Has the incident been resolved?
+                                </h2>
+                            </legend>
+                            <div id="page1.1-checkbox2-hint" class="govuk-hint">
+                                Select if applicable
+                            </div>
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input"
+                                           id="page1.1-checkbox2-yes"
+                                           name="page1.1-checkbox2"
+                                           type="checkbox"
+                                           value="yes"
+                                           th:checked="${data['page1.1-checkbox2'] == 'yes'}">
+                                    <label class="govuk-label govuk-checkboxes__label" for="page1.1-checkbox2-yes">
+                                        Yes
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Text Input - Name -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--m" for="page1.1-input-name">
+                            First name
+                        </label>
+                        <input class="govuk-input govuk-!-width-two-thirds"
+                               id="page1.1-input-name"
+                               name="page1.1-input-name"
+                               type="text"
+                               autocomplete="given-name"
+                               th:value="${data['page1.1-input-name'] ?: ''}">
+                    </div>
+
+                    <!-- Text Input - Surname -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--m" for="page1.1-input-surname">
+                            Last name
+                        </label>
+                        <input class="govuk-input govuk-!-width-two-thirds"
+                               id="page1.1-input-surname"
+                               name="page1.1-input-surname"
+                               type="text"
+                               autocomplete="family-name"
+                               th:value="${data['page1.1-input-surname'] ?: ''}">
+                    </div>
+
+                    <!-- Textarea - Description -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--m" for="page1.1-textarea-description">
+                            Description of the incident
+                        </label>
+                        <div id="page1.1-textarea-description-hint" class="govuk-hint">
+                            You have 200 characters remaining
+                        </div>
+                        <textarea class="govuk-textarea"
+                                  id="page1.1-textarea-description"
+                                  name="page1.1-textarea-description"
+                                  rows="5"
+                                  maxlength="200"
+                                  aria-describedby="page1.1-textarea-description-hint"
+                                  th:text="${data['page1.1-textarea-description'] ?: ''}"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Continue
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<th:block th:insert="~{fragments/common :: footer}"></th:block>
+
+<script type="module" th:src="@{/js/govuk-frontend-5.11.1.min.js}"></script>
+<script type="module" th:inline="javascript">
+    import {initAll} from /*[[@{/js/govuk-frontend-5.11.1.min.js}]]*/ '/js/govuk-frontend-5.11.1.min.js';
+    initAll();
+</script>
+</body>
+</html>
