@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.controller.web;
+package com.smartsourcing.charitycommission.rsi.controller.web;
 
 
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import uk.gov.ccew.rsi.model.entity.Submission;
-import uk.gov.ccew.rsi.repository.SubmissionRepository;
+import com.smartsourcing.charitycommission.rsi.repository.SubmissionRepository;
 
 import java.util.HashMap;
 import java.util.Map;

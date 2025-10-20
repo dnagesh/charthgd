@@ -12,3 +12,10 @@ server:
   web:
    resources:
      static-locations: classpath:/static/
+inactive:
+  banner: You will be logged out after 30 minutes
+message:
+  liferay: Message
+account:
+  liferay: Account
+signout: Sign out

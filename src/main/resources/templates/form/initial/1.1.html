@@ -26,6 +26,44 @@
                             <li><a href="#answer" th:errors="*{answer}"></a></li>
                         </ul>
                     </div>
+                    <div>
+
+                        <th:block th:fragment="inactivity-phase-banner">
+                            <nav id="secondary-nav" class="ccew-account-menu ccew-account-menu__container" aria-label="Account" data-module="ccew-account-menu">
+                                <div class="ccew-account-menu__row">
+                                    <div class="ccew-account-menu__inactivity-container">
+                                        <div class="govuk-warning-text">
+                                            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                                            <strong class="govuk-warning-text__text">
+                                                <span class="govuk-visually-hidden">Warning</span>
+                                                <span th:text="#{inactive.banner} ? : 'You will be logged out after 30 minutes of inactivity.'">You will be logged out after 30 minutes of inactivity.</span>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div class="ccew-account-menu__navigation-container">
+                                        <ul class="ccew-account-menu__main">
+                                            <li>
+                                                <a href="/messages" class="ccew-account-menu__link">
+                                                    <span th:text="#{message.liferay} ? : 'Messages'">Messages</span><span class="ccew-notification-badge">2</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/account" class="ccew-account-menu__link">
+                                                    <span th:text="#{account.liferay} ? : 'Account'">Account</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/sign-out" class="ccew-account-menu__link">
+                                                    <span th:text="#{signout} ? : 'Sign out'">Sign out</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                        </th:block>
+
+                    </div>
 
                     <!-- Section title (plain text, not bold) -->
                     <p class="govuk-body govuk-!-margin-bottom-2">
