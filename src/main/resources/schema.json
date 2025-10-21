@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "IncidentReport",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "encodedBase64Pdf": {
+          "type": "string"
+        },
+        "incidentReportId": {
+          "type": "string"
+        },
+        "formFieldValues": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ]
+            }
+          ]
+        },
+        "uniqueReferenceNumber": {
+          "type": "string"
+        },
+        "user": {
+          "type": "object",
+          "title": "User",
+          "properties": {
+            "name": { "type": "string" },
+            "telephoneNumber": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          },
+          "required": ["email"]
+        }
+      },
+      "required": [
+        "encodedBase64Pdf",
+        "incidentReportId",
+        "formFieldValues",
+        "uniqueReferenceNumber",
+        "user"
+      ]
+    }
+  ]
+}
