@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.mapper;
+package com.smartsourcing.charitycommission.rsi;
 
 
 import jakarta.persistence.AttributeConverter;

@@ -1,11 +1,10 @@
-package uk.gov.ccew.rsi.model.entity;
+package com.smartsourcing.charitycommission.rsi;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.Objects;
 
 @Entity
 @Table(name = "report_incident")

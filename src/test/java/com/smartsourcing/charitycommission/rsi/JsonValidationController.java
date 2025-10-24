@@ -1,9 +1,8 @@
-package uk.gov.ccew.rsi.controller;
+package com.smartsourcing.charitycommission.rsi;
 
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.ccew.rsi.service.JsonValidationService;
 
 @RestController
 @RequestMapping("/validate")

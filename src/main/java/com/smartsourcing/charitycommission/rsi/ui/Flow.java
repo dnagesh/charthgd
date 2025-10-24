@@ -1,4 +1,4 @@
-package com.smartsourcing.charitycommission.rsi.model;
+package com.smartsourcing.charitycommission.rsi.ui;
 
 import java.util.Map;
 

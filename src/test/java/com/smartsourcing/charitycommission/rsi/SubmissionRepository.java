@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.repository;
+package com.smartsourcing.charitycommission.rsi;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

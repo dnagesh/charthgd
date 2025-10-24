@@ -1,9 +1,7 @@
-package uk.gov.ccew.rsi.mapper;
+package com.smartsourcing.charitycommission.rsi;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.gov.ccew.rsi.model.domain.ReportIncident;
-import uk.gov.ccew.rsi.model.entity.ReportIncidentEntity;
 
 @Component
 public class ReportIncidentMapper {

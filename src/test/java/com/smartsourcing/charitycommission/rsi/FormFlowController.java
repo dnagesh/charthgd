@@ -1,10 +1,10 @@
-package com.smartsourcing.charitycommission.rsi.controller;
+package com.smartsourcing.charitycommission.rsi;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartsourcing.charitycommission.rsi.model.Page;
-import com.smartsourcing.charitycommission.rsi.model.QuestionForm;
+import com.smartsourcing.charitycommission.rsi.ui.Page;
+import com.smartsourcing.charitycommission.rsi.ui.QuestionForm;
 import com.smartsourcing.charitycommission.rsi.service.FormFlowService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

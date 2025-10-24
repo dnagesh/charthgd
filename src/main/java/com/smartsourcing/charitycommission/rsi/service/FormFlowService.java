@@ -1,8 +1,8 @@
 package com.smartsourcing.charitycommission.rsi.service;
 
-import com.smartsourcing.charitycommission.rsi.model.Flow;
-import com.smartsourcing.charitycommission.rsi.model.Page;
-import com.smartsourcing.charitycommission.rsi.model.Section;
+import com.smartsourcing.charitycommission.rsi.ui.Flow;
+import com.smartsourcing.charitycommission.rsi.ui.Page;
+import com.smartsourcing.charitycommission.rsi.ui.Section;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;

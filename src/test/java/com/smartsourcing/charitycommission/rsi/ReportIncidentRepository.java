@@ -1,8 +1,7 @@
-package uk.gov.ccew.rsi.repository;
+package com.smartsourcing.charitycommission.rsi;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import uk.gov.ccew.rsi.model.entity.ReportIncidentEntity;
 
 import java.util.Optional;
 

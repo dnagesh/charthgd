@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.model.domain;
+package com.smartsourcing.charitycommission.rsi;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

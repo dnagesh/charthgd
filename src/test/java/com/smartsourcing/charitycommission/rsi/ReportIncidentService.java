@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.service;
+package com.smartsourcing.charitycommission.rsi;
 
 
 import jakarta.validation.Valid;
@@ -6,10 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import uk.gov.ccew.rsi.mapper.ReportIncidentMapper;
-import uk.gov.ccew.rsi.model.domain.ReportIncident;
-import uk.gov.ccew.rsi.model.entity.ReportIncidentEntity;
-import uk.gov.ccew.rsi.repository.ReportIncidentRepository;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import com.smartsourcing.charitycommission.rsi.model.entity.Submission;
+import com.smartsourcing.charitycommission.rsi.entity.Submission;
 import com.smartsourcing.charitycommission.rsi.repository.SubmissionRepository;
 
 import java.util.HashMap;

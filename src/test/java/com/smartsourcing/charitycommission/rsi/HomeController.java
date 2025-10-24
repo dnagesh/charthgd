@@ -1,6 +1,6 @@
-package com.smartsourcing.charitycommission.rsi.controller;
+package com.smartsourcing.charitycommission.rsi;
 
-import com.smartsourcing.charitycommission.rsi.model.User;
+import com.smartsourcing.charitycommission.rsi.ui.User;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
