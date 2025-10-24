@@ -1,11 +1,11 @@
 package com.smartsourcing.charitycommission.rsi.repository;
 
+import com.smartsourcing.charitycommission.rsi.entity.FormDataEntity;
+import com.smartsourcing.charitycommission.rsi.entity.Status;
+import com.smartsourcing.charitycommission.rsi.entity.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import uk.gov.ccew.rsi.entity.FormDataEntity;
-import uk.gov.ccew.rsi.entity.Status;
-import uk.gov.ccew.rsi.entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;

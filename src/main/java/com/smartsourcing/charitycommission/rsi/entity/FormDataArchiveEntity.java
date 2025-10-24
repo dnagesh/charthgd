@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.entity;
+package com.smartsourcing.charitycommission.rsi.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

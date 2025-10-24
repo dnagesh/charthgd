@@ -24,7 +24,7 @@ public class JsonValidationService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public void validateJson1(String jsonString) {
+    public void validateJson(String jsonString) {
         try (InputStream schemaStream = getClass().getResourceAsStream("/schema.json")) {
             if (schemaStream == null) {
                 throw new IllegalStateException("Schema file '/schema.json' not found in resources.");

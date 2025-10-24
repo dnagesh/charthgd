@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.entity;
+package com.smartsourcing.charitycommission.rsi.entity;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;

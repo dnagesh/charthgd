@@ -1,9 +1,9 @@
-package uk.gov.ccew.rsi.repository;
+package com.smartsourcing.charitycommission.rsi.repository;
 
+import com.smartsourcing.charitycommission.rsi.entity.FormDataEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import uk.gov.ccew.rsi.entity.FormDataEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;

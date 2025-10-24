@@ -1,8 +1,8 @@
 package com.smartsourcing.charitycommission.rsi;
 
+import com.smartsourcing.charitycommission.rsi.entity.Submission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import uk.gov.ccew.rsi.model.entity.Submission;
 
 @Repository
 public interface SubmissionRepository extends JpaRepository <Submission, Long> {

@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.entity;
+package com.smartsourcing.charitycommission.rsi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -18,7 +18,8 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Enumerated(EnumType.STRING) private Title title;
+    @Enumerated(EnumType.STRING)
+    private Title title;
 
     private String firstname;
 
