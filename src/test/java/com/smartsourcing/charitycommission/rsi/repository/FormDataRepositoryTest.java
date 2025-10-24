@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.repository;
+package com.smartsourcing.charitycommission.rsi.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
