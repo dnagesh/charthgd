@@ -1,10 +1,11 @@
-package uk.gov.ccew.rsi.mapper;
+package com.smartsourcing.charitycommission.rsi.mapper;
 
+import com.smartsourcing.charitycommission.rsi.entity.FormDataEntity;
+import com.smartsourcing.charitycommission.rsi.entity.Status;
+import com.smartsourcing.charitycommission.rsi.entity.UserEntity;
 import org.junit.jupiter.api.Test;
-import uk.gov.ccew.rsi.dto.FormData;
-import uk.gov.ccew.rsi.entity.FormDataEntity;
-import uk.gov.ccew.rsi.entity.Status;
-import uk.gov.ccew.rsi.entity.UserEntity;
+import com.smartsourcing.charitycommission.rsi.dto.FormData;
+
 
 import java.util.HashMap;
 import java.util.Map;

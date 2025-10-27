@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.ccew.rsi.dto.FormData;
-import uk.gov.ccew.rsi.service.RSIService;
+import com.smartsourcing.charitycommission.rsi.dto.FormData;
+import com.smartsourcing.charitycommission.rsi.service.RSIService;
 
 import java.util.Map;
 

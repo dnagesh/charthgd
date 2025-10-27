@@ -1,16 +1,16 @@
-package uk.gov.ccew.rsi.service;
+package com.smartsourcing.charitycommission.rsi.service;
 
+import com.smartsourcing.charitycommission.rsi.entity.FormDataEntity;
+import com.smartsourcing.charitycommission.rsi.entity.Status;
+import com.smartsourcing.charitycommission.rsi.entity.UserEntity;
+import com.smartsourcing.charitycommission.rsi.repository.FormDataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.validation.annotation.Validated;
-import uk.gov.ccew.rsi.dto.FormData;
-import uk.gov.ccew.rsi.entity.FormDataEntity;
-import uk.gov.ccew.rsi.entity.Status;
-import uk.gov.ccew.rsi.entity.UserEntity;
-import uk.gov.ccew.rsi.repository.FormDataRepository;
+import com.smartsourcing.charitycommission.rsi.dto.FormData;
 
 import java.util.List;
 import java.util.Map;

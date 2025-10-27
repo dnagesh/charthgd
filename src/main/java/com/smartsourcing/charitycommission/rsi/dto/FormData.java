@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.dto;
+package com.smartsourcing.charitycommission.rsi.dto;
 
 
 import jakarta.validation.constraints.Email;
