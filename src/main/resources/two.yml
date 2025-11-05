@@ -1,0 +1,121 @@
+sections:
+    initialPages:
+      pages:
+        "1.0":
+        "1.1":
+            condition:
+            new: flow_1
+            continue: flow_2
+            update: flow_3
+      transition_to: nextSectionName
+      flows:
+        flow_1:
+          pages:
+            "1.3":
+              condition:
+                no: flow_1_2
+            "1.4": {}
+            "1.5": {}
+            "1.6": {}
+            "1.7":
+              condition:
+                some: flow_1_7_1
+            "1.8":
+              condition:
+                single data: flow_1_8_1
+                over a period of time: flow_1_8_2
+            "1.10":
+              condition:
+                no: flow_1_10_1
+                overseas: flow_1_10_2
+            "1.11":
+              condition:
+                No: flow_1_11_1
+                still ongoing: flow_1_11_2
+            "1.12":
+              condition:
+                yes: flow_1_12_1
+            "1.13": {}
+            "1.14":
+              condition:
+                yes: flow_1_14_1
+          sub_flows:
+            flow_1_7_1:
+              page:
+                "1.7a": {}
+            flow_1_8_2:
+              page:
+                "1.9":
+                  condition:
+                    still ongoing: flow_1_9_1
+                    Now over: flow_1_9_2
+            flow_1_8_1:
+              page:
+                "1.8.1": {}
+            flow_1_9_1:
+              page:
+                "1.9.1": {}
+            flow_1_9_2:
+              page:
+                "1.9.2": {}
+            flow_1_12_1:
+              page:
+                "1.12.1": {}
+            flow_1_14_1:
+              page:
+                "1.14.1": {}
+                "1.14.2": {}
+            flow_1_2:
+              page:
+                "1.3a": {}
+                "end": {}
+  
+        flow_2:
+          page:
+            "1.2":
+              condition:
+                default: flow_1
+  
+        flow_3:
+          transition_to: update
+
+    otherSignificantFinancialLoss:
+      pages:
+        "7.0":
+          condition:
+            "1": flow_1
+            "2": flow_2
+            "3": flow_3
+            "4": flow_4
+        "7.6": {}
+        "7.7": {}
+        "7.8": {}
+        "7.9": {}
+        "7.10": {}
+        "7.11": {}
+      transition_to: nextSectionName
+      flows:
+        flow_1:
+          page:
+            "7.1": {}
+            "7.1.1": {}
+        flow_2:
+          page:
+            "7.2":
+              title: "Flow 2 Decision Page"
+              condition:
+                "Trustee": flow_2_1
+            "7.2.1": {}
+            "7.2.2": {}
+            "7.2.3": {}
+          sub_flows:
+            flow_2_1:
+              page:
+                "7.2.0.1": {}
+        flow_3:
+          page:
+            "7.3": {}
+        flow_4:
+          page:
+            "7.4": {}
+            "7.4.1": {}
