@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="content(layoutContent)">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation Flow</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<header>
+    <h1>Dynamic Navigation Flow</h1>
+    <hr/>
+</header>
+
+<main th:insert="${layoutContent}"></main>
+
+<footer>
+    <hr/>
+    <p>Current Page ID: <b th:text="${pageId}"></b></p>
+</footer>
+</body>
+</html>

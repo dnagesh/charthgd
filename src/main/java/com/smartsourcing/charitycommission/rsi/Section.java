@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.flow.model;
+package com.smartsourcing.charitycommission.rsi;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation System - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .home-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 3rem;
+            max-width: 600px;
+        }
+        .section-btn {
+            margin: 10px 0;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="home-card">
+        <h1 class="text-center mb-4">Navigation System</h1>
+        <p class="text-center text-muted mb-4">
+            Select a section to begin navigation
+        </p>
+
+        <div class="d-grid gap-3">
+            <a href="/navigate/start?section=initialPages"
+               class="btn btn-primary section-btn">
+                <i class="bi bi-arrow-right-circle"></i> Initial Pages Section
+            </a>
+
+            <a href="/navigate/start?section=otherSignificantFinancialLoss"
+               class="btn btn-info section-btn">
+                <i class="bi bi-cash-stack"></i> Financial Loss Section
+            </a>
+        </div>
+
+        <div class="text-center mt-4">
+            <small class="text-muted">
+                Powered by Spring Boot + Thymeleaf
+            </small>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

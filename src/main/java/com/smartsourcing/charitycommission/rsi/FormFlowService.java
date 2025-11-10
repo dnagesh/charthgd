@@ -1,14 +1,11 @@
 package uk.gov.ccew.rsi.service;
 
 
+import com.smartsourcing.charitycommission.rsi.Sections;
 import lombok.Getter;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import uk.gov.ccew.rsi.flow.model.Flow;
-import uk.gov.ccew.rsi.flow.model.Page;
-import uk.gov.ccew.rsi.flow.model.Section;
-import uk.gov.ccew.rsi.flow.model.Sections;
 
 import java.io.InputStream;
 import java.util.*;
@@ -20,7 +17,7 @@ public class FormFlowService {
     @Getter
     private final Sections sections;
 
-    private final Navigator navigator = new Navigator();
+//    private final Navigator navigator = new Navigator();
 
     public FormFlowService() {
         Yaml yaml = new Yaml(new Constructor(Sections.class, new LoaderOptions()));

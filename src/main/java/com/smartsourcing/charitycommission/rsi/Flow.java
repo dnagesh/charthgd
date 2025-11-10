@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.flow.model;
+package com.smartsourcing.charitycommission.rsi;
 // package your.package.name;
 
 import lombok.Getter;

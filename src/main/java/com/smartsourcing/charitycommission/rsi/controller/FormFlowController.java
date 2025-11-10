@@ -1,4 +1,4 @@
-package com.smartsourcing.charitycommission.rsi;
+package com.smartsourcing.charitycommission.rsi.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;

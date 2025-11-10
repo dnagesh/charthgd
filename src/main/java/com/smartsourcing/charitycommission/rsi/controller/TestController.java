@@ -1,4 +1,4 @@
-package com.smartsourcing.charitycommission.rsi.controller.web;
+package com.smartsourcing.charitycommission.rsi.controller;
 
 
 import lombok.RequiredArgsConstructor;
