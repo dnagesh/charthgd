@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!--/*
+================================================================================
+FRAGMENT: dropdownWrapper (label, hint, options)
+
+Params:
+- label = The main label of this element
+- hint = The hint text displayed above the dropdown
+- options = The options to be included in the dropdown
+================================================================================
+*/-->
+<div th:fragment="dropdownWrapper (label, hint, options)"
+     th:with="type='dropdown',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}"
+     class="govuk-form-group">
+
+    <label class="govuk-label" th:for='${ID}' th:text="${label}">
+        LABEL
+    </label>
+    <div th:id="${ID}+'-hint'" class="govuk-hint" th:text="${hint}">
+        HINT
+    </div>
+    <select class="govuk-select" th:id="${ID}" th:name="${ID}">
+        <th:block th:replace='${options}'></th:block>
+    </select>
+</div>
+
+<!--/*
+================================================================================
+FRAGMENT: dropdownOption (text, value)
+
+Params:
+- text = The text to display for this option
+- value = The value to assign this option to
+================================================================================
+*/-->
+<th:block th:fragment="dropdownOption (text, value)"
+          th:with="type='dropdown', userAnwser=${data}">
+    <option th:text="${text}" th:value="${value}"></option>
+</th:block>
+
+<!--/*
+================================================================================
+FRAGMENT: dropdownOption (text, value)
+
+Params:
+- text = The text to display for this option
+- value = The value to assign this option to
+================================================================================
+*/-->
+<th:block th:fragment="dataPopulatedDropdownOption (text, value, parentID)"
+          th:with="type='dropdown', userAnwser=${data}">
+    <th:block th:switch="${@formUtil.isChecked(parentID,value,userAnwser)}">
+        <th:block th:case="true">
+            <option th:text="${text}" th:value="${value}" selected></option>
+        </th:block>
+        <th:block th:case="false">
+            <option th:text="${text}" th:value="${value}"></option>
+        </th:block>
+    </th:block>
+</th:block>
+
+
+
+<!--/*
+================================================================================
+FRAGMENT: dropdownOptionDefault (text)
+Defaults the value to 'choose'. Only one is expected per dropdown.
+
+Params:
+- text = The text to display for this option
+================================================================================
+*/-->
+<th:block th:fragment="dropdownOptionDefault (text)"
+          th:with="type='dropdown'">
+    <option th:text="${text}" th:value="${value}" selected></option>
+</th:block>
+
+
+<!--/*
+================================================================================
+FRAGMENT: dropdownWrapper (label, hint, options)
+
+Params:
+- label = The main label of this element
+- hint = The hint text displayed above the dropdown
+- options = The options to be included in the dropdown
+================================================================================
+*/-->
+<div th:fragment="dropdownDynamic (label, hint, dropdownItems)"
+     th:with="type='dropdown',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}"
+     class="govuk-form-group">
+
+    <label class="govuk-label" th:for='${ID}' th:text="${label}">
+        LABEL
+    </label>
+    <div th:id="${ID}+'-hint'" class="govuk-hint" th:text="${hint}">
+        HINT
+    </div>
+    <select class="govuk-select" th:id="${ID}" th:name="${ID}">
+        <th:block th:each="item : ${dropdownItems}">
+            <th:block th:insert="~{fragments/lib/dropdown  :: dataPopulatedDropdownOption (${item.label}, ${item.value}, ${ID})}"></th:block>
+        </th:block>
+    </select>
+</div>
+
+

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!--/*
+================================================================================
+FRAGMENT: details (contentText, labelText)
+
+Params:
+- contentText = The content that populates the details box, this can be HTML.
+- labelText = The text displayed on the <span>
+================================================================================
+*/-->
+<details th:fragment="details(labelText, contentText)" th:with="type='details',pageName=${#execInfo.processedTemplateName}, name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}" class="govuk-details" th:id="${ID}">
+    <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text" th:text="${labelText ?: ''}"></span>
+    </summary>
+    <div class="govuk-details__text" th:utext="${contentText ?: ''}"></div>
+</details>

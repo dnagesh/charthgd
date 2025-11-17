@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!--/*
+================================================================================
+FRAGMENT: checkbox (labelText, value, hintText)
+
+Params:
+- labelText = The label text that appears next to the checkbox.
+- value = The value assigned to the checkbox when selected.
+- hintText = Optional hintText text that appears below the checkbox label.
+================================================================================
+*/-->
+<div th:fragment="checkbox (labelText,value,hintText)"
+     th:with="pageName=${#execInfo.processedTemplateName},type='checkbox',name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data} "
+     class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+    <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input"
+               th:id="${ID}"
+               th:name="${ID}"
+               type="checkbox"
+               th:value="${value ?: ''}"
+               aria-describedby="nationality-item-hint"
+               th:checked="${@formUtil.isChecked(ID,value,userAnwser)}">
+        <label class="govuk-label govuk-checkboxes__label"
+               th:for="${ID}"
+               th:text="${labelText}">
+        </label>
+        <div class="govuk-hint govuk-checkboxes__hint"
+             th:id="${ID}+'-hint' "
+             th:text="${hintText ?: ''}">
+        </div>
+    </div>
+</div>
+
+<!--/*
+================================================================================
+FRAGMENT: checkboxWithCondition (label, value, hintText, conditionName, conditionLabel, conditionValue)
+
+Params:
+- label = The label text that appears next to the checkbox.
+- value = The value assigned to the checkbox when selected.
+- hintText = Optional hintText text that appears below the checkbox label.
+- conditionName = The name for the conditional input field.
+- conditionLabel = The label for the conditional input field.
+- conditionValue = The value for the conditional input field.
+
+Note: This fragment creates a checkbox with a conditional input field that appears when the checkbox is selected.
+================================================================================
+*/-->
+<div th:fragment="checkboxWithCondition(labelText,value,hintText,conditionLabel)"
+     th:with="pageName=${#execInfo.processedTemplateName},type='checkboxCondition',name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data}"
+     class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+    <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input"
+               th:id="${ID}"
+               th:name="${ID}"
+               type="checkbox"
+               th:value="${value}"
+               th:data-aria-controls=" 'conditional-' +${ID}">
+        <label class="govuk-label govuk-checkboxes__label"
+               th:for="${ID}"
+               th:text="${labelText ?: ''}"></label>
+    </div>
+    <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" th:id="${'conditional-' + ID}"
+         th:with="IDCON=${'conditional-'+ID}">
+        <div class="govuk-form-group">
+            <label class="govuk-label"
+                   th:for="${IDCON}"
+                   th:text="${conditionLabel ?: ''}"></label>
+            <input class="govuk-input govuk-!-width-one-third"
+                   th:id="${IDCON}"
+                   th:name="${IDCON}"
+                   type="text"
+                   th:value="${@formUtil.dataValue(ID,userAnwser)}"
+                   spellcheck="false">
+        </div>
+
+    </div>
+</div>

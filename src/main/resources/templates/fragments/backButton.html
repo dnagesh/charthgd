@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!--/*
+================================================================================
+FRAGMENT: back (showBack, href)
+
+Params:
+- showBack = Boolean to control visibility of the back button. Optional
+- href = The URL/link for the back button. Optional
+
+examples:
+- back() = Shows back button with default "of your selection" href
+- back(true) = Shows back button with default "#" href
+- back(false) = Hides the back button completely
+- back(true, '/home') = Shows back button linking to "/home"
+- back(true, @{/previous}) = Shows back button with Thymeleaf URL expression
+- back(true, 'javascript:history.back()') = Shows back button with browser back functionality
+
+Note me: If showBack is false, the entire <a> element is not rendered in the DOM.
+================================================================================
+*/-->
+
+<a href="#" class="govuk-back-link" th:fragment="back">Back</a>
+
+<a th:href="${href ?: '#'}" class="govuk-back-link" th:fragment="backWithParams(showBack, href)" th:if="${showBack ?: false}">Back</a>
+
+
+
