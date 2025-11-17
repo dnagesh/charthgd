@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en"
+      class="govuk-template govuk-template--rebranded">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="application-name" content="Report Serious Incident">
+    <meta name="description" content="Report Serious Incidents Charity Commission for England and Wales">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/govuk-frontend-5.11.1.min.css}">
+    <link rel="stylesheet" th:href="@{/css/hmrc-frontend-6.97.0.min.css}">
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">RSI</title>
+</head>
+
+<body class="govuk-template__body">
+<script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+<th:block th:insert="~{fragments/common :: header-RSI}"></th:block>
+
+<section aria-label="Service information" class="govuk-service-navigation" data-module="govuk-service-navigation"
+         data-govuk-service-navigation-init="">
+
+    <div class="govuk-width-container">
+        <div class="govuk-service-navigation__container">
+        <span class="govuk-service-navigation__service-name">
+            <a href="http://localhost:3000/" class="govuk-service-navigation__link"> Report a Serious Incident </a>
+        </span>
+        </div>
+    </div>
+</section>
+
+
+<div class="govuk-width-container">
+    <th:block th:insert="~{fragments/language :: languageSelect}"></th:block>
+    <!--/* can be used on the child HTML using th:with after the decorated level (layout:decorate) default to now ref and not visible*/-->
+    <th:block th:insert="~{fragments/lib/backButton ::backWithParams(${backButtonShow}, ${backButtonHref})}"></th:block>
+
+    <main class="govuk-main-wrapper" id="main-content">
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full-from-desktop">
+                <span class="govuk-caption-l" th:text="${pageCaption ?: 'Default Caption'}">Default Caption</span>
+                <h1 class="govuk-heading-l" th:text="${pageHeading ?: 'Default Question'}">Default Question</h1>
+
+
+                <div layout:fragment="form-top">
+                    <!--/*Use the above fragment to override the form */-->
+
+                    <form method="post" th:action="@{/submit}">
+                        <div layout:fragment="form-content">
+                            <!--/*Use the above fragment to add content to the form */-->
+                        </div>
+
+
+                        <div class="govuk-button-group">
+                            <button type="submit" class="govuk-button" data-module="govuk-button" name="action" value="continue">Continue</button>
+                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="action" value="save">Save and come back later</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<th:block th:insert="~{fragments/common :: footer}"></th:block>
+
+
+<script type="module" th:src="@{/js/govuk-frontend-5.11.1.min.js}"></script>
+<script type="module" th:src="@{/js/hmrc-frontend-6.97.0.min.js}"></script>
+<script type="module" th:inline="javascript">
+    import {initAll} from /*[[@{/js/govuk-frontend-5.11.1.min.js}]]*/ '/js/govuk-frontend-5.11.1.min.js';
+
+    initAll();
+    if (globalThis.HMRCFrontend) {
+        globalThis.HMRCFrontend.initAll();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en"
+      class="govuk-template govuk-template--rebranded">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="application-name" content="Report Serious Incident">
+    <meta name="description" content="Report Serious Incidents Charity Commission for England and Wales">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/govuk-frontend-5.11.1.min.css}">
+    <link rel="stylesheet" th:href="@{/css/hmrc-frontend-6.97.0.min.css}">
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">RSI</title>
+</head>
+
+<body class="govuk-template__body">
+<script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+<th:block th:insert="~{fragments/common :: header-RSI}"></th:block>
+
+<div class="govuk-width-container">
+    <th:block th:insert="~{fragments/language :: languageSelect}"></th:block>
+
+    <!--/* can be used on the child HTML using th:with after the decorated level (layout:decorate) default to now ref and not visible*/-->
+    <th:block th:insert="~{fragments/lib/backButton ::backWithParams(${backButtonShow}, ${backButtonHref})}"></th:block>
+    <main class="govuk-main-wrapper" layout:fragment="main" id="main-content">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full" layout:fragment="content">
+                <!--/* Content goes here */-->
+            </div>
+        </div>
+    </main>
+
+
+</div>
+
+
+<th:block th:insert="~{fragments/common :: footer}"></th:block>
+
+
+<script type="module" th:src="@{/js/govuk-frontend-5.11.1.min.js}"></script>
+<script type="module" th:src="@{/js/hmrc-frontend-6.97.0.min.js}"></script>
+<script type="module" th:inline="javascript">
+    import {initAll} from /*[[@{/js/govuk-frontend-5.11.1.min.js}]]*/ '/js/govuk-frontend-5.11.1.min.js';
+
+    initAll();
+    if (globalThis.HMRCFrontend) {
+        globalThis.HMRCFrontend.initAll();
+    }
+</script>
+</body>
+</html>
