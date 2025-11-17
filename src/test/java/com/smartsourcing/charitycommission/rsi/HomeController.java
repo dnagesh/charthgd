@@ -1,3 +1,4 @@
+/*
 package com.smartsourcing.charitycommission.rsi;
 
 import com.smartsourcing.charitycommission.rsi.ui.User;
@@ -25,3 +26,4 @@ public class HomeController {
         return "result";
     }
 }
+*/

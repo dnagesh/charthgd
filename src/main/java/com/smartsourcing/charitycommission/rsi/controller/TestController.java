@@ -61,6 +61,12 @@ public class TestController {
         return "home";
     }
 
+
+    @GetMapping("/P1.1")
+    public String P11() {
+        return "forms/initial/P1.1";
+    }
+
     @GetMapping("/sample2")
     public String sample2(Model model){
         Map<String, Object> data = new HashMap<>();
