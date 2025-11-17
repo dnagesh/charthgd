@@ -4,14 +4,12 @@
       th:with="backButtonShow=true, backButtonHref='/',pageCaption=null, pageHeading=null">
 <head>
     <meta charset="UTF-8">
-    <title>P1.1</title>
+    <title>P1.11.3.html</title>
 </head>
 <body>
-    <div layout:fragment="form-content">
-
-        <th:block th:insert="~{fragments/lib/radioinput ::radioYesNo (null, null)}"></th:block>
-    </div>
-
+<div layout:fragment="form">
+    <h1 class="govuk-heading-xl" th:text="${#execInfo.processedTemplateName}"> Page Name</h1>
+</div>
 
 </body>
 </html>
