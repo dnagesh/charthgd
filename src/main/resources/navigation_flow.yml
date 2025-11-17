@@ -1,0 +1,326 @@
+sections:
+    initialPages:
+      pages:
+        - id: "initial/P1.0"
+        - id: "initial/P1.1"
+          condition:
+            P1.1-radio-1_new: flow_1.1
+            P1.1-radio-2_draft: flow_1.2
+      flows:
+        flow_1.1:
+          pages:
+            - id: "initial/P1.3"
+              condition:
+                P1.3-radio-2_no: flow_1.3
+            - id: "initial/P1.4"
+            - id: "initial/P1.5"
+            - id: "initial/P1.6"
+            - id: "initial/P1.7"
+              condition:
+                P1.7-radio-2_some: flow_1.7.1
+            - id: "initial/P1.8"
+              condition:
+                P1.8-radio-1_single data: flow_1.8.1
+                P1.8-radio-1_over a period of time: flow_1.9
+            - id: "initial/P1.10"
+              condition:
+                P1.10-checkbox-1_overseas first country/territory is added: flow_1.10.2
+                P1.10-checkbox-1_overseas countries already added: flow_1.10.1
+            - id: "initial/P1.11"
+              condition:
+                P1.11-radio-1_yes: flow_1.11.1
+            - id: "initial/P1.12"
+              condition:
+                P1.12-radio-1_yes: flow_1.12.1
+            - id: "initial/P1.13"
+            - id: "initial/P1.14"
+              condition:
+                P1.14-radio-1_yes: flow_1.14.1
+          subFlows:
+            flow_1.3:
+              pages:
+                - id: "initial/P1.3a"
+                - id: "end"
+            flow_1.7.1:
+              pages:
+                - id: "initial/P1.7a"
+            flow_1.8.1:
+              pages:
+                - id: "initial/P1.8.1"
+            flow_P1.9:
+              pages:
+                - id: "initial/P1.9"
+                  condition:
+                    P1.19-radio-1_still ongoing: flow_1.9.1
+                    P1.19-radio-2_now over: flow_1.9.2
+            flow_1.9.1:
+              pages:
+                - id: "initial/P1.9.1"
+            flow_1.9.2:
+              pages:
+                - id: "initial/P1.9.2"
+            flow_1.10.1:
+              pages:
+                - id: "initial/P1.10.1"
+                  condition:
+                    P1.10.1-checkbox-1_add: flow_1.10.2
+            flow_1.10.2:
+              pages:
+                - id: "initial/P1.10.2"
+                - id: "initial/P1.10.1"
+            flow_1.11.1:
+              pages:
+                - id: "initial/P1.11.1"
+                - id: "initial/P1.11.2"
+                  condition:
+                    P1.11.2-checkbox-1_yes: flow_1.11.3
+                    P1.11.2-checkbox-1_no: flow_1.11.4
+            flow_1.11.3:
+              pages:
+                - id: "initial/P1.11.3"
+            flow_1.11.4:
+              pages:
+                - id: "initial/P1.11.4"
+            flow_1.12.1:
+              pages:
+                - id: "initial/P1.12.1"
+            flow_1.14.1:
+              pages:
+                - id: "initial/P1.14.1"
+                - id: "initial/P1.14.2"
+        flow_1.2:
+          pages:
+            - id: "initial/P1.2"
+              condition:
+                default: flow_1.1
+      transitionTo:
+        P1.1-radio-3_update: updateAnIncident/P8.0
+        P1.6-radio-1-safeguarding: safeguarding/P2.0
+        P1.6-radio-2-financial: financial/P3.0
+        P1.6-radio-3-donations: donations/P4.0
+        P1.6-radio-4-otherFinancialLoss: otherFinancialLoss/P5.0
+        P1.6-radio-5-terrorism: terrorism/P6.0
+        P1.7-radio-6-otherIncidents: otherIncidents/P7.0
+    safeguarding:
+      pages:
+        - id: "safeguarding/P2.0"
+          condition:
+            P2.0-checkbox-1_abuseOrMistreatment: flow_2.1
+            P2.0-checkbox-2_breachOfProceduresOrPolicies: flow_2.2
+        - id: "safeguarding/P2.3"
+        - id: "safeguarding/P2.4"
+          condition:
+            P2.4-checkbox-1_yes: flow_2.4.1
+        - id: "safeguarding/P2.5"
+        - id: "safeguarding/P2.6"
+        - id: "safeguarding/P2.7"
+        - id: "safeguarding/P2.8"
+        - id: "safeguarding/P2.9"
+        - id: "safeguarding/P2.10"
+        - id: "safeguarding/P2.11"
+      flows:
+        flow_2.1:
+          pages:
+            - id: "safeguarding/P2.1.1"
+              condition:
+                P2.1.1-checkbox-1_sexual: flow_2.1.1
+            - id: "safeguarding/P2.1.2"
+            - id: "safeguarding/P2.1.3"
+            - id: "safeguarding/P2.1.4"
+            - id: "safeguarding/P2.1.5"
+            - id: "safeguarding/P2.1.6"
+              condition:
+                P2.1.6-checkbox-1_trustee/staff/volunteer: flow_2.1.6
+            - id: "safeguarding/P2.1.7"
+            - id: "safeguarding/P2.1.8"
+          subFlows:
+            flow_2.1.1:
+              pages:
+                - id: "safeguarding/P2.1.1.1"
+            flow_2.1.6:
+              pages:
+                - id: "safeguarding/P2.1.6.1"
+                  condition:
+                    P2.1.6.1-checkbox-1_yes: flow_2.1.6.2
+              subFlows:
+                flow_2.1.6.2:
+                  pages:
+                    - id: "safeguarding/P2.1.6.2"
+        flow_2.2:
+          pages:
+            - id: "safeguarding/P2.2"
+        flow_2.4.1:
+          pages:
+            - id: "safeguarding/P2.4.1"
+      transitionTo:
+          default: submission/P9.1
+    financial:
+      pages:
+        - id: "financial/P3.0"
+          condition:
+            P3.0-checkbox-1_fraud: flow_3.1
+            P3.0-checkbox-2_cybercrime: flow_3.2
+        - id: "financial/P3.3"
+          condition:
+            P3.3-checkbox-1_internal: flow_3.3.1
+            P3.3-checkbox-2_external: flow_3.3.2
+        - id: "financial/P3.4"
+        - id: "financial/P3.5"
+        - id: "financial/P3.6"
+        - id: "financial/P3.7"
+          condition:
+            P3.7-checkbox-1_yes: flow_3.7.1
+        - id: "financial/P3.8"
+        - id: "financial/P3.9"
+        - id: "financial/P3.10"
+          condition:
+            P3.10-checkbox-1_yes: flow_3.10.1
+        - id: "financial/P3.11"
+        - id: "financial/P3.12"
+        - id: "financial/P3.13"
+      flows:
+        flow_3.1:
+          pages:
+            - id: "financial/P3.1"
+        flow_3.2:
+          pages:
+            - id: "financial/P3.2"
+        flow_3.3.1:
+          pages:
+            - id: "financial/P3.3.1.1"
+            - id: "financial/P3.3.1.2"
+              condition:
+                P3.3.1.2-checkbox-1_external: flow_3.3.2
+          subFlows:
+            flow_3.3.2:
+              pages:
+                - id: "financial/P3.3.2.1"
+        flow_3.7.1:
+          pages:
+            - id: "financial/P3.7.1"
+        flow_3.10.1:
+          pages:
+            - id: "financial/P3.10.1"
+      transitionTo:
+          default: submission/P9.1
+    donations:
+      pages:
+        - id: "donations/P4.0"
+        - id: "donations/P4.1"
+        - id: "donations/P4.2"
+        - id: "donations/P4.3"
+        - id: "donations/P4.4"
+        - id: "donations/P4.5"
+        - id: "donations/P4.6"
+        - id: "donations/P4.7"
+        - id: "donations/P4.8"
+      transitionTo:
+          default: submission/P9.1
+    otherFinancialLoss:
+      pages:
+        - id: "otherFinancialLoss/P5.0"
+        - id: "otherFinancialLoss/P5.1"
+        - id: "otherFinancialLoss/P5.2"
+        - id: "otherFinancialLoss/P5.3"
+          condition:
+            P5.3-checkbox-1_yes: flow_5.4
+        - id: "otherFinancialLoss/P5.5"
+        - id: "otherFinancialLoss/P5.6"
+        - id: "otherFinancialLoss/P5.7"
+        - id: "otherFinancialLoss/P5.8"
+        - id: "otherFinancialLoss/P5.9"
+        - id: "otherFinancialLoss/5.10"
+      flows:
+        flow_5.4:
+          pages:
+            - id: "otherFinancialLoss/P5.4"
+      transitionTo:
+          default: submission/P9.1
+    terrorism:
+      pages:
+        - id: "terrorism/P6.0"
+        - id: "terrorism/P6.1"
+        - id: "terrorism/P6.2"
+        - id: "terrorism/P6.3"
+        - id: "terrorism/P6.4"
+        - id: "terrorism/P6.5"
+        - id: "terrorism/P6.6"
+        - id: "terrorism/P6.7"
+      transitionTo:
+          default: submission/P9.1
+    otherIncidents:
+      pages:
+        - id: "otherIncidents/P7.0"
+          condition:
+            P7.0-checkbox-1_partner incident: flow_1
+            P7.0-checkbox-2_disqualified person: flow_2
+            P7.0-checkbox-3_police/reg auth investigation: flow_3
+            P7.0-checkbox-4_partner incident: flow_4
+        - id: "otherIncidents/P7.6"
+        - id: "otherIncidents/P7.7"
+        - id: "otherIncidents/P7.8"
+        - id: "otherIncidents/P7.8"
+        - id: "otherIncidents/P7.9"
+        - id: "otherIncidents/P7.10"
+        - id: "otherIncidents/P7.11"
+      flows:
+        flow_1:
+          pages:
+            - id: "otherIncidents/P7.1"
+            - id: "otherIncidents/P7.1.1"
+        flow_2:
+          pages:
+            - id: "otherIncidents/P7.2"
+              condition:
+                P7.2-checkbox-1_trustee: flow_7.2.0
+            - id: "otherIncidents/P7.2.1"
+            - id: "otherIncidents/P7.2.2"
+            - id: "otherIncidents/P7.2.3"
+          subFlows:
+            flow_7.2.0:
+              pages:
+                - id: "otherIncidents/P7.2.0.1"
+        flow_3:
+          pages:
+            - id: "otherIncidents/P7.3"
+        flow_4:
+          pages:
+            - id: "otherIncidents/P7.4"
+            - id: "otherIncidents/P7.4.1"
+      transitionTo:
+          default: submission/P9.1
+    updateAnIncident:
+      pages:
+        - id: "updateAnIncident/P8.0"
+          condition:
+            P8.0-checkbox-2_no: flow_8.0
+        - id: "updateAnIncident/P8.1"
+        - id: "updateAnIncident/P8.2"
+          condition:
+            P8.2-checkbox-1_yes: flow_8.3
+            P8.2-checkbox-2_no: flow_8.4
+        - id: "updateAnIncident/P8.5"
+        - id: "updateAnIncident/P8.6"
+        - id: "updateAnIncident/P8.7"
+        - id: "updateAnIncident/P8.8"
+        - id: "updateAnIncident/P8.9"
+      flows:
+        flow_8.0:
+          pages:
+            - id: "updateAnIncident/P8.0a"
+            - id: "end"
+        flow_8.3:
+          pages:
+            - id: "updateAnIncident/P8.3"
+            - id: "updateAnIncident/P8.3a"
+              condition:
+                P8.3a-checkbox-2_no: flow_8.4
+        flow_8.4:
+          pages:
+            - id: "updateAnIncident/P8.4"
+      transitionTo:
+          default: submission/P9.1
+    submission:
+      pages:
+        - id: "submission/P9.1"
+        - id: "submission/P9.2"
