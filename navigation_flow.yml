@@ -1,0 +1,340 @@
+sections:
+  - SECTION_ID: Initial_pages_section
+    flows:
+      - FLOW_ID: Initial Flow
+        pages:
+          - PAGE_ID: "initial/P1.0"
+          - PAGE_ID: "initial/P1.1"
+            transitionTo:
+              option1: sub_flow_1.1
+              option2: sub_flow_1.2
+          - PAGE_ID: "initial/P1.4"
+          - PAGE_ID: "initial/P1.5"
+          - PAGE_ID: "initial/P1.6"
+          - PAGE_ID: "initial/P1.7"
+            transitionTo:
+              option1: sub_flow_1.7.1
+          - PAGE_ID: "initial/P1.8"
+            transitionTo:
+              option1: sub_flow_1.8.1
+              option2: sub_flow_1.9
+          - PAGE_ID: "initial/P1.10"
+            transitionTo:
+              option1: sub_flow_1.10.2
+              option2: sub_flow_1.10.1
+          - PAGE_ID: "initial/P1.11"
+            transitionTo:
+              option1: sub_flow_1.11.1
+          - PAGE_ID: "initial/P1.12"
+            transitionTo:
+              option1: sub_flow_1.12.1
+          - PAGE_ID: "initial/P1.13"
+          - PAGE_ID: "initial/P1.14"
+            transitionTo:
+              option1: sub_flow_1.14.1
+        subFlows:
+          - SUBFLOW_ID: sub_flow_1.1
+            pages:
+              - PAGE_ID: "initial/P1.3"
+                transitionTo:
+                  option2:  Second flow
+          - SUBFLOW_ID: sub_flow_1.2
+            pages:
+              - PAGE_ID: "initial/P1.2"
+              - PAGE_ID: "take me to previously visited page"
+          - SUBFLOW_ID: sub_flow_1.7.1
+            pages:
+              - PAGE_ID: "initial/P1.7a"
+          - SUBFLOW_ID: sub_flow_1.8.1
+            pages:
+              - PAGE_ID: "initial/P1.8.1"
+          - SUBFLOW_ID: sub_flow_1.9
+            pages:
+              - PAGE_ID: "initial/P1.9"
+                transitionTo:
+                  option1: sub_flow_1.9.1
+                  option2: sub_flow_1.9.2
+          - SUBFLOW_ID: sub_flow_1.9.1
+            pages:
+              - PAGE_ID: "initial/P1.9.1"
+          - SUBFLOW_ID: sub_flow_1.9.2
+            pages:
+              - PAGE_ID: "initial/P1.9.2"
+          - SUBFLOW_ID: sub_flow_1.10.1
+            pages:
+              - PAGE_ID: "initial/P1.10.1"
+                transitionTo:
+                  option1: sub_flow_1.10.2
+          - SUBFLOW_ID: sub_flow_1.10.2
+            pages:
+              - PAGE_ID: "initial/P1.10.2"
+              - PAGE_ID: "initial/P1.10.1"
+          - SUBFLOW_ID: sub_flow_1.11.1
+            pages:
+              - PAGE_ID: "initial/P1.11.1"
+              - PAGE_ID: "initial/P1.11.2"
+                transitionTo:
+                  option1: sub_flow_1.11.3
+                  option2: sub_flow_1.11.4
+          - SUBFLOW_ID: sub_flow_1.11.3
+            pages:
+              - PAGE_ID: "initial/P1.11.3"
+          - SUBFLOW_ID: sub_flow_1.11.4
+            pages:
+              - PAGE_ID: "initial/P1.11.4"
+          - SUBFLOW_ID: sub_flow_1.12.1
+            pages:
+              - PAGE_ID: "initial/P1.12.1"
+          - SUBFLOW_ID: sub_flow_1.14.1
+            pages:
+              - PAGE_ID: "initial/P1.14.1"
+              - PAGE_ID: "initial/P1.14.2"
+      - FLOW_ID: Second flow
+        pages:
+          - PAGE_ID: "initial/P1.3a"
+          - PAGE_ID: "end"
+      - FLOW_ID: Third Flow
+        pages:
+          - PAGE_ID: "updateAnIncident/P8.0"
+    sectionTransitionTo:
+      option1: safeguardingID
+      option2: financialID
+      option3: donationsID
+      option4: otherFinancialLossID
+      option5: terrorismID
+      option6: otherIncidentsID
+  - SECTION_ID: safeguardingID
+    flows:
+      - FLOW_ID: safeguarding
+        pages:
+          - PAGE_ID: "safeguarding/P2.0"
+            transitionTo:
+              option1: sub_flow_2.1
+              option2: sub_flow_2.2
+          - PAGE_ID: "safeguarding/P2.3"
+          - PAGE_ID: "safeguarding/P2.4"
+            transitionTo:
+              option1: sub_flow_2.4.1
+          - PAGE_ID: "safeguarding/P2.5"
+          - PAGE_ID: "safeguarding/P2.6"
+          - PAGE_ID: "safeguarding/P2.7"
+          - PAGE_ID: "safeguarding/P2.8"
+          - PAGE_ID: "safeguarding/P2.9"
+          - PAGE_ID: "safeguarding/P2.10"
+          - PAGE_ID: "safeguarding/P2.11"
+        subFlows:
+          - SUBFLOW_ID: sub_flow_2.1
+            pages:
+              - PAGE_ID: "safeguarding/P2.1.1"
+                transitionTo:
+                  option1: sub_flow_2.1.1
+              - PAGE_ID: "safeguarding/P2.1.2"
+              - PAGE_ID: "safeguarding/P2.1.3"
+              - PAGE_ID: "safeguarding/P2.1.4"
+              - PAGE_ID: "safeguardingP2.1.5"
+              - PAGE_ID: "safeguarding/P2.1.6"
+                transitionTo:
+                  option1: sub_flow_2.1.6
+              - PAGE_ID: P2.1.7
+              - PAGE_ID: P2.1.8
+          - SUBFLOW_ID: sub_flow_2.1.1
+            pages:
+              - PAGE_ID: "safeguarding/P2.1.1.1"
+          - SUBFLOW_ID: flow_2.1.6
+            pages:
+              - PAGE_ID: "safeguardingP2.1.6.1"
+                transitionTo:
+                  option1: sub_flow_2.1.6.2
+          - SUBFLOW_ID: sub_flow_2.1.6.2
+            pages:
+              - PAGE_ID: "safeguarding/P2.1.6.2"
+          - SUBFLOW_ID: sub_flow_2.2
+            pages:
+              - PAGE_ID: "safeguarding/P2.2"
+          - SUBFLOW_ID: sub_flow_2.4.1
+            pages:
+              - PAGE_ID: "safeguarding/P2.4.1"
+    sectionTransitionTo:
+      default: "submission/P9.1"
+  - SECTION_ID: financialID
+    flows:
+      - FLOW_ID: financial
+        pages:
+          - PAGE_ID: "financial/P3.0"
+            transitionTo:
+              option1: sub_flow_3.1
+              option2: sub_flow_3.2
+          - PAGE_ID: "financial/P3.3"
+            transitionTo:
+              option1: sub_flow_3.3.1
+              option2: sub_flow_3.3.2
+          - PAGE_ID: "financial/P3.4"
+          - PAGE_ID: "financial/P3.5"
+          - PAGE_ID: "financial/P3.6"
+          - PAGE_ID: "financial/P3.7"
+            transitionTo:
+              option1: sub_flow_3.7.1
+          - PAGE_ID: "financial/P3.8"
+          - PAGE_ID: "financial/P3.9"
+          - PAGE_ID: "financial/P3.10"
+            transitionTo:
+              option1: sub_flow_3.10.1
+          - PAGE_ID: "financial/P3.11"
+          - PAGE_ID: "financial/P3.12"
+          - PAGE_ID: "financial/P3.13"
+        subFlows:
+          - SUBFLOW_ID: sub_flow_3.1
+            pages:
+              - PAGE_ID: "financial/P3.1"
+          - SUBFLOW_ID: sub_flow_3.2
+            pages:
+              - PAGE_ID: "financial/P3.2"
+          - SUBFLOW_ID: sub_flow_3.3.1
+            pages:
+              - PAGE_ID: "financial/P3.3.1.1"
+              - PAGE_ID: "financial/P3.3.1.2"
+                transitionTo:
+                  option1: sub_flow_3.3.2
+          - SUBFLOW_ID: sub_flow_3.3.2
+            pages:
+              - PAGE_ID: "financial/P3.3.2.1"
+          - SUBFLOW_ID: sub_flow_3.3.1
+            pages:
+              - PAGE_ID: "financial/P3.7.1"
+          - SUBFLOW_ID: sub_flow_3.10.1
+            pages:
+              - PAGE_ID: "financial/P3.10.1"
+    sectionTransitionTo:
+      default: submission/P9.1
+  - SECTION_ID: donationsID
+    flows:
+      - FLOW_ID: donations
+        pages:
+          - PAGE_ID: "donations/P4.0"
+          - PAGE_ID: "donations/P4.1"
+          - PAGE_ID: "donations/P4.2"
+          - PAGE_ID: "donations/P4.3"
+          - PAGE_ID: "donations/P4.4"
+          - PAGE_ID: "donations/P4.5"
+          - PAGE_ID: "donations/P4.6"
+          - PAGE_ID: "donations/P4.7"
+          - PAGE_ID: "donations/P4.8"
+    sectionTransitionTo:
+      default: submission/P9.1
+  - SECTION_ID: otherFinancialLossID
+    flows:
+      - FLOW_ID: otherFinancialLoss
+        pages:
+          - PAGE_ID: "otherFinancialLoss/P5.0"
+          - PAGE_ID: "otherFinancialLoss/P5.1"
+          - PAGE_ID: "otherFinancialLoss/P5.2"
+          - PAGE_ID: "otherFinancialLoss/P5.3"
+            transitionTo:
+              option1: sub_flow_5.4
+          - PAGE_ID: "otherFinancialLoss/P5.5"
+          - PAGE_ID: "otherFinancialLoss/P5.6"
+          - PAGE_ID: "otherFinancialLoss/P5.7"
+          - PAGE_ID: "otherFinancialLoss/P5.8"
+          - PAGE_ID: "otherFinancialLoss/P5.9"
+          - PAGE_ID: "otherFinancialLoss/5.10"
+        subFlows:
+          - SUBFLOW_ID: sub_flow_5.4
+            pages:
+              - PAGE_ID: "otherFinancialLoss/P5.4"
+    sectionTransitionTo:
+      default: submission/P9.1
+  - SECTION_ID: terrorismID
+    flows:
+      - FLOW_ID: terrorism
+        pages:
+          - PAGE_ID: "terrorism/P6.0"
+          - PAGE_ID: "terrorism/P6.1"
+          - PAGE_ID: "terrorism/P6.2"
+          - PAGE_ID: "terrorism/P6.3"
+          - PAGE_ID: "terrorism/P6.4"
+          - PAGE_ID: "terrorism/P6.5"
+          - PAGE_ID: "terrorism/P6.6"
+          - PAGE_ID: "terrorism/P6.7"
+    sectionTransitionTo:
+      default: submission/P9.1
+  - SECTION_ID: otherIncidentsID
+    flows:
+      - FLOW_ID: otherIncidents
+        pages:
+          - PAGE_ID: "otherIncidents/P7.0"
+            transitionTo:
+              option1: sub_flow_1
+              option2: sub_flow_2
+              option3: sub_flow_3
+              option4: sub_flow_4
+          - PAGE_ID: "otherIncidents/P7.6"
+          - PAGE_ID: "otherIncidents/P7.7"
+          - PAGE_ID: "otherIncidents/P7.8"
+          - PAGE_ID: "otherIncidents/P7.8"
+          - PAGE_ID: "otherIncidents/P7.9"
+          - PAGE_ID: "otherIncidents/P7.10"
+          - PAGE_ID: "otherIncidents/P7.11"
+        subFlows:
+          - SUBFLOW_ID: sub_flow_1
+            pages:
+              - PAGE_ID: "otherIncidents/P7.1"
+              - PAGE_ID: "otherIncidents/P7.1.1"
+          - SUBFLOW_ID: sub_flow_2
+            pages:
+              - PAGE_ID: "otherIncidents/P7.2"
+                transitionTo:
+                  option1: sub_flow_7.2.0
+              - PAGE_ID: "otherIncidents/P7.2.1"
+              - PAGE_ID: "otherIncidents/P7.2.2"
+              - PAGE_ID: "otherIncidents/P7.2.3"
+          - SUBFLOW_ID: sub_flow_7.2.0
+            pages:
+              - PAGE_ID: "otherIncidents/P7.2.0.1"
+          - SUBFLOW_ID: sub_flow_3
+            pages:
+              - PAGE_ID: "otherIncidents/P7.3"
+          - SUBFLOW_ID: sub_flow_4
+            pages:
+              - PAGE_ID: "otherIncidents/P7.4"
+              - PAGE_ID: "otherIncidents/P7.4.1"
+    sectionTransitionTo:
+      default: submission/P9.1
+  - SECTION_ID: updateAnIncidentID
+    flows:
+      - FLOW_ID: updateAnIncident
+        pages:
+          - PAGE_ID: "updateAnIncident/P8.0"
+            transitionTo:
+              option1: sub_flow_8.0
+          - PAGE_ID: "updateAnIncident/P8.1"
+          - PAGE_ID: "updateAnIncident/P8.2"
+            transitionTo:
+              option1: sub_flow_8.3
+              option2: sub_flow_8.4
+          - PAGE_ID: "updateAnIncident/P8.5"
+          - PAGE_ID: "updateAnIncident/P8.6"
+          - PAGE_ID: "updateAnIncident/P8.7"
+          - PAGE_ID: "updateAnIncident/P8.8"
+          - PAGE_ID: "updateAnIncident/P8.9"
+        subFlows:
+          - SUBFLOW_ID: sub_flow_8.0
+            pages:
+              - PAGE_ID: "updateAnIncident/P8.0a"
+              - PAGE_ID: "end"
+          - SUBFLOW_ID: sub_flow_8.3
+            pages:
+              - PAGE_ID: "updateAnIncident/P8.3"
+              - PAGE_ID: "updateAnIncident/P8.3a"
+                transitionTo:
+                  option1: flow_8.4
+          - SUBFLOW_ID: sub_flow_8.3
+            pages:
+              - PAGE_ID: "updateAnIncident/P8.4"
+    sectionTransitionTo:
+      default: submission/P9.1
+  - SECTION_ID: submissionID
+    flows:
+      - FLOW_ID: submission
+        pages:
+          - PAGE_ID: "submission/P9.1"
+          - PAGE_ID: "submission/P9.2"
