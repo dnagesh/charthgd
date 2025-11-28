@@ -1,9 +1,6 @@
 package com.smartsourcing.charitycommission.rsi.engine;
 
-import com.smartsourcing.charitycommission.rsi.config.PageDefinition;
-import com.smartsourcing.charitycommission.rsi.config.Section;
-import com.smartsourcing.charitycommission.rsi.config.Flow;
-import com.smartsourcing.charitycommission.rsi.config.YamlConfigLoader;
+import com.smartsourcing.charitycommission.rsi.config.*;
 import com.smartsourcing.charitycommission.rsi.exception.NavigationException;
 import com.smartsourcing.charitycommission.rsi.model.PageNode;
 import com.smartsourcing.charitycommission.rsi.model.NavigationContext;
@@ -24,6 +21,7 @@ public class FlowNavigator {
 
     private final YamlConfigLoader configLoader;
     private final ConditionEvaluator conditionEvaluator;
+    private final SectionMapper sectionMapper;
 
     /**
      * Find the next page based on current context and user response
@@ -45,6 +43,7 @@ public class FlowNavigator {
 
     /**
      * Find next page within section's main pages
+     * NEW: Checks transitionTo for cross-section jumps
      */
     private PageNode findNextInSection(NavigationContext context, String userResponse, Section section) {
         List<PageDefinition> pages = section.getPages();
@@ -77,6 +76,14 @@ public class FlowNavigator {
             // Store the response
             context.storeResponse(currentPageId, userResponse);
 
+            // NEW: Check if this is a cross-section transition
+            Map<String, String> transitionTo = section.getTransitionTo();
+            if (transitionTo != null && transitionTo.containsKey(userResponse)) {
+                String targetPageId = transitionTo.get(userResponse);
+                log.info("Cross-section transition: {} → {}", currentPageId, targetPageId);
+                return handleCrossSectionTransition(context, targetPageId);
+            }
+
             // Evaluate condition and enter the specified flow
             PageNode currentNode = buildPageNode(currentPageDef, context.getCurrentSection(), null, null);
             String targetFlow = conditionEvaluator.evaluateCondition(currentNode, userResponse);
@@ -91,6 +98,10 @@ public class FlowNavigator {
             context.setCurrentFlow(targetFlow);
 
             // Get first page of the flow
+            if (flow.getPages() == null || flow.getPages().isEmpty()) {
+                throw new NavigationException("Flow has no pages: " + targetFlow);
+            }
+
             PageDefinition firstPageDef = flow.getPages().get(0);
             return buildPageNode(firstPageDef, context.getCurrentSection(), targetFlow, null);
         }
@@ -101,10 +112,12 @@ public class FlowNavigator {
             return buildPageNode(nextPageDef, context.getCurrentSection(), null, null);
         }
 
-        // End of section - check for transition
-        if (section.getTransition_to() != null) {
-            log.info("End of section {}, transitioning to: {}", context.getCurrentSection(), section.getTransition_to());
-            // TODO: Handle section transition
+        // End of section - check for default transition
+        Map<String, String> transitionTo = section.getTransitionTo();
+        if (transitionTo != null && transitionTo.containsKey("default")) {
+            String targetPageId = transitionTo.get("default");
+            log.info("End of section {}, default transition to: {}", context.getCurrentSection(), targetPageId);
+            return handleCrossSectionTransition(context, targetPageId);
         }
 
         // End of navigation
@@ -113,6 +126,48 @@ public class FlowNavigator {
                 .sectionName(context.getCurrentSection())
                 .isEndPage(true)
                 .build();
+    }
+
+    /**
+     * NEW: Handle cross-section transition
+     * Example: "safeguarding/P2.0" → Jump to safeguarding section
+     */
+    private PageNode handleCrossSectionTransition(NavigationContext context, String targetPageId) {
+        // Parse target page ID: "safeguarding/P2.0"
+        String targetSectionName = sectionMapper.extractSectionNameFromPageId(targetPageId);
+
+        log.debug("Transitioning from section {} to section {}",
+                context.getCurrentSection(), targetSectionName);
+
+        // Update context for new section
+        context.setCurrentSection(targetSectionName);
+        context.setCurrentFlow(null);
+        context.setCurrentSubFlow(null);
+        context.setCurrentPageId(targetPageId);
+
+        // Get the target section
+        Section targetSection = configLoader.getSection(targetSectionName);
+
+        // Find the page definition in target section
+        PageDefinition targetPageDef = findPageInSection(targetSection, targetPageId);
+
+        if (targetPageDef == null) {
+            // If not in section pages, might be in a flow
+            if (targetSection.getFlows() != null) {
+                for (Map.Entry<String, Flow> flowEntry : targetSection.getFlows().entrySet()) {
+                    targetPageDef = findPageInFlow(flowEntry.getValue(), targetPageId);
+                    if (targetPageDef != null) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (targetPageDef == null) {
+            throw new NavigationException("Target page not found: " + targetPageId);
+        }
+
+        return buildPageNode(targetPageDef, targetSectionName, null, null);
     }
 
     /**
@@ -128,16 +183,24 @@ public class FlowNavigator {
         // Determine if we're in a sub-flow or main flow
         if (subFlowName != null) {
             Flow mainFlow = section.getFlows().get(flowName);
-            currentFlow = mainFlow.getSub_flows().get(subFlowName);
+            if (mainFlow == null) {
+                throw new NavigationException("Main flow not found: " + flowName);
+            }
+            currentFlow = mainFlow.getSubFlows().get(subFlowName);
+            if (currentFlow == null) {
+                throw new NavigationException("Sub-flow not found: " + subFlowName);
+            }
         } else {
             currentFlow = section.getFlows().get(flowName);
-        }
-
-        if (currentFlow == null) {
-            throw new NavigationException("Flow not found: " + flowName);
+            if (currentFlow == null) {
+                throw new NavigationException("Flow not found: " + flowName);
+            }
         }
 
         List<PageDefinition> pages = currentFlow.getPages();
+        if (pages == null || pages.isEmpty()) {
+            throw new NavigationException("Flow has no pages: " + (subFlowName != null ? subFlowName : flowName));
+        }
 
         // Find current page
         int currentIndex = -1;
@@ -170,13 +233,24 @@ public class FlowNavigator {
 
             // Enter sub-flow
             Flow mainFlow = section.getFlows().get(flowName);
-            Flow subFlow = mainFlow.getSub_flows().get(targetSubFlow);
+            if (mainFlow == null) {
+                throw new NavigationException("Main flow not found: " + flowName);
+            }
+
+            Flow subFlow = mainFlow.getSubFlows().get(targetSubFlow);
+            if (subFlow == null) {
+                throw new NavigationException("Sub-flow not found: " + targetSubFlow);
+            }
 
             if (subFlow == null) {
                 throw new NavigationException("Sub-flow not found: " + targetSubFlow);
             }
 
             context.setCurrentSubFlow(targetSubFlow);
+
+            if (subFlow.getPages() == null || subFlow.getPages().isEmpty()) {
+                throw new NavigationException("Sub-flow has no pages: " + targetSubFlow);
+            }
 
             PageDefinition firstPageDef = subFlow.getPages().get(0);
             return buildPageNode(firstPageDef, context.getCurrentSection(), flowName, targetSubFlow);
@@ -194,7 +268,7 @@ public class FlowNavigator {
             context.setCurrentSubFlow(null);
 
             // Continue from the page that branched into this sub-flow
-            return findNextInFlow(context, null, section);
+            return continueAfterSubFlow(context, section, flowName);
         }
 
         // End of main flow - return to section
@@ -206,53 +280,112 @@ public class FlowNavigator {
     }
 
     /**
+     * Continue navigation after exiting a sub-flow
+     */
+    private PageNode continueAfterSubFlow(NavigationContext context, Section section, String flowName) {
+        Flow mainFlow = section.getFlows().get(flowName);
+        if (mainFlow == null || mainFlow.getPages() == null) {
+            context.setCurrentFlow(null);
+            return continueFromSectionAfterFlow(context, section);
+        }
+
+        List<PageDefinition> pages = mainFlow.getPages();
+
+        // Find the page that branched into the sub-flow
+        for (int i = 0; i < pages.size(); i++) {
+            PageDefinition pageDef = pages.get(i);
+            if (pageDef.getCondition() != null) {
+                String storedResponse = context.getResponse(pageDef.getId());
+                if (storedResponse != null && pageDef.getCondition().containsKey(storedResponse)) {
+                    // This page had a condition that was answered
+                    // Continue from next page
+                    if (i + 1 < pages.size()) {
+                        PageDefinition nextPageDef = pages.get(i + 1);
+                        return buildPageNode(nextPageDef, context.getCurrentSection(), flowName, null);
+                    }
+                }
+            }
+        }
+
+        // If we can't find the branching point, end the flow
+        context.setCurrentFlow(null);
+        return continueFromSectionAfterFlow(context, section);
+    }
+
+    /**
      * Continue navigation in section after completing a flow
      */
     private PageNode continueFromSectionAfterFlow(NavigationContext context, Section section) {
         List<PageDefinition> pages = section.getPages();
 
+        if (pages == null || pages.isEmpty()) {
+            return buildEndPage(context.getCurrentSection());
+        }
+
         // Find the last page we were at in the section before entering flow
-        // Look through history or find the page with condition that led to this flow
         for (int i = 0; i < pages.size(); i++) {
             PageDefinition pageDef = pages.get(i);
             if (pageDef.getCondition() != null) {
                 String storedResponse = context.getResponse(pageDef.getId());
                 if (storedResponse != null && pageDef.getCondition().containsKey(storedResponse)) {
                     String flowFromCondition = pageDef.getCondition().get(storedResponse);
-                    if (flowFromCondition.equals(context.getCurrentFlow())) {
-                        // This was the page that led to our flow, continue from next page
-                        if (i + 1 < pages.size()) {
-                            PageDefinition nextPageDef = pages.get(i + 1);
-                            return buildPageNode(nextPageDef, context.getCurrentSection(), null, null);
-                        }
+
+                    // Check if this matches our current/previous flow
+                    // Continue from next page
+                    if (i + 1 < pages.size()) {
+                        PageDefinition nextPageDef = pages.get(i + 1);
+                        return buildPageNode(nextPageDef, context.getCurrentSection(), null, null);
                     }
                 }
             }
         }
 
-        // Check for section transition
-        if (section.getTransition_to() != null) {
-            log.info("Section complete, transition to: {}", section.getTransition_to());
+        // Check for default transition at end of section
+        Map<String, String> transitionTo = section.getTransitionTo();
+        if (transitionTo != null && transitionTo.containsKey("default")) {
+            String targetPageId = transitionTo.get("default");
+            log.info("Section complete, default transition to: {}", targetPageId);
+            return handleCrossSectionTransition(context, targetPageId);
         }
 
+//        return PageNode.builder()
+//                .pageId("end")
+//                .sectionName(context.getCurrentSection())
+//                .isEndPage(true)
+//                .build();
+
+        return buildEndPage(context.getCurrentSection());
+    }
+
+    /**
+     * Build end page node
+     */
+    private PageNode buildEndPage(String sectionName) {
         return PageNode.builder()
                 .pageId("end")
-                .sectionName(context.getCurrentSection())
+                .sectionName(sectionName)
                 .isEndPage(true)
                 .build();
     }
 
     /**
      * Build a PageNode from PageDefinition
+     * NEW: Extracts section prefix and page name from ID
      */
     private PageNode buildPageNode(PageDefinition pageDef, String sectionName, String flowName, String subFlowName) {
+        String pageId = pageDef.getId();
+        String sectionPrefix = sectionMapper.extractPrefixFromPageId(pageId);
+        String pageName = sectionMapper.extractPageNameFromPageId(pageId);
+
         return PageNode.builder()
-                .pageId(pageDef.getId())
+                .pageId(pageId)
                 .sectionName(sectionName)
+                .sectionPrefix(sectionPrefix)
+                .pageName(pageName)
                 .flowName(flowName)
                 .subFlowName(subFlowName)
                 .conditions(pageDef.getCondition())
-                .isEndPage("end".equals(pageDef.getId()))
+                .isEndPage("end".equals(pageId))
                 .build();
     }
 
@@ -263,7 +396,7 @@ public class FlowNavigator {
         Section section = configLoader.getSection(sectionName);
         List<PageDefinition> pages = section.getPages();
 
-        if (pages.isEmpty()) {
+        if (pages == null || pages.isEmpty()) {
             throw new NavigationException("Section has no pages: " + sectionName);
         }
 
@@ -290,8 +423,8 @@ public class FlowNavigator {
         // Check if we're in a sub-flow
         if (subFlowName != null && flowName != null) {
             Flow mainFlow = section.getFlows().get(flowName);
-            if (mainFlow != null && mainFlow.getSub_flows() != null) {
-                Flow subFlow = mainFlow.getSub_flows().get(subFlowName);
+            if (mainFlow != null && mainFlow.getSubFlows() != null) {
+                Flow subFlow = mainFlow.getSubFlows().get(subFlowName);
                 if (subFlow != null) {
                     pageDefinition = findPageInFlow(subFlow, currentPageId);
                 }

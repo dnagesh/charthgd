@@ -7,6 +7,6 @@ import java.util.Map;
  */
 @Data
 public class PageDefinition {
-    private String id;
+    private String id;  // Format: "initial/P1.0" or "safeguarding/P2.0"
     private Map<String, String> condition;
 }

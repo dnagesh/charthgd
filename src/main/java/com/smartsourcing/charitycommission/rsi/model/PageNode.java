@@ -15,11 +15,13 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageNode {
-    private String pageId;
-    private String sectionName;
+    private String pageId;           // Full ID: "initial/P1.0"
+    private String sectionName;      // YAML section name: "initialPages"
+    private String sectionPrefix;    // URL/Template prefix: "initial"
+    private String pageName;         // Just the page: "P1.0"
     private String flowName;
     private String subFlowName;
-    private Map<String, String> conditions; // condition value -> target flow
+    private Map<String, String> conditions; // condition value → target flow
     private boolean isEndPage;
 
     /**
@@ -41,5 +43,34 @@ public class PageNode {
             path.append(" > ").append(subFlowName);
         }
         return path.toString();
+    }
+
+    /**
+     * Get template path for Thymeleaf
+     * Example: "initial/P1.0" → "forms/initial/P1.0"
+     */
+    public String getTemplatePath() {
+        return "forms/" + pageId;
+    }
+
+    /**
+     * Parse section prefix from page ID
+     */
+    public String parseSectionPrefix() {
+        if (pageId != null && pageId.contains("/")) {
+            return pageId.split("/")[0];
+        }
+        return sectionPrefix;
+    }
+
+    /**
+     * Parse page name from page ID
+     */
+    public String parsePageName() {
+        if (pageId != null && pageId.contains("/")) {
+            String[] parts = pageId.split("/");
+            return parts.length > 1 ? parts[1] : pageId;
+        }
+        return pageName;
     }
 }

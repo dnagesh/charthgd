@@ -45,7 +45,7 @@ public class NavigationControllerNew {
     /**
      * Display a specific page
      */
-    @GetMapping("/page/{pageId}")
+    @GetMapping("/page/{pageId:.+}")
     public String showPage(@PathVariable String pageId, Model model) {
         log.info("Showing page: {}", pageId);
 
@@ -59,7 +59,13 @@ public class NavigationControllerNew {
             model.addAttribute("isEndPage", response.isEndPage());
             model.addAttribute("flowPath", response.getFlowPath());
 
-            return "navigation/page";
+            // NEW: Return template path based on page ID
+            // Example: "initial/P1.0" → "forms/initial/P1.0"
+            String templatePath = "forms/" + pageId;
+            log.debug("Resolving template: {}", templatePath);
+
+            return templatePath;
+
         } catch (Exception e) {
             log.error("Error showing page: {}", pageId, e);
             model.addAttribute("error", "Failed to load page: " + e.getMessage());

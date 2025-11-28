@@ -24,7 +24,7 @@ public class YamlConfigLoader {
     public void loadConfig() {
         try {
             log.info("Loading navigation configuration from YAML...");
-            ClassPathResource resource = new ClassPathResource("two.yml");
+            ClassPathResource resource = new ClassPathResource("navigation_flow.yml");
 
             // Create LoaderOptions for newer SnakeYAML versions
             LoaderOptions loaderOptions = new LoaderOptions();
@@ -37,6 +37,13 @@ public class YamlConfigLoader {
 
             log.info("Navigation configuration loaded successfully. Sections: {}",
                     navigationConfig.getSections().keySet());
+
+            // Log first page of each section for verification
+            navigationConfig.getSections().forEach((name, section) -> {
+                if (!section.getPages().isEmpty()) {
+                    log.debug("Section '{}' first page: {}", name, section.getPages().get(0).getId());
+                }
+            });
 
         } catch (Exception e) {
             log.error("Failed to load navigation configuration", e);
@@ -58,6 +65,10 @@ public class YamlConfigLoader {
      * Get a specific section
      */
     public Section getSection(String sectionName) {
+        if (navigationConfig == null) {
+            throw new NavigationException("Navigation configuration not loaded");
+        }
+
         Section section = navigationConfig.getSections().get(sectionName);
         if (section == null) {
             throw new NavigationException("Section not found: " + sectionName);

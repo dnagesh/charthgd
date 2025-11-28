@@ -20,6 +20,7 @@ public class NavigationResponse {
     private String previousPageId;
     private String currentSection;
     private String currentFlow;
+    private String currentSubFlow;  // NEW: Added sub-flow tracking
     private Map<String, String> conditions; // Available conditions for the page
     private boolean canGoBack;
     private boolean isEndPage;

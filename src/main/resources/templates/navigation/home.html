@@ -18,7 +18,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 3rem;
-            max-width: 600px;
+            max-width: 800px;
         }
         .section-btn {
             margin: 10px 0;
@@ -30,7 +30,7 @@
 <body>
 <div class="container">
     <div class="home-card">
-        <h1 class="text-center mb-4">Navigation System</h1>
+        <h1 class="text-center mb-4">Incident Reporting Navigation System</h1>
         <p class="text-center text-muted mb-4">
             Select a section to begin navigation
         </p>
@@ -38,18 +38,48 @@
         <div class="d-grid gap-3">
             <a href="/navigate/start?section=initialPages"
                class="btn btn-primary section-btn">
-                <i class="bi bi-arrow-right-circle"></i> Initial Pages Section
+                📋 Initial Pages - Start New Report
             </a>
 
-            <a href="/navigate/start?section=otherSignificantFinancialLoss"
+            <a href="/navigate/start?section=safeguarding"
+               class="btn btn-danger section-btn">
+                🛡️ Safeguarding Incidents
+            </a>
+
+            <a href="/navigate/start?section=financial"
+               class="btn btn-warning section-btn">
+                💰 Financial Incidents
+            </a>
+
+            <a href="/navigate/start?section=donations"
                class="btn btn-info section-btn">
-                <i class="bi bi-cash-stack"></i> Financial Loss Section
+                🎁 Donations & Fundraising
+            </a>
+
+            <a href="/navigate/start?section=otherFinancialLoss"
+               class="btn btn-secondary section-btn">
+                📉 Other Financial Loss
+            </a>
+
+            <a href="/navigate/start?section=terrorism"
+               class="btn btn-dark section-btn">
+                ⚠️ Terrorism Related
+            </a>
+
+            <a href="/navigate/start?section=otherIncidents"
+               class="btn btn-success section-btn">
+                📝 Other Incidents
+            </a>
+
+            <a href="/navigate/start?section=updateAnIncident"
+               class="btn btn-outline-primary section-btn">
+                🔄 Update An Incident
             </a>
         </div>
 
         <div class="text-center mt-4">
             <small class="text-muted">
-                Powered by Spring Boot + Thymeleaf
+                Powered by Spring Boot + Thymeleaf | YAML-Driven Navigation
             </small>
         </div>
     </div>

@@ -61,6 +61,11 @@ public class NavigationEngine {
             navigationContext.setCurrentFlow(nextPage.getFlowName());
             navigationContext.setCurrentSubFlow(nextPage.getSubFlowName());
 
+            // Handle cross-section transition - update section if page ID contains different section
+            if (nextPage.getSectionName() != null) {
+                navigationContext.setCurrentSection(nextPage.getSectionName());
+            }
+
             return buildResponse(nextPage);
 
         } catch (Exception e) {
@@ -91,13 +96,16 @@ public class NavigationEngine {
         navigationContext.setCurrentSubFlow(previousState.getSubFlow());
         navigationContext.setCurrentPageId(previousState.getPageId());
 
-        // Build page node for response
-        PageNode previousPage = PageNode.builder()
-                .pageId(previousState.getPageId())
-                .sectionName(previousState.getSection())
-                .flowName(previousState.getFlow())
-                .subFlowName(previousState.getSubFlow())
-                .build();
+//        // Build page node for response
+//        PageNode previousPage = PageNode.builder()
+//                .pageId(previousState.getPageId())
+//                .sectionName(previousState.getSection())
+//                .flowName(previousState.getFlow())
+//                .subFlowName(previousState.getSubFlow())
+//                .build();
+
+        // Get current page details for response
+        PageNode previousPage = flowNavigator.getCurrentPageNode(navigationContext);
 
         return buildResponse(previousPage);
     }
