@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<main class="govuk-main-wrapper" layout:fragment="main" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l" th:text="#{P1_0.title}"></h1>
+                <p class="govuk-body" th:text="#{P1_0.paragraph1}"></p>
+                <p class="govuk-body" th:utext="#{P1_0.paragraph2}"></p>
+                <p class="govuk-body" th:text="#{P1_0.paragraph3}"></p>
+                <p class="govuk-body" th:text="#{P1_0.paragraph4}"></p>
+
+            <h2 class="govuk-heading-m" th:text="#{P1_0.subtitle2}"></h2>
+                <p class="govuk-body" th:text="#{P1_0.list1.info}"></p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li th:text="#{P1_0.list1.item1}"></li>
+                    <li th:text="#{P1_0.list1.item2}"></li>
+                    <li th:text="#{P1_0.list1.item3}"></li>
+                </ul>
+                <p class="govuk-body" th:text="#{P1_0.list2.info}"></p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li th:text="#{P1_0.list2.item1}"></li>
+                    <li th:text="#{P1_0.list2.item2}"></li>
+                    <li th:text="#{P1_0.list2.item3}"></li>
+                    <li th:text="#{P1_0.list2.item4}"></li>
+                    <li th:text="#{P1_0.list2.item5}"></li>
+                    <li th:text="#{P1_0.list2.item6}"></li>
+                </ul>
+                <p class="govuk-body" th:text="#{P1_0.list3.info}"></p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li th:text="#{P1_0.list3.item1}"></li>
+                    <li th:text="#{P1_0.list3.item2}"></li>
+                    <li th:text="#{P1_0.list3.item3}"></li>
+                    <li th:text="#{P1_0.list3.item4}"></li>
+                </ul>
+            <h2 class="govuk-heading-m" th:text="#{P1_0.subtitle3}"></h2>
+                <p class="govuk-body" th:text="#{P1_0.section3.paragraph1}"></p>
+                <p class="govuk-body" th:text="#{P1_0.section3.paragraph2}"></p>
+                <p class="govuk-body" th:utext="#{P1_0.section3.paragraph3}"></p>
+
+                <p class="govuk-body" th:text="#{P1_0.list4.info}"></p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li th:text="#{P1_0.list4.item1}"></li>
+                    <li th:text="#{P1_0.list4.item2}"></li>
+                    <li th:text="#{P1_0.list4.item3}"></li>
+                </ul>
+                <p class="govuk-body" th:utext="#{P1_0.section3.paragraph4}"></p>
+            <h2 class="govuk-heading-m" th:text="#{P1_0.subtitle4}"></h2>
+                <p class="govuk-body" th:text="#{P1_0.section4.paragraph1}"></p>
+            <a th:href="@{/form/start}" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button" th:text="#{start.now.button.label}">
+                <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                </svg>
+            </a>
+
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <aside class="govuk-prototype-kit-common-templates-related-items">
+                <h2 class="govuk-heading-m" id="subsection-title" th:text="#{P1_0.related.content.title}"></h2>
+                <nav role="navigation" aria-labelledby="subsection-title">
+                    <ul class="govuk-list">
+                        <li>
+                            <a class="govuk-link" href="https://www.gov.uk/government/publications/charities-and-terrorism" th:text="#{P1_0.related.content.link1}"></a>
+                        </li>
+                        <li>
+                            <a class="govuk-link" href="https://www.gov.uk/guidance/safeguarding-duties-for-charity-trustees" th:text="#{P1_0.related.content.link2}"></a>
+                        </li>
+                        <li>
+                            <a class="govuk-link" href="https://www.gov.uk/guidance/charity-commission-guidance" th:text="#{P1_0.related.content.link3}"></a>
+                        </li>
+                        <li>
+                            <a class="govuk-link" href=" https://www.gov.uk/guidance/report-serious-wrongdoing-at-a-charity-as-a-worker-or-volunteer" th:text="#{P1_0.related.content.link4}"></a>
+                        </li>
+                        <li>
+                            <a class="govuk-link" href=" https://www.gov.uk/complain-about-charity" th:text="#{P1_0.related.content.link5}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+        </div>
+    </div>
+</main>
+</body>
+</html>
