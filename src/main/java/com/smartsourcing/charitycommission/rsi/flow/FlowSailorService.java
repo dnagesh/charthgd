@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.flow.service;
+package com.smartsourcing.charitycommission.rsi.flow;
 
 
 import jakarta.servlet.http.HttpSession;

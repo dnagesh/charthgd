@@ -1,4 +1,4 @@
-package com.smartsourcing.charitycommission.rsi;
+package com.smartsourcing.charitycommission.rsi.navigation.model;
 
 import lombok.Getter;
 import lombok.Setter;

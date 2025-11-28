@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.navigation.model;
+package com.smartsourcing.charitycommission.rsi.navigation.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

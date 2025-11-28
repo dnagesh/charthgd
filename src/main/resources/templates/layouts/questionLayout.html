@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html">
     <meta name="application-name" content="Report Serious Incident">
     <meta name="description" content="Report Serious Incidents Charity Commission for England and Wales">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,15 +48,18 @@
                 <div layout:fragment="form-top">
                     <!--/*Use the above fragment to override the form */-->
 
-                    <form method="post" th:action="@{/submit}">
+                    <form method="post" th:action="@{/form/submit}">
+                        <input type="hidden" name="processInstanceId" th:value="${processInstanceId}" />
                         <div layout:fragment="form-content">
                             <!--/*Use the above fragment to add content to the form */-->
                         </div>
 
 
                         <div class="govuk-button-group">
-                            <button type="submit" class="govuk-button" data-module="govuk-button" name="action" value="continue">Continue</button>
-                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="action" value="save">Save and come back later</button>
+                            <!--/Continue button, default to Continue, the text can be change if the variable 'submitText' is pass on the questionLayout with a String.*/-->
+                            <button type="submit" class="govuk-button" data-module="govuk-button" name="action" value="continue" th:text="${submitText ?: 'Continue'}">Continue Default</button>
+                            <!--/The default if the object is empty is to false so no NullPointers */-->
+                            <button th:if="${#objects.nullSafe(saveButton,false) != false}" type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="action" value="save">Save and come back later</button>
                         </div>
                     </form>
 
