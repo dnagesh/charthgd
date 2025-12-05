@@ -1,0 +1,16 @@
+package com.smartsourcing.charitycommission.rsi.config;
+
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
+
+@Data
+@Validated
+@ConfigurationProperties(prefix = "navigation.config")
+public class NavigationProperties {
+
+    @NotBlank(message= "Navigation configuration path must not be blank")
+    private String path;
+}

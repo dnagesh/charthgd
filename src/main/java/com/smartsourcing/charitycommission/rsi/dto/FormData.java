@@ -1,7 +1,8 @@
 package com.smartsourcing.charitycommission.rsi.dto;
 
 
-import jakarta.validation.constraints.Email;
+import com.smartsourcing.charitycommission.rsi.validation.MandatoryField;
+import com.smartsourcing.charitycommission.rsi.validation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -24,8 +25,8 @@ public class FormData {
 
     private String surname;
 
-    @NotBlank
-    @Email
+    @MandatoryField
+    @ValidEmail
     @Size(max = 25)
     private String email;
 
