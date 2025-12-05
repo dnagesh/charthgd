@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0i9vi8q" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0i9vi8q" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
   <bpmn:process id="rsi_update_flow" name="rsi_update_flow" isExecutable="true" camunda:versionTag="1.0" camunda:historyTimeToLive="P30D">
     <bpmn:startEvent id="start_update" name="Start Update">
       <bpmn:outgoing>Flow_1ietntl</bpmn:outgoing>
@@ -133,10 +133,6 @@
           <dc:Bounds x="421" y="81" width="61" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1r5oul2_di" bpmnElement="P8.0a">
-        <dc:Bounds x="560" y="210" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0qhdv7k_di" bpmnElement="P8.1">
         <dc:Bounds x="560" y="90" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -195,6 +191,10 @@
           <dc:Bounds x="2680" y="155" width="20" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1r5oul2_di" bpmnElement="P8.0a">
+        <dc:Bounds x="550" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1ietntl_di" bpmnElement="Flow_1ietntl">
         <di:waypoint x="218" y="130" />
         <di:waypoint x="270" y="130" />
@@ -205,10 +205,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0glbe8w_di" bpmnElement="P8.0.no">
         <di:waypoint x="450" y="155" />
-        <di:waypoint x="450" y="250" />
-        <di:waypoint x="560" y="250" />
+        <di:waypoint x="450" y="260" />
+        <di:waypoint x="550" y="260" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="458" y="200" width="15" height="14" />
+          <dc:Bounds x="458" y="205" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0fz31nb_di" bpmnElement="P8.0.yes">
