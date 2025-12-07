@@ -42,8 +42,11 @@
 
             <div class="govuk-grid-column">
                 <div layout:fragment="form-top">
+
+                    <!-- Error Summary Fragment -->
+                    <div th:replace="~{fragments/error-summary :: error-summary}"></div>
                     <!--/*Use the above fragment to override the form */-->
-                    <form method="post" th:action="@{/form/submit}">
+                    <form method="post" th:action="@{/form/submit}" th:object="${formData}">
                         <span class="govuk-caption-l" th:text="${pageCaption ?: 'Default Caption'}">Default Caption</span>
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h1 class="govuk-heading-l" th:text="${pageHeading ?: 'Default Question'}">Default Question</h1></legend>

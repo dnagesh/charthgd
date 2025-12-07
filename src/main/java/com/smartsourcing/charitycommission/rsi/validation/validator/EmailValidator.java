@@ -1,8 +1,8 @@
-package uk.gov.ccew.rsi.validation.validator;
+package com.smartsourcing.charitycommission.rsi.validation.validator;
 
+import com.smartsourcing.charitycommission.rsi.validation.annotation.ValidEmail;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import uk.gov.ccew.rsi.validation.annotation.ValidEmail;
 
 import java.util.regex.Pattern;
 

@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/questionLayout}"
-      th:with="backButtonShow=true, backButtonHref='/',pageCaption=null, pageHeading=null">
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=' ', pageHeading=#{P1_2.title},saveButton=false">
 <head>
     <meta charset="UTF-8">
     <title>P1.2.html</title>
 </head>
 <body>
-<div layout:fragment="form">
-    <h1 class="govuk-heading-xl" th:text="${#execInfo.processedTemplateName}"> Page Name</h1>
+<div layout:fragment="form-content">
+    <p class="govuk-body" th:text="#{P1_2.paragraph1}"></p>
+    <h2 class="govuk-heading-m" th:text="#{P1_2.subtitle1}"></h2>
+    <ol class="govuk-list govuk-list--number">
+        <li th:text="#{P1_2.list1.item1}"></li>
+        <li th:text="#{P1_2.list1.item2}"></li>
+        <li th:text="#{P1_2.list1.item3}"></li>
+    </ol>
+    <div class="govuk-inset-text" th:text="#{P1_2.inset.text1}"></div>
+
+    <div th:insert="~{fragments/lib/textinput :: textinputValidation (#{P1_2.textbox1.hint}, 40, 'P1.2-input')}">
+    </div>
 </div>
 
 </body>

@@ -46,4 +46,6 @@ public class FormData {
     @Size(max = 50)
     private String modifiedBy;
 
+    private String currentPage;
+
 }

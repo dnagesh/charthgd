@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.validation.validator;
+package com.smartsourcing.charitycommission.rsi.validation.validator;
 
 public interface ValidationRule {
     boolean isValid(String value);

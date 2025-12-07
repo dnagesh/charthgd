@@ -8,11 +8,11 @@
 </head>
 <body>
 <div layout:fragment="form-content">
-    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', null, ~{ :: radioInputs1})}">
+    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', null, 'P1.1-radioGroup', ~{ :: radioInputs1})}">
         <th:block th:fragment="radioInputs1">
-            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option1}, 'option1', null,  'P1.1-RadioGroup')}"></th:block>
-            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'P1.1-RadioGroup')}"></th:block>
-            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-RadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option1}, 'option1', null,  'dynamicFields[P1.1-radioGroup]')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'dynamicFields[P1.1-radioGroup]')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'dynamicFields[P1.1-radioGroup]')}"></th:block>
         </th:block>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.smartsourcing.charitycommission.rsi.validation;
 
+import com.smartsourcing.charitycommission.rsi.validation.validator.EmailValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;

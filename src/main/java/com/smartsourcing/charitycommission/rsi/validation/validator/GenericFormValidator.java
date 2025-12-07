@@ -1,13 +1,12 @@
-package uk.gov.ccew.rsi.validation.validator;
+package com.smartsourcing.charitycommission.rsi.validation.validator;
 
+import com.smartsourcing.charitycommission.rsi.validation.model.FormData;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import uk.gov.ccew.rsi.validation.model.FormData;
-import uk.gov.ccew.rsi.validation.model.GenericFormData;
 
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class GenericFormValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return GenericFormData.class.equals(clazz);
+        return FormData.class.equals(clazz);
     }
 
     @Override

@@ -1,15 +1,10 @@
-package uk.gov.ccew.rsi.validation.model;
+package com.smartsourcing.charitycommission.rsi.validation.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.validation.constraints.Size;
-import uk.gov.ccew.rsi.validation.annotation.MandatoryField;
-import uk.gov.ccew.rsi.validation.annotation.ValidEmail;
 
-import java.time.LocalDate;
+
 import java.util.HashMap;
 import java.util.Map;
 
