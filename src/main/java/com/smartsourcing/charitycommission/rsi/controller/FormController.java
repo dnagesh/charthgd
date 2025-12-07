@@ -60,6 +60,19 @@ public class FormController {
         return "forms/initial/" + pageId;
     }
 
+    @GetMapping("/forms/update/{pageId}")
+    public String previewPage(@PathVariable String pageId,
+                              @ModelAttribute("formData") FormData formData,
+                              Model model) {
+
+        // Set current page to maintain state
+        formData.setCurrentPage(pageId);
+
+        // Return the appropriate Thymeleaf template based on pageId
+        return "forms/update/" + pageId;
+
+    }
+
     /**
      * Handle form submission with validation
      * @param pageId The page identifier from URL
