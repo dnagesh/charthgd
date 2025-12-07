@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/questionLayout}"
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=' ', pageHeading=#{P8_9.title},saveButton=true">
+<head>
+    <meta charset="UTF-8">
+    <title>P8.9.html</title>
+</head>
+<body>
+<div layout:fragment="form-content">
+    <p class="govuk-body" th:text="#{P8_9.paragraph1}"></p>
+
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+            <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="trusteeAssuranceYes" name="trusteeAssurance" type="radio" value="yes" data-aria-controls="trustees-satisfied">
+                    <label class="govuk-label govuk-radios__label" for="trusteeAssuranceYes" th:text="#{Radio-label.yes}">
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="trusteeAssuranceNo" name="trusteeAssurance" type="radio" value="no" data-aria-controls="trustees-unsatisfied">
+                    <label class="govuk-label govuk-radios__label" for="trusteeAssuranceNo" th:text="#{Radio-label.no}">
+                    </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="trustees-unsatisfied-detail">
+                    <div class="govuk-form-group">
+                        <th:block th:insert="~{fragments/lib/textarea :: textarea (#{P8_9.textarea.label},2000,4)}"></th:block>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>
+
+</body>
+</html>

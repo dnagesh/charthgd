@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/questionLayout}"
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=#{P8.caption}, pageHeading=#{P8_5.title},saveButton=false">
+<head>
+    <meta charset="UTF-8">
+    <title>P8.5.html</title>
+</head>
+<body>
+<div layout:fragment="form-content">
+    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', #{Title.dropdown.label}, ~{ :: radioInputs1})}">
+        <th:block th:fragment="radioInputs1">
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.mr}, 'mr', null,  'titleRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.mrs}, 'mrs', null, 'titleRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.ms}, 'ms', null, 'titleRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.miss}, 'miss', null, 'titleRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.dr}, 'dr', null, 'titleRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.rev}, 'rev', null, 'titleRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{Title.other}, 'other', null, 'titleRadioGroup')}"></th:block>
+        </th:block>
+    </div>
+
+    <div th:insert="~{fragments/lib/textinput :: textinput (#{Given.name.input.label}, 'three-quarters')}"></div>
+    <div th:insert="~{fragments/lib/textinput :: textinput (#{Family.name.input.label}, 'three-quarters')}"></div>
+
+</div>
+
+</body>
+</html>

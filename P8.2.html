@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/questionLayout}"
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=#{P8.caption}, pageHeading=#{P8_2.title},saveButton=false">
+<head>
+    <meta charset="UTF-8">
+    <title>P8.2.html</title>
+</head>
+<body>
+<div layout:fragment="form-content">
+    <div th:insert="~{fragments/lib/radioinput :: radioYesNo (null, 'P8.2-radioGroup')}"></div>
+</div>
+
+</body>
+</html>
