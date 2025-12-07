@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/questionLayout}"
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=#{P1_4.caption}, pageHeading=#{P1_4_1.title},saveButton=false, submitText=#{find.charity.button.label}">
+<head>
+    <meta charset="UTF-8">
+    <title>P1.4.1.html</title>
+</head>
+<body>
+<div layout:fragment="form-content">
+    <div th:insert="~{fragments/lib/textinput :: textinputValidation (null, 'three-quarters', 'P1.4.1-input')}"></div>
+    <
+</div>
+
+</body>
+</html>

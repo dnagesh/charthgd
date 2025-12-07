@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/questionLayout}"
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=' ', pageHeading=#{P1_3.title},saveButton=false">
+<head>
+    <meta charset="UTF-8">
+    <title>P1.3.html</title>
+</head>
+<body>
+<div layout:fragment="form-content">
+    <div class="govuk-inset-text" th:text="#{P1_3.inset.text1}"></div>
+    <p class="govuk-body" th:utext="#{P1_3.paragraph1}"></p>
+    <div th:insert="~{fragments/lib/radioinput :: radioYesNo (#{P1_3.question1}, 'P1.3-radioGroup')}"></div>
+</div>
+
+</body>
+</html>

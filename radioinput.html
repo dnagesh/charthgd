@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!--/*
+================================================================================
+FRAGMENT: radioYesNo (hintText, pageId)
+
+Unified Yes/No radio button fragment with validation support.
+Works with dynamicFields Map for validation framework.
+
+Params:
+- hintText = the text to display as the legend/question above radios
+- pageId = The page identifier (e.g., 'P1.3') for validation binding
+================================================================================
+*/-->
+<div th:fragment="radioYesNo (hintText, pageId)"
+     th:with="fieldName=${'dynamicFields[' + pageId + ']'}, inputId=${pageId + '-yesno'}"
+     class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-heading-m" th:text="${hintText} ?: ''"> </legend>
+
+        <!-- Inline error message without red box -->
+        <p th:if="${#fields.hasErrors(fieldName)}"
+           class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>
+            <span th:text="${#fields.errors(fieldName)[0]}">This field is required</span>
+        </p>
+
+        <div class="govuk-radios govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" type="radio"
+                       value="yes"
+                       th:id="${inputId + '-yes'}"
+                       th:name="${fieldName}"
+                       th:field="*{__${fieldName}__}">
+                <label class="govuk-label govuk-radios__label" th:for="${inputId + '-yes'}"> Yes </label>
+            </div>
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" type="radio"
+                       value="no"
+                       th:id="${inputId + '-no'}"
+                       th:name="${fieldName}"
+                       th:field="*{__${fieldName}__}">
+                <label class="govuk-label govuk-radios__label" th:for="${inputId + '-no'}"> No </label>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+
+<!--/*
+================================================================================
+FRAGMENT: radioYesNoHorizontal (hintText, pageId)
+
+Unified horizontal Yes/No radio buttons with validation support.
+
+Params:
+- hintText = the hint text to display above the radios
+- pageId = The page identifier (e.g., 'P2.5') for validation binding
+================================================================================
+*/-->
+<div th:fragment="radioYesNoHorizontal (hintText, pageId)"
+     th:with="fieldName=${'dynamicFields[' + pageId + ']'}, inputId=${pageId + '-yesno-h'}"
+     class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+        <div class="govuk-hint" th:text="${hintText} ?: ''"> </div>
+
+        <!-- Inline error message without red box -->
+        <p th:if="${#fields.hasErrors(fieldName)}"
+           class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>
+            <span th:text="${#fields.errors(fieldName)[0]}">This field is required</span>
+        </p>
+
+        <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" type="radio"
+                       value="yes"
+                       th:id="${inputId + '-yes'}"
+                       th:name="${fieldName}"
+                       th:field="*{__${fieldName}__}">
+                <label class="govuk-label govuk-radios__label" th:for="${inputId + '-yes'}">Yes</label>
+            </div>
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input" type="radio"
+                       value="no"
+                       th:id="${inputId + '-no'}"
+                       th:name="${fieldName}"
+                       th:field="*{__${fieldName}__}">
+                <label class="govuk-label govuk-radios__label" th:for="${inputId + '-no'}">No</label>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<!--/*
+================================================================================
+FRAGMENT: radioOption (label, value, hint, radioGroupName)
+
+Individual radio option for use inside radioWrapper.
+Binds to dynamicFields Map.
+
+Params:
+- label = The label text for this radio option
+- value = The value of this radio option
+- hint = Optional hint text below this option
+- radioGroupName = Field name like 'dynamicFields[P1.1]'
+================================================================================
+*/-->
+<div th:fragment="radioOption (label, value, hint, radioGroupName)"
+     th:with="optionId=${radioGroupName + '-' + value}"
+     class="govuk-radios__item">
+    <input class="govuk-radios__input"
+           th:id="${optionId}"
+           th:name="${radioGroupName}"
+           th:value="${value}"
+           type="radio"
+           th:field="*{__${radioGroupName}__}">
+    <label class="govuk-label govuk-radios__label"
+           th:for="${optionId}"
+           th:text="${label}">
+    </label>
+    <div th:if="${hint != null and hint != ''}"
+         class="govuk-hint govuk-radios__hint"
+         th:id="${optionId + '-hint'}"
+         th:text="${hint}">
+    </div>
+</div>
+
+<!--/*
+================================================================================
+FRAGMENT: radioWrapper (legendText, hint, fieldName, radioItems)
+
+Wrapper for custom radio button groups with validation support.
+Use with radioOption fragments.
+
+Params:
+- legendText = The H1 heading text (can be empty)
+- hint = Optional hint text below heading
+- fieldName = The field name key (e.g., 'P1.1-radioGroup') for dynamicFields Map
+- radioItems = A fragment reference containing radioOption fragments
+================================================================================
+*/-->
+<div th:fragment="radioWrapper (legendText, hint, fieldName, radioItems)"
+     th:with="fieldPath=${'dynamicFields[' + fieldName + ']'}, wrapperId=${fieldName + '-wrapper'}"
+     class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+
+        <legend th:if="${legendText != null and legendText != ''}"
+                class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading" th:text="${legendText}"></h1>
+        </legend>
+
+        <div th:if="${hint != null and hint != ''}"
+             class="govuk-hint"
+             th:text="${hint}"></div>
+
+        <!-- Inline error message without red box -->
+        <p th:if="${#fields.hasErrors(fieldPath)}"
+           class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>
+            <span th:text="${#fields.errors(fieldPath)[0]}">This field is required</span>
+        </p>
+
+        <div class="govuk-radios" data-module="govuk-radios">
+            <th:block th:replace='${radioItems}'></th:block>
+        </div>
+
+    </fieldset>
+</div>
