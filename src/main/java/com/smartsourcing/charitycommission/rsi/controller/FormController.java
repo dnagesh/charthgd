@@ -42,6 +42,20 @@ public class FormController {
         return "redirect:/form/forms/preview/P1.1";
     }
 
+    private String resolvePagePath(String pageId) {
+        if (pageId.startsWith("P8.")) {
+            return "forms/update/" + pageId;
+        }
+        return "forms/initial/" + pageId;
+    }
+
+    private String buildRedirectUrl(String currentPage, String nextPage) {
+        if (currentPage.startsWith("P8.")) {
+            return "redirect:/forms/update/" + nextPage;
+        }
+        return "redirect:/forms/preview/" + nextPage;
+    }
+
     /**
      * Display the form page (preview mode)
      * @param pageId The page identifier (e.g., "P1.1", "P1.2", etc.)
@@ -102,7 +116,7 @@ public class FormController {
             model.addAttribute("hasErrors", true);
 
             // Return to the same page to display errors
-            return "forms/initial/" + formData.getCurrentPage();
+            return resolvePagePath(formData.getCurrentPage());
         }
 
         // Validation successful - proceed to next page or save data
@@ -118,7 +132,8 @@ public class FormController {
         // sessionStatus.setComplete();
 
         // Redirect to next page or confirmation
-        return "redirect:/form/forms/preview/" + nextPage;
+        return buildRedirectUrl(formData.getCurrentPage(), nextPage);
+
     }
 
     /**
@@ -201,10 +216,12 @@ public class FormController {
         // Simple sequential navigation
         // You can implement more complex routing logic here
         switch (currentPage) {
-            case "page1":
-                return "page2";
-            case "page2":
-                return "page3";
+            case "P1.1":
+                return "P1.2";
+            case "P1.2":
+                return "P1.3";
+            case "P8.0":
+                return "P8.0a";
             // Add more page mappings as needed
             default:
                 return "confirmation";
