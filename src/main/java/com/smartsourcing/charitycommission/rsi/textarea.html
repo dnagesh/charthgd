@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*
+================================================================================
+FRAGMENT: textarea (hintText, characterCount, boxSize)
+
+Params:
+- hintText = The text hint that appears on top of the text area.
+- characterCount = The total char remaining for the counter and text.
+- boxSize = The vertical size of the box.
+================================================================================
+*/-->
+<div th:fragment="textarea (hintText,characterCount,boxSize)"
+     th:with="type='textarea', pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}">
+    <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" th:data-maxlength="${characterCount ?: 10}">
+        <label class="govuk-label"
+               th:for="${ID}"
+               th:text="${hintText ?: ''}">
+        </label>
+
+        <!-- Inline error messages -->
+        <div th:replace="~{fragments/lib/errorSummary :: error-field-text(${ID})}"></div>
+        
+        <textarea class="govuk-textarea govuk-js-character-count"
+                  th:id="${ID}"
+                  th:name="${ID}"
+                  th:rows="${boxSize ?: 1}"
+                  th:maxlength="${characterCount ?: 10}"
+                  th:aria-describedby="${ID+'-info'}"
+                  th:text="${@formUtil.dataValue(ID,userAnwser)}"></textarea>
+
+        <div th:id="${ID+'-info'}" class="govuk-hint govuk-character-count__message">
+            <span th:text="'You can enter up to ' + ${characterCount ?: 10} + ' characters'">
+                You can enter up to {Placeholder} characters
+            </span>
+        </div>
+    </div>
+</div>

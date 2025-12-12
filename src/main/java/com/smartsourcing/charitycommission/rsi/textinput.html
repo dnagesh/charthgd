@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*
+================================================================================
+FRAGMENT: textinput (labelText, width)
+
+Params:
+- labelText = The label text that appears on top of the input area.
+- width = the horizontal size of the input.
+================================================================================
+*/-->
+<div th:fragment="textinput (labelText, width)"
+     th:with="type='textinput',pageName=${#execInfo.processedTemplateName}, name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data}" class="govuk-form-group">
+    <label class="govuk-label"
+           th:for="${ID}"
+           th:text="${labelText ?: ''}">
+    </label>
+
+
+    <!-- Inline error messages -->
+    <div th:replace="~{fragments/lib/errorSummary :: error-field-text(${ID})}"></div>
+
+    <input th:class="${'govuk-input govuk-input--width-'+width}"
+           th:id="${ID}"
+           th:name="${ID}"
+           th:value="${@formUtil.dataValue(ID,userAnwser)}"
+           type="text">
+</div>
