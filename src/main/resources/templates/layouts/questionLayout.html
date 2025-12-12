@@ -35,7 +35,7 @@
 <div class="govuk-width-container">
     <th:block th:insert="~{fragments/language :: languageSelect}"></th:block>
     <!--/* can be used on the child HTML using th:with after the decorated level (layout:decorate) default to now ref and not visible*/-->
-    <th:block th:insert="~{fragments/lib/backButton ::backWithParams(${backButtonShow}, ${backButtonHref})}"></th:block>
+    <th:block th:replace="~{fragments/lib/backButton ::backWithParams(${backButtonShow}, @{/form/back})}"></th:block>
 
     <main class="govuk-main-wrapper" id="main-content">
         <div class="govuk-grid-row">
@@ -44,7 +44,7 @@
                 <div layout:fragment="form-top">
 
                     <!-- Error Summary Fragment -->
-                    <div th:replace="~{fragments/error-summary :: error-summary}"></div>
+                    <div th:replace="~{fragments/lib/errorSummary :: error-summary}"></div>
                     <!--/*Use the above fragment to override the form */-->
                     <form method="post" th:action="@{/form/submit}" th:object="${formData}">
                         <span class="govuk-caption-l" th:text="${pageCaption ?: 'Default Caption'}">Default Caption</span>
@@ -76,7 +76,7 @@
 <script type="module" th:src="@{/js/govuk-frontend-5.11.1.min.js}"></script>
 <script type="module" th:src="@{/js/hmrc-frontend-6.97.0.min.js}"></script>
 <script type="module" th:inline="javascript">
-    import {initAll} from /*[[@{/js/govuk-frontend-5.11.1.min.js}]]*/ '/js/govuk-frontend-5.11.1.min.js';
+    import { initAll } from '[[@{/js/govuk-frontend-5.11.1.min.js}]]';
 
     initAll();
     if (globalThis.HMRCFrontend) {
