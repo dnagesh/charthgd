@@ -1,9 +1,9 @@
 package com.smartsourcing.charitycommission.rsi.validation.validator;
 
+import com.smartsourcing.charitycommission.rsi.validation.annotation.MandatoryField;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
-import uk.gov.ccew.rsi.validation.annotation.MandatoryField;
 
 /**
  * Validator implementation for @MandatoryField annotation.

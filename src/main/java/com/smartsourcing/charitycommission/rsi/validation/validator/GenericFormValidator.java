@@ -1,12 +1,12 @@
 package com.smartsourcing.charitycommission.rsi.validation.validator;
 
+import com.smartsourcing.charitycommission.rsi.validation.model.FormData;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import uk.gov.ccew.rsi.validation.model.FormData;
 
 import java.util.HashMap;
 import java.util.List;

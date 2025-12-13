@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
 
 @Documented
-@Constraint(validatedBy = EmailValidator.class)
+//@Constraint(validatedBy = EmailValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidEmail {

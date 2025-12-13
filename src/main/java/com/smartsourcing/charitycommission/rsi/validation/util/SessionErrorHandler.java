@@ -1,10 +1,10 @@
 package com.smartsourcing.charitycommission.rsi.validation.util;
 
+import com.smartsourcing.charitycommission.rsi.validation.model.ErrorSummary;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import uk.gov.ccew.rsi.validation.model.ErrorSummary;
 
 import java.util.List;
 import java.util.Map;
