@@ -3,8 +3,6 @@ package com.smartsourcing.charitycommission.rsi.validation.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,43 +16,30 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class FormData {
-    
-    // ===== Page 1.1 - Radio Button Example =====
-/*    @MandatoryField(message = "{P1.1.radio.required}")
-    private String p11RadioGroup;*/
-    
-    // ===== Page 1.4.1 - Text Input Example =====
-   /* @MandatoryField(message = "{P1.4.1.name.required}")
-    @Size(max = 100, message = "{P1.4.1.name.size}")
-    private String p141Name;
-    
-    // ===== Email Field Example =====
-    @MandatoryField(message = "{email.required}")
-    @ValidEmail(allowEmpty = false)
-    private String email;
-    
-    // ===== Checkbox Example =====
-    @MandatoryField(message = "{checkbox.required}")
-    private String checkboxSelection;
-    
-    // ===== Date Field Example =====
-    @MandatoryField(message = "{date.required}")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate incidentDate;*/
-    
-    // ===== Dynamic Fields for 100 Pages =====
+
+    // ===== Dynamic Fields for All Pages =====
     /**
-     * Map to store dynamic fields for different pages.
-     * Key format: "pageId.fieldName" (e.g., "P2.1.textField1")
-     * This allows flexibility for 100 pages without defining 1000+ fields
+     * Map to store all form field values across all 100 pages.
+     * Key format: pageId (e.g., "P1.1", "P2.1", "P3.5")
+     * Value: The user's input for that page
+     * This allows complete flexibility without defining individual fields
      */
     private Map<String, String> dynamicFields = new HashMap<>();
-    
+
     /**
      * Current page identifier to apply conditional validation
      */
     private String currentPage;
 
+    /**
+     * Current section identifier
+     */
+    private String currentSection;
+
+    /**
+     * Current flow identifier
+     */
+    private String currentFlow;
     /**
      * Helper method to get a dynamic field value
      */

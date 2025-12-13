@@ -14,7 +14,8 @@ public class LengthValidationRule implements ValidationRule {
     @Override
     public boolean isValid(String value) {
         if (value == null) return true; // Let required rule handle null values
-        return value.length() == minLength && value.length() == maxLength;
+        int length = value.length();
+        return length >= minLength && length <= maxLength;
     }
     @Override
     public String getErrorMessage() {
