@@ -1,273 +1,144 @@
-package com.smartsourcing.charitycommission.rsi.controller;
+package uk.gov.ccew.rsi.controller.web;
 
 
-import com.smartsourcing.charitycommission.rsi.validation.model.FormData;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.Errors;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import uk.gov.ccew.rsi.exception.FlowException;
+import uk.gov.ccew.rsi.flow.model.UserStep;
+import uk.gov.ccew.rsi.flow.service.FlowSailorImpl;
+import uk.gov.ccew.rsi.validation.model.ErrorSummary;
+import uk.gov.ccew.rsi.validation.util.ErrorSummaryBuilder;
+import uk.gov.ccew.rsi.validation.util.SessionErrorHandler;
+import uk.gov.ccew.rsi.validation.validator.GenericFormValidator;
 
-import jakarta.validation.Valid;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 
-/**
- * Single controller handling all 100 pages with centralized validation logic.
- * Uses Spring's @Valid annotation and BindingResult for validation.
- *
- * Updated for Spring Boot 3.5.6 with Jakarta EE validation
- * Uses @SessionAttributes to maintain formData across requests
- */
-@Controller
+import static org.apache.commons.collections4.MapUtils.verbosePrint;
+
+@Slf4j
+@RequiredArgsConstructor
+@Controller()
+@RequestMapping("/form")
 @SessionAttributes("formData")
 public class FormController {
 
-    /**
-     * Initialize formData model attribute for the session
-     */
-    @ModelAttribute("formData")
-    public FormData getFormData() {
-        return new FormData();
-    }
+    private static final String BUSINESS_KEY = "businessKey";
+    private static final String LAST_PAGE = "lastPage";
+    private final FlowSailorImpl flowService;
+    private final GenericFormValidator genericFormValidator;
+    private final ErrorSummaryBuilder errorSummaryBuilder;
+    private final SessionErrorHandler sessionErrorHandler;
 
-    /**
-     * Redirect root to first page
-     */
-    @GetMapping("/")
-    public String home() {
-        return "redirect:/form/forms/preview/P1.1";
-    }
+    @GetMapping("/start")
+    public String startIncident(HttpSession session) {
+        Random random = new Random();
+        String businessKey = session.getCreationTime() + "-flow-" + random.nextInt(1, 30);
 
-    private String resolvePagePath(String pageId) {
-        if (pageId.startsWith("P8.")) {
-            return "forms/update/" + pageId;
+        var sessionAttribute = session.getAttribute(BUSINESS_KEY);
+
+        if (sessionAttribute == null) {
+            log.info("Empty session, creating a new one with value {}", businessKey);
+            session.setAttribute(BUSINESS_KEY, businessKey);
+            sessionAttribute = businessKey;
         }
-        return "forms/initial/" + pageId;
+
+        flowService.startOrResume(String.valueOf(sessionAttribute));
+
+        return "redirect:/form/page";
     }
 
-    private String buildRedirectUrl(String currentPage, String nextPage) {
-        if (currentPage.startsWith("P8.")) {
-            return "redirect:/forms/update/" + nextPage;
+    @GetMapping("/page")
+    public String getPage(HttpSession session, Model model) {
+        String businessKey = (String) session.getAttribute(BUSINESS_KEY);
+
+        if (businessKey == null) {
+            log.warn("No business key in session. Redirecting to start.");
+            return "redirect:/form/start";
         }
-        return "redirect:/forms/preview/" + nextPage;
+
+        UserStep step = flowService.getCurrentStep(businessKey).orElseThrow(() -> new FlowException("Unable to get current step for businessKey: " + businessKey));
+        // Check for validation errors in a session
+        sessionErrorHandler.retrieveAndClearErrors(session, model);
+        log.info("Page found with key: {} and last pageKey: {}", step.formKey(), session.getAttribute(LAST_PAGE));
+
+        return getView(step);
     }
 
-    /**
-     * Display the form page (preview mode)
-     * @param pageId The page identifier (e.g., "P1.1", "P1.2", etc.)
-     * @param formData The form data from session
-     * @param model Spring MVC model
-     * @return Thymeleaf template name
-     */
-    @GetMapping("/forms/preview/{pageId}")
-    public String showForm(@PathVariable String pageId,
-                           @ModelAttribute("formData") FormData formData,
-                           Model model) {
-        // Set current page to maintain state
-        formData.setCurrentPage(pageId);
 
-        // Return the appropriate Thymeleaf template based on pageId
-        return "forms/initial/" + pageId;
+    @GetMapping("/back")
+    public String getBack(@RequestParam Map<String, String> formData, HttpSession session) {
+        String businessKey = (String) session.getAttribute(BUSINESS_KEY);
+        String lastPage = (String) session.getAttribute(LAST_PAGE);
+
+        if (businessKey == null) {
+            log.warn("No business key in session. Redirecting to start.");
+            return "redirect:/form/start";
+        }
+
+        flowService.back(businessKey, lastPage).orElseThrow(() -> new FlowException("Unable to navigate back for businessKey: " + businessKey));
+
+        return "redirect:/form/page";
     }
 
-    @GetMapping("/forms/update/{pageId}")
-    public String previewPage(@PathVariable String pageId,
-                              @ModelAttribute("formData") FormData formData,
-                              Model model) {
+    @PostMapping("/submit")
+    public String submit(@RequestParam Map<String, String> formData, Model model, HttpSession session) {
+        log.info("Form Data Received");
+        verbosePrint(System.out, null, formData);
+        log.info("Submitted formData: {}", formData);
+        log.info("trusteeAssurance value: '{}'", formData.get("trusteeAssurance"));
 
-        // Set current page to maintain state
-        formData.setCurrentPage(pageId);
+        var businessKey = (String) session.getAttribute(BUSINESS_KEY);
 
-        // Return the appropriate Thymeleaf template based on pageId
-        return "forms/update/" + pageId;
+        if (businessKey == null) {
+            log.warn("No business key in session. Redirecting to start.");
+            return "redirect:/form/start";
+        }
 
-    }
+        model.addAttribute("data", formData);
+        UserStep currentStep = flowService.getCurrentStep(businessKey).orElseThrow(() -> new FlowException("Unable to get current step for businessKey: " + businessKey));
+        String pageId = currentStep.formKey(); // e.g., "P1.1"
+        // check for screen validation
+        Errors errors = new MapBindingResult(formData, "formData");
 
-    /**
-     * Handle form submission with validation
-     * @param pageId The page identifier from URL
-     * @param formData The form data object from session
-     * @param bindingResult Spring validation result
-     * @param model Spring MVC model
-     * @param redirectAttributes Redirect attributes for flash messages
-     * @param sessionStatus Session status for clearing session if needed
-     * @return Redirect to next page or return to current page with errors
-     */
-    @PostMapping("/form/submit")
-    public String submitForm(
-            @Valid @ModelAttribute("formData") FormData formData,
-            BindingResult bindingResult,
-            Model model,
-            RedirectAttributes redirectAttributes,
-            SessionStatus sessionStatus) {
-
-        // Custom validation logic (if needed beyond annotations)
-        performCustomValidation(formData, bindingResult, formData.getCurrentPage());
+        // Further validation and update errors with validation messages
+        genericFormValidator.validateWithPageContext(formData, errors, pageId);
 
         // If validation errors exist
-        if (bindingResult.hasErrors()) {
+        if (errors.hasErrors()) {
             // Create error summary for display at top of page
-            List<ErrorSummary> errorSummary = buildErrorSummary(bindingResult);
-            model.addAttribute("errorSummary", errorSummary);
-            model.addAttribute("hasErrors", true);
-
+            List<ErrorSummary> errorSummary = errorSummaryBuilder.buildErrorSummary(errors);
+            // Store errors in session so they survive the redirect
+            sessionErrorHandler.storeErrors(session, errorSummary, formData);
             // Return to the same page to display errors
-            return resolvePagePath(formData.getCurrentPage());
+            return "redirect:/form/page";
         }
 
-        // Validation successful - proceed to next page or save data
-        // In a real application, you might save to database here
+        String taskDefinitionID = currentStep.taskDefinitionKey();
+        Optional<UserStep> nextStep = flowService.next(businessKey, formData);
 
-        // Add success message
-        redirectAttributes.addFlashAttribute("successMessage", "Form submitted successfully");
+        if (nextStep.isEmpty()) {
+            log.info("Process completed for businessKey: {}", businessKey);
+            session.invalidate();
+            return "redirect:/";
+        }
 
-        // Determine next page (you can implement your own logic)
-        String nextPage = determineNextPage(formData.getCurrentPage());
+        log.info("Moving to next page: {}", nextStep.get().formKey());
+        session.setAttribute(LAST_PAGE, taskDefinitionID);
 
-        // If this is the last page, you might want to clear the session
-        // sessionStatus.setComplete();
-
-        // Redirect to next page or confirmation
-        return buildRedirectUrl(formData.getCurrentPage(), nextPage);
-
+        return "redirect:/form/page";
     }
 
-    /**
-     * Perform custom validation logic beyond annotation-based validation
-     * @param formData The form data
-     * @param bindingResult The binding result to add errors to
-     * @param pageId Current page identifier
-     */
-    private void performCustomValidation(FormData formData, BindingResult bindingResult, String pageId) {
-        // Determine field name based on page type
-        String fieldName = determineFieldName(pageId);
-        String fieldValue = formData.getDynamicField(fieldName);
-
-        if (fieldValue == null || fieldValue.trim().isEmpty()) {
-            bindingResult.rejectValue("dynamicFields[" + fieldName + "]", "field.required",
-                    "This field is required");
-        }
-
-        // Add more page-specific validation as needed
+    private String getView(UserStep step) {
+        return "forms/" + step.formKey();
     }
 
-    /**
-     * Determine field name from pageId based on naming convention
-     * @param pageId The page identifier (e.g., "P1.1", "P1.2")
-     * @return Field name (e.g., "P1.1-radioGroup", "P1.2-input")
-     */
-    private String determineFieldName(String pageId) {
-        // For pages with text input
-        if (pageId.equals("P1.2") || pageId.equals("P1.4.1")) {
-            return pageId + "-input";
-        }
-        // Default to radioGroup for radio button pages
-        return pageId + "-radioGroup";
-    }
-
-    /**
-     * Build error summary for display at the top of the page
-     * @param bindingResult The binding result containing errors
-     * @return List of error summary objects
-     */
-    private List<ErrorSummary> buildErrorSummary(BindingResult bindingResult) {
-        List<ErrorSummary> errorSummary = new ArrayList<>();
-
-        for (FieldError error : bindingResult.getFieldErrors()) {
-            ErrorSummary summary = new ErrorSummary();
-            summary.setFieldId(error.getField());
-            summary.setFieldName(formatFieldName(error.getField()));
-            summary.setErrorMessage(error.getDefaultMessage());
-            summary.setAnchor("#" + error.getField());
-            errorSummary.add(summary);
-        }
-
-        return errorSummary;
-    }
-
-    /**
-     * Format field name for display in error summary
-     * Converts camelCase to readable text (e.g., "p141Name" -> "Name")
-     * @param fieldName The field name
-     * @return Formatted field name
-     */
-    private String formatFieldName(String fieldName) {
-        // Simple implementation - customize as needed
-        if (fieldName.equals("p11RadioGroup")) return "Reporting Type";
-        if (fieldName.equals("p141Name")) return "Name";
-        if (fieldName.equals("email")) return "Email Address";
-        if (fieldName.equals("checkboxSelection")) return "Selection";
-        if (fieldName.equals("incidentDate")) return "Incident Date";
-
-        // Default: just capitalize first letter
-        return fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-    }
-
-    /**
-     * Determine the next page based on current page
-     * @param currentPage Current page identifier
-     * @return Next page identifier
-     */
-    private String determineNextPage(String currentPage) {
-        // Simple sequential navigation
-        // You can implement more complex routing logic here
-        switch (currentPage) {
-            case "P1.1":
-                return "P1.2";
-            case "P1.2":
-                return "P1.3";
-            case "P8.0":
-                return "P8.0a";
-            // Add more page mappings as needed
-            default:
-                return "confirmation";
-        }
-    }
-
-    /**
-     * Inner class to represent error summary for display
-     */
-    public static class ErrorSummary {
-        private String fieldId;
-        private String fieldName;
-        private String errorMessage;
-        private String anchor;
-
-        // Getters and Setters
-        public String getFieldId() {
-            return fieldId;
-        }
-
-        public void setFieldId(String fieldId) {
-            this.fieldId = fieldId;
-        }
-
-        public String getFieldName() {
-            return fieldName;
-        }
-
-        public void setFieldName(String fieldName) {
-            this.fieldName = fieldName;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
-
-        public void setErrorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-        }
-
-        public String getAnchor() {
-            return anchor;
-        }
-
-        public void setAnchor(String anchor) {
-            this.anchor = anchor;
-        }
-    }
 }
