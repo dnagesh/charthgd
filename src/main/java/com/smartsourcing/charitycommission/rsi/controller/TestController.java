@@ -132,10 +132,13 @@ public class TestController {
     public String showForm(@PathVariable String sectionId,
                            @PathVariable String pageId,
                            @ModelAttribute("formData") FormData formData,
-                           Model model) {
+                           Model model,
+                           HttpSession session) {
         // Set current page to maintain state
         formData.setCurrentPage(pageId);
         formData.setCurrentSection(sectionId);
+
+        sessionErrorHandler.retrieveAndClearErrors(session, model);
 
         // Return the appropriate Thymeleaf template based on pageId
         return String.format("forms/%s/%s", sectionId, pageId);
