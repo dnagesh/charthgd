@@ -70,6 +70,7 @@ public class TestController {
             List<ErrorSummary> errorSummary = errorSummaryBuilder.buildErrorSummary(errors);
             // Store errors in session so they survive the redirect
             sessionErrorHandler.storeErrors(session, errorSummary, formData);
+
             // Return to the same page to display errors
             return "redirect:/forms/preview/initial/P1.1";
         }

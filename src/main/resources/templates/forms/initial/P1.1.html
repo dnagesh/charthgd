@@ -15,6 +15,12 @@
             <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-radioGroup')}"></th:block>
         </th:block>
     </div>
+
+    <div th:insert="~{fragments/lib/dateinput :: dateInput(
+        #{P1_1.date.title},
+        'P1.1-passportIssued'
+)}"></div>
+
 </div>
 
 </body>

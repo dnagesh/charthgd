@@ -3,6 +3,7 @@ package com.smartsourcing.charitycommission.rsi.validation.util;
 import com.smartsourcing.charitycommission.rsi.validation.model.ErrorSummary;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.util.List;
 
@@ -19,9 +20,17 @@ public class ErrorSummaryBuilder {
         return errors.getAllErrors().stream()
                 .map(error -> {
                     String fieldId;
-                    if (error instanceof org.springframework.validation.FieldError fieldError) {
-                        // For field errors, get the actual field name (e.g., "[P1.1-radioGroup]")
+
+                    if (error instanceof FieldError fieldError) {
                         fieldId = fieldError.getField();
+
+                        // Handle date group fields
+                        if (fieldId.startsWith("dynamicFields[")) {
+                            fieldId = fieldId
+                                    .replace("dynamicFields[", "")
+                                    .replace("]", "")
+                                    + "-fieldset";
+                        }
                     } else {
                         // For object errors, use object name
                         fieldId = error.getObjectName();

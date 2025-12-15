@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,31 +29,59 @@ public class SessionErrorHandler {
      * @param model the Spring MVC model to populate with error data
      * @return true if errors were found and processed, false otherwise
      */
+//    public boolean retrieveAndClearErrors(HttpSession session, Model model) {
+//        if (session.getAttribute(ERROR_SUMMARY) == null) {
+//            return false;
+//        }
+//
+//        // Retrieve saved form data from session
+//        Map<String, String> savedFormData = (Map<String, String>) session.getAttribute("formData");
+//        log.info("Retrieved savedFormData from session: {}", savedFormData);
+//
+//        // Add error attributes to model for template rendering
+//        model.addAttribute(ERROR_SUMMARY, session.getAttribute(ERROR_SUMMARY));
+//        model.addAttribute(HAS_ERRORS, session.getAttribute(HAS_ERRORS));
+//        model.addAttribute("formData", savedFormData);
+//        model.addAttribute("data", savedFormData);  // Also add as 'data' for fragments
+//
+//        log.info("Added to model - data: {}", savedFormData);
+//
+//        // Clear error attributes from session after adding to model
+//        session.removeAttribute(ERROR_SUMMARY);
+//        session.removeAttribute(HAS_ERRORS);
+//        session.removeAttribute("formData");
+//
+//        return true;
+//    }
+
+    @SuppressWarnings("unchecked")
     public boolean retrieveAndClearErrors(HttpSession session, Model model) {
         if (session.getAttribute(ERROR_SUMMARY) == null) {
             return false;
         }
 
-        // Retrieve saved form data from session
-        Map<String, String> savedFormData = (Map<String, String>) session.getAttribute("formData");
-        log.info("Retrieved savedFormData from session: {}", savedFormData);
+        List<ErrorSummary> summaries = (List<ErrorSummary>) session.getAttribute(ERROR_SUMMARY);
 
-        // Add error attributes to model for template rendering
-        model.addAttribute(ERROR_SUMMARY, session.getAttribute(ERROR_SUMMARY));
-        model.addAttribute(HAS_ERRORS, session.getAttribute(HAS_ERRORS));
+        Map<String, String> fieldErrors = new HashMap<>();
+        for (ErrorSummary es : summaries) {
+            fieldErrors.put(es.getFieldId(), es.getErrorMessage());
+        }
+
+        Map<String, String> savedFormData =
+                (Map<String, String>) session.getAttribute("formData");
+
+        model.addAttribute(ERROR_SUMMARY, summaries);
+        model.addAttribute(HAS_ERRORS, true);
+        model.addAttribute("fieldErrors", fieldErrors);
         model.addAttribute("formData", savedFormData);
-        model.addAttribute("data", savedFormData);  // Also add as 'data' for fragments
+        model.addAttribute("data", savedFormData);
 
-        log.info("Added to model - data: {}", savedFormData);
-
-        // Clear error attributes from session after adding to model
         session.removeAttribute(ERROR_SUMMARY);
         session.removeAttribute(HAS_ERRORS);
         session.removeAttribute("formData");
 
         return true;
     }
-
 
     /**
      * Stores validation errors in session for Post-Redirect-Get pattern.

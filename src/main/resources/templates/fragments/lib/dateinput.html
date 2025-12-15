@@ -8,98 +8,184 @@ FRAGMENT: dateInput
 ================================================================================
 */-->
 
-<div th:fragment="dateInput"
-     th:with="pageName=${#execInfo.processedTemplateName},type='dateinput', name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data}"
-     class="govuk-form-group">
-    <fieldset class="govuk-fieldset" role="group" aria-describedby="passport-issued-hint">
-        <div th:id="${ID}+ '-hint'" class="govuk-hint">
-            For example, 27 3 2007
-        </div>
-        <div class="govuk-date-input" th:id="${ID}">
-            <div class="govuk-date-input__item">
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-day'">Day</label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                           th:id="${ID}+'-day'"
-                           th:name="${ID}+'-day'"
-                           type="text"
-                           inputmode="numeric">
-                </div>
-            </div>
-            <div class="govuk-date-input__item">
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-month'">Month</label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                           th:id="${ID}+'-month'"
-                           th:name="${ID}+'-month'"
-                           type="text"
-                           inputmode="numeric">
-                </div>
-            </div>
-            <div class="govuk-date-input__item">
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-year'">Year</label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                           th:id="${ID}+'-year'"
-                           th:name="${ID}+'-year'"
-                           type="text"
-                           inputmode="numeric">
-                </div>
-            </div>
-        </div>
-    </fieldset>
-</div>
+<!--<div th:fragment="dateInput"-->
+<!--     th:with="pageName=${#execInfo.processedTemplateName},type='dateinput', name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data}"-->
+<!--     class="govuk-form-group">-->
+<!--    <fieldset class="govuk-fieldset" role="group" aria-describedby="passport-issued-hint">-->
+<!--        <div th:id="${ID}+ '-hint'" class="govuk-hint">-->
+<!--            For example, 27 3 2007-->
+<!--        </div>-->
+<!--        <div class="govuk-date-input" th:id="${ID}">-->
+<!--            <div class="govuk-date-input__item">-->
+<!--                <div class="govuk-form-group">-->
+<!--                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-day'">Day</label>-->
+<!--                    <input class="govuk-input govuk-date-input__input govuk-input&#45;&#45;width-2"-->
+<!--                           th:id="${ID}+'-day'"-->
+<!--                           th:name="${ID}+'-day'"-->
+<!--                           type="text"-->
+<!--                           inputmode="numeric">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="govuk-date-input__item">-->
+<!--                <div class="govuk-form-group">-->
+<!--                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-month'">Month</label>-->
+<!--                    <input class="govuk-input govuk-date-input__input govuk-input&#45;&#45;width-2"-->
+<!--                           th:id="${ID}+'-month'"-->
+<!--                           th:name="${ID}+'-month'"-->
+<!--                           type="text"-->
+<!--                           inputmode="numeric">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="govuk-date-input__item">-->
+<!--                <div class="govuk-form-group">-->
+<!--                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-year'">Year</label>-->
+<!--                    <input class="govuk-input govuk-date-input__input govuk-input&#45;&#45;width-4"-->
+<!--                           th:id="${ID}+'-year'"-->
+<!--                           th:name="${ID}+'-year'"-->
+<!--                           type="text"-->
+<!--                           inputmode="numeric">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </fieldset>-->
+<!--</div>-->
 
 
-<!--/*
-================================================================================
-FRAGMENT: dateInput
+<!--&lt;!&ndash;/*-->
+<!--================================================================================-->
+<!--FRAGMENT: dateInput-->
 
-Params:
-- title = The title for the question to display
-================================================================================
-*/-->
-<div th:fragment="dateInputAndTitle(title)"
-     th:with="pageName=${#execInfo.processedTemplateName},type='dateinputTitle', name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data}"
-     class="govuk-form-group">
-    <fieldset class="govuk-fieldset" role="group" th:aria-describedby="${ID}+'-hint' ">
+<!--Params:-->
+<!-- - title = The title for the question to display-->
+<!--================================================================================-->
+<!--*/&ndash;&gt;-->
+<!--<div th:fragment="dateInputAndTitle(title)"-->
+<!--     th:with="pageName=${#execInfo.processedTemplateName},type='dateinputTitle', name=${@formUtil.generateName(type,pageName)}, ID=${#ids.seq(name)}, userAnwser=${data}"-->
+<!--     class="govuk-form-group">-->
+<!--    <fieldset class="govuk-fieldset" role="group" th:aria-describedby="${ID}+'-hint' ">-->
+<!--        <legend class="govuk-fieldset__legend govuk-fieldset__legend&#45;&#45;l">-->
+<!--            <h1 class="govuk-fieldset__heading" th:text="${title} ?: '{PLACEHOLDER}' ">TEXT?</h1>-->
+<!--        </legend>-->
+<!--        <div th:id="${ID}+'-hint'" class="govuk-hint">-->
+<!--            For example, 27 3 2007-->
+<!--        </div>-->
+<!--        <div class="govuk-date-input" th:id="${ID}">-->
+<!--            <div class="govuk-date-input__item">-->
+<!--                <div class="govuk-form-group">-->
+<!--                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-day'">Day</label>-->
+<!--                    <input class="govuk-input govuk-date-input__input govuk-input&#45;&#45;width-2"-->
+<!--                           th:id="${ID}+'-day'"-->
+<!--                           th:name="${ID}+'-day'"-->
+<!--                           type="text"-->
+<!--                           inputmode="numeric">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="govuk-date-input__item">-->
+<!--                <div class="govuk-form-group">-->
+<!--                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-month'">Month</label>-->
+<!--                    <input class="govuk-input govuk-date-input__input govuk-input&#45;&#45;width-2"-->
+<!--                           th:id="${ID}+'-month'"-->
+<!--                           th:name="${ID}+'-month'"-->
+<!--                           type="text"-->
+<!--                           inputmode="numeric">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="govuk-date-input__item">-->
+<!--                <div class="govuk-form-group">-->
+<!--                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-year'">Year</label>-->
+<!--                    <input class="govuk-input govuk-date-input__input govuk-input&#45;&#45;width-4"-->
+<!--                           th:id="${ID}+'-year'"-->
+<!--                           th:name="${ID}+'-year'"-->
+<!--                           type="text"-->
+<!--                           inputmode="numeric">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </fieldset>-->
+<!--</div>-->
+
+<div th:fragment="dateInput(title, fieldName)"
+     th:with="
+        hasFieldError=${hasErrors == true
+            and fieldErrors != null
+            and fieldErrors.containsKey(fieldName)},
+        errorMessage=${(fieldErrors != null and fieldErrors.containsKey(fieldName))
+            ? fieldErrors.get(fieldName)
+            : null},
+        errorId=${fieldName + '-error'},
+        fieldsetId=${fieldName + '-fieldset'},
+        hintId=${fieldName + '-hint'}
+     "
+     th:class="${hasFieldError
+        ? 'govuk-form-group govuk-form-group--error'
+        : 'govuk-form-group'}">
+
+    <fieldset class="govuk-fieldset"
+              th:id="${fieldsetId}"
+              th:aria-describedby="${hasFieldError ? errorId : null}">
+
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading" th:text="${title} ?: '{PLACEHOLDER}' ">TEXT?</h1>
+            <h1 class="govuk-fieldset__heading"
+                th:text="${title}">
+            </h1>
         </legend>
-        <div th:id="${ID}+'-hint'" class="govuk-hint">
+
+        <div th:id="${hintId}" class="govuk-hint">
             For example, 27 3 2007
         </div>
-        <div class="govuk-date-input" th:id="${ID}">
+
+        <!-- Inline error -->
+        <p th:if="${hasFieldError}"
+           th:id="${errorId}"
+           class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>
+            <span th:text="${errorMessage}"></span>
+        </p>
+
+        <div class="govuk-date-input" th:id="${fieldName}">
+
+            <!-- Day -->
             <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-day'">Day</label>
+                    <label class="govuk-label govuk-date-input__label"
+                           th:for="${fieldName + '-day'}">Day</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                           th:id="${ID}+'-day'"
-                           th:name="${ID}+'-day'"
-                           type="text"
-                           inputmode="numeric">
+                           th:id="${fieldName + '-day'}"
+                           th:name="${fieldName + '-day'}"
+                           th:value="${@formUtil.dataValue(fieldName + '-day', data)}"
+                           inputmode="numeric"
+                           type="text">
                 </div>
             </div>
+
+            <!-- Month -->
             <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-month'">Month</label>
+                    <label class="govuk-label govuk-date-input__label"
+                           th:for="${fieldName + '-month'}">Month</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                           th:id="${ID}+'-month'"
-                           th:name="${ID}+'-month'"
-                           type="text"
-                           inputmode="numeric">
+                           th:id="${fieldName + '-month'}"
+                           th:name="${fieldName + '-month'}"
+                           th:value="${@formUtil.dataValue(fieldName + '-month', data)}"
+                           inputmode="numeric"
+                           type="text">
                 </div>
             </div>
+
+            <!-- Year -->
             <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" th:for="${ID}+'-year'">Year</label>
+                    <label class="govuk-label govuk-date-input__label"
+                           th:for="${fieldName + '-year'}">Year</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                           th:id="${ID}+'-year'"
-                           th:name="${ID}+'-year'"
-                           type="text"
-                           inputmode="numeric">
+                           th:id="${fieldName + '-year'}"
+                           th:name="${fieldName + '-year'}"
+                           th:value="${@formUtil.dataValue(fieldName + '-year', data)}"
+                           inputmode="numeric"
+                           type="text">
                 </div>
             </div>
+
         </div>
     </fieldset>
 </div>

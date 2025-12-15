@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +31,12 @@ public class GenericFormValidator implements Validator {
     private final Map<String, List<String>> pageRequiredFields = new HashMap<>();
     private final MandatoryFieldValidator mandatoryFieldValidator;
     private final MessageSource messageSource;
+    private final DateGroupValidator dateGroupValidator;
 
-    public GenericFormValidator(MandatoryFieldValidator mandatoryFieldValidator, MessageSource messageSource) {
+    public GenericFormValidator(MandatoryFieldValidator mandatoryFieldValidator, MessageSource messageSource, DateGroupValidator dateGroupValidator) {
         this.mandatoryFieldValidator = mandatoryFieldValidator;
         this.messageSource = messageSource;
+        this.dateGroupValidator = dateGroupValidator;
     }
 
     /**
@@ -119,6 +122,15 @@ public class GenericFormValidator implements Validator {
             return;
         }
 
+        if ("P1.1".equals(pageId)) {
+            dateGroupValidator.validate(
+                    data,
+                    errors,
+                    "P1.1-passportIssued",
+                    "date your passport was issued"
+            );
+        }
+
         // Validate all fields in the dynamicFields map
         validateAllFields(data, errors);
     }
@@ -196,6 +208,13 @@ public class GenericFormValidator implements Validator {
 
         for (Map.Entry<String, String> entry : data.entrySet()) {
             String fieldName = entry.getKey();
+
+            if (fieldName.endsWith("-day")
+                    || fieldName.endsWith("-month")
+                    || fieldName.endsWith("-year")) {
+                continue;
+            }
+
             if ("action".equals(fieldName)) {
                 continue;
             }
