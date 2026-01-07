@@ -17,6 +17,10 @@ Params:
                th:for="${ID}"
                th:text="${hintText ?: ''}">
         </label>
+
+        <!-- Inline error messages -->
+        <div th:replace="~{fragments/lib/errorSummary :: error-field-text(${ID})}"></div>
+        
         <textarea class="govuk-textarea govuk-js-character-count"
                   th:id="${ID}"
                   th:name="${ID}"

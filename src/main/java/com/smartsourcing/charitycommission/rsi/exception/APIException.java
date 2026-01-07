@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.charity.exception;
+package com.smartsourcing.charitycommission.rsi.exception;
 
 
 public class APIException extends RuntimeException {

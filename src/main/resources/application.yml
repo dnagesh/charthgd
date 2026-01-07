@@ -12,7 +12,7 @@ spring:
       static-locations: classpath:/static/
 
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
     session:
@@ -28,12 +28,47 @@ app:
     liferay: Account
   signout: Sign out
 
+#logging:
+#  level:
+#    root: INFO
+#    com:
+#      smartsourcing:
+#        charitycommission:
+#          rsi: DEBUG
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+wiremock:
+  enabled: true
+  port: 8090
+  timeout: 5000
+  api-key: ""
+
+charity:
+  api:
+    base-url: http://localhost:8090
+
+# Swagger Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+    display-request-duration: true
+    show-extensions: true
+    show-common-extensions: true
+    try-it-out-enabled: true
+  show-actuator: false
+
 logging:
   level:
     root: INFO
-    com:
-      smartsourcing:
-        charitycommission:
-          rsi: DEBUG
+    com.smartsourcing.charitycommission: DEBUG
+    org.springframework.web: INFO
+    com.github.tomakehurst.wiremock: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
