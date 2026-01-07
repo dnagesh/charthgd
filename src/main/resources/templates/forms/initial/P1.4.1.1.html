@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/questionLayout}"
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=#{P1_4.caption}, pageHeading=#{P1_4_1_1.title},saveButton=false">
+<head>
+    <meta charset="UTF-8">
+    <title>P1.4.1.1.html</title>
+</head>
+<body>
+<div layout:fragment="form-content">
+    <th:block th:insert="~{fragments/lib/tables :: charityTable(null, null)}"></th:block>
+    <div th:insert="~{fragments/lib/radioinput :: radioYesNo (null, 'P1.4.1.1-radioGroup')}"></div>
+</div>
+
+</body>
+</html>

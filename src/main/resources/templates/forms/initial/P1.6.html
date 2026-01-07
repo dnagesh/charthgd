@@ -1,14 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/questionLayout}"
-      th:with="backButtonShow=true, backButtonHref='/',pageCaption=null, pageHeading=null">
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=' ', pageHeading=#{P1_6.title},saveButton=true">
 <head>
     <meta charset="UTF-8">
     <title>P1.6.html</title>
 </head>
 <body>
-<div layout:fragment="form">
-    <h1 class="govuk-heading-xl" th:text="${#execInfo.processedTemplateName}"> Page Name</h1>
+<div layout:fragment="form-content">
+
+    <div th:insert="~{fragments/lib/radioinput :: radioWrapper('', #{P1_6.hint},'P1.6-radioGroup', ~{ :: radioInputs1})}">
+        <th:block th:fragment="radioInputs1">
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_6.radio.incidentType1}, 'option1', null,  'P1.6-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_6.radio.incidentType2}, 'option2', #{P1_6.radio.incidentType2.hint}, 'P1.6-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_6.radio.incidentType3}, 'option3', null, 'P1.6-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_6.radio.incidentType4}, 'option4', null, 'P1.6-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_6.radio.incidentType5}, 'option5', null, 'P1.6-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_6.radio.incidentType6}, 'option6', #{P1_6.radio.incidentType6.hint}, 'P1.6-radioGroup')}"></th:block>
+        </th:block>
+    </div>
+    <details class="govuk-details">
+        <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text" th:text="#{P1_6.helpText.summary}">
+    </span>
+        </summary>
+        <div class="govuk-details__text">
+            <p th:text="#{P1_6.helpText.paragraph}"></p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li th:text="#{P1_6.helpText.listItem1}"></li>
+                <li th:text="#{P1_6.helpText.listItem2}"></li>
+                <li th:text="#{P1_6.helpText.listItem3}"></li>
+                <li th:text="#{P1_6.helpText.listItem4}"></li>
+                <li th:text="#{P1_6.helpText.listItem5}"></li>
+                <li th:text="#{P1_6.helpText.listItem6}"></li>
+                <li th:text="#{P1_6.helpText.listItem7}"></li>
+                <li th:text="#{P1_6.helpText.listItem8}"></li>
+            </ul>
+        </div>
+    </details>
 </div>
 
 </body>

@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/questionLayout}"
-      th:with="backButtonShow=true, backButtonHref='/',pageCaption=null, pageHeading=null">
+      th:with="backButtonShow=true, backButtonHref='/',pageCaption=#{P1_5.caption}, pageHeading=#{P1_5.title},saveButton=true">
 <head>
     <meta charset="UTF-8">
     <title>P1.5.html</title>
 </head>
 <body>
-<div layout:fragment="form">
-    <h1 class="govuk-heading-xl" th:text="${#execInfo.processedTemplateName}"> Page Name</h1>
-</div>
+<th:block layout:fragment="form-content">
+
+    <th:block th:insert="~{fragments/lib/checkbox :: checkboxWrapper('P1.5-checkboxGroup',~{:: checkboxGroup})}">
+        <th:block th:fragment="checkboxGroup">
+            <th:block th:insert="~{fragments/lib/checkbox :: checkbox(#{trustee.label},'trustee-role',null)}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkbox(#{employee.label},'employee-role',null)}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkboxWithDetailHTML (#{authorised.advisor.label},'advisor-role', #{P1_5.hidden.text.title}, ~{::content})}">
+                <th:block th:fragment="content">
+                    <p th:text="#{P1_5.hidden.text.body}"></p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li><a class="govuk-link" href="/assets/images/giphy.gif" th:text="#{P1_5.link1}"></a></li>
+                        <li><a class="govuk-link" href="/assets/images/giphy.gif" th:text="#{P1_5.link2}"></a></li>
+                    </ul>
+                </th:block>
+            </th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkbox(#{volunteer.label},'volunteer-role',null)}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox ::checkboxWithCondition(#{other.label},'other role',null,#{P1_5.other.hint})}"></th:block>
+        </th:block>
+    </th:block>
+</th:block>
 
 </body>
 </html>
