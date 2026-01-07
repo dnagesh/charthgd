@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: RSI Local
+
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=false;trustServerCertificate=true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start-and-stop
+      file: docker-compose.yaml
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+
+camunda:
+  bpm:
+    enabled: true
+    database:
+      schema-update: true
+    metrics:
+      enabled: false
+      db-reporter-activate: false
+    job-execution:
+      enabled: true
+    history-level: none
+    admin-user:
+      id: as
+      password: as
+      first-name: Dev
+    authorization:
+      enabled: false
+    filter:
+      create: All tasks
+wiremock:
+  enabled: true
+# Charity API base URL for local WireMock
+charity:
+  api:
+    base-url: http://localhost:8089
