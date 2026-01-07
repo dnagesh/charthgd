@@ -1,0 +1,16 @@
+services:
+  database:
+    container_name: RSI-mssql
+    image: 'mcr.microsoft.com/mssql/server:2019-latest'
+    ports:
+      - '1434:1433'
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Basil123'
+      MSSQL_PID: 'Developer'
+    restart: always
+    volumes:
+      - database:/var/opt/mssql
+
+volumes:
+  database:
