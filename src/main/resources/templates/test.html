@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<!--
+   layout:decorate - Uses questionLayout as the parent template for questions and layout for anything else
+   th:with - Passes variables to the layout: shows back button(Boolean) linking to any href(String)
+-->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/questionLayout}" th:with="backButtonShow=true, backButtonHref='/'" lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+
+<div layout:fragment="form-content">
+
+    <!-- TEXTAREA EXAMPLES - Testing different parameter combinations -->
+    <p></p>
+    <h2 class="govuk-heading-s">Welsh Checker: </h2>
+    <p th:text="#{test.special.welsh}"></p>
+
+
+    <div th:insert="~{fragments/lib/errorSummary :: error-summary}"></div>
+
+    <!-- Textarea with all null parameters - uses defaults -->
+    <div th:insert="~{fragments/lib/textarea :: textarea (null,null,null)}"></div>
+    <!-- Textarea using the current template, other params null -->
+    <div th:insert="~{fragments/lib/textarea :: textarea (null,null,null)}"></div>
+    <!-- Textarea with hint text, 250 char limit, 3 rows height -->
+    <div th:insert="~{fragments/lib/textarea :: textarea ('Input hint text',250,3)}"></div>
+    <!-- Textarea with longer hint text, 300 char limit, 6 rows height -->
+    <div th:insert="~{fragments/lib/textarea :: textarea ('Another hint text example to use',300,6)}"></div>
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+
+    <!-- TEXT INPUT EXAMPLES - Different widths and labels -->
+
+    <!-- Text input with width-2, no label -->
+    <div th:insert="~{fragments/lib/textinput :: textinput (null, 2)}"></div>
+    <!-- Text input with internationalized label (from a properties file), width-5 -->
+    <div th:insert="~{fragments/lib/textinput :: textinput (#{test.label}, 5)}"></div>
+    <!-- Text input with literal label, width-10 -->
+    <div th:insert="~{fragments/lib/textinput :: textinput ('Sample label with size 10', 10)}"></div>
+    <!-- Text input with literal label, width-20 -->
+    <div th:insert="~{fragments/lib/textinput :: textinput ('Sample label with size 20', 20)}"></div>
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+
+    <h2 class="govuk-heading-l">Checkboxes with Wrapper</h2>
+    <!-- CHECKBOX EXAMPLES - Different configurations -->
+    <th:block th:insert="~{fragments/lib/checkbox :: checkboxWrapper('checboxGroup',~{:: checkBoxList})}">
+
+        <th:block th:fragment="checkBoxList">
+            <th:block th:insert="~{fragments/lib/checkbox :: checkbox(#{test.checkbox},'british','English Language')}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkbox('Hindi','hindi','Hindi Language')}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkbox('Welsh','Welsh','')}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkboxWithDetail('More Info','value3','Details Inside', #{test.details.html})}"></th:block>
+            <th:block th:insert="~{fragments/lib/checkbox :: checkboxWithTextBox('CheckBox with textArea','value3','Text area hint',2000,7)}"></th:block>
+            <!-- CONDITIONAL CHECKBOX EXAMPLES - Checkboxes that reveal additional inputs when selected -->
+            <th:block th:insert="~{fragments/lib/checkbox ::checkboxWithCondition(#{other.label},'other role',null,'Hint Input box')}"></th:block>
+            <!-- Conditional checkbox with all null parameters - uses defaults -->
+            <th:block th:insert="~{fragments/lib/checkbox ::checkboxWithCondition(null,null,null,null)}"></th:block>
+            <!-- Conditional checkbox with custom labels and values for both checkbox and conditional input -->
+            <th:block th:insert="~{fragments/lib/checkbox ::checkboxWithCondition('Click to display','clickvalue',null,'Hidden element')}"></th:block>
+        </th:block>
+
+    </th:block>
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+
+    <!-- DETAILS EXAMPLES - display -->
+    <!-- with HTML as content -->
+    <th:block th:insert="~{fragments/lib/details :: details('Long HTML',#{test.details.html})}"></th:block>
+    <!-- Usual usage -->
+    <th:block th:insert="~{fragments/lib/details :: details('Short','Hello 😁')}"></th:block>
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    <!-- INPUT DATES EXAMPLES - display -->
+
+    <!-- with HTML as content -->
+    <div th:insert="~{fragments/lib/dateinput :: dateInput}"></div>
+    <!-- with null for default -->
+    <div th:insert="~{fragments/lib/dateinput :: dateInputAndTitle(null)}"></div>
+    <!-- input date with title -->
+    <div th:insert="~{fragments/lib/dateinput :: dateInputAndTitle('Hello World(?)')}"></div>
+
+    <!-- Vertical with dynamic elements 3 -->
+    <div th:insert="~{fragments/lib/radioinput :: radioDynamic ('', 'This radio element is created from the model data', 'radioDynamic', ${radioData})}">
+
+    </div>
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    <!-- DROPDOWN EXAMPLES -  Extensible -->
+
+    <!-- Basic Extensible with Default -->
+    <!-- Currently this one does not pull previously selected values from the data -->
+    <div th:insert="~{fragments/lib/dropdown :: dropdownWrapper ('', 'Select your favourite pizza type', ~{ :: dropdownOptions1})}">
+        <th:block th:fragment="dropdownOptions1">
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOptionDefault ('Choose option...')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Cheese Pizza', 'cheesePizza')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Peperonni Pizza', 'peperonniPizza')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Hawaiian Pizza', 'pineapplePizza')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Jalapeno Spicy Pizza', 'spicyPizza')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Vegan Pizza', 'veganPizza')}"></th:block>
+        </th:block>
+    </div>
+    <!-- Basic Extensible without Default -->
+    <!-- Currently this one does not pull previously selected values from the data -->
+    <div th:insert="~{fragments/lib/dropdown :: dropdownWrapper ('', 'Where are you in the UK right now?', ~{ :: dropdownOptions2})}">
+        <th:block th:fragment="dropdownOptions2">
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('England', 'england')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Ireland', 'ireland')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Wales', 'wales')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Scotland', 'scotland')}"></th:block>
+            <th:block th:insert="~{fragments/lib/dropdown  :: dropdownOption ('Not in UK', 'notInUK')}"></th:block>
+        </th:block>
+    </div>
+
+    <!-- DROPDOWN EXAMPLES -  Data Dynamic -->
+    <!-- Data Dynamic Dropdown -->
+    <div th:insert="~{fragments/lib/dropdown :: dropdownDynamic ('', 'How do you mainly stream your shows?', ${dropdownData})}">
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+
+    <!-- RADIOS EXAMPLES - Yes/No -->
+    <!-- Basic Yes/No -->
+    <div th:insert="~{fragments/lib/radioinput :: radioYesNo ('Will the answer to this question be No?', 'yesNoTest')}"></div>
+    <!-- inline Yes/No 2 -->
+    <div th:insert="~{fragments/lib/radioinput :: radioYesNoHorizontal ('Was the answer to the last question correct?', 'yesNoTest2')}"></div>
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    <!-- RADIOS EXAMPLES - Extensible -->
+    <!-- Vertical with Extensible elements -->
+    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', 'Select your favourite fruit from the following','fruitRadioGroup', ~{ :: radioInputs1})}">
+        <th:block th:fragment="radioInputs1">
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Apple', 'option1', 'The Fruit often known as an Apple',  'fruitRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Orange', 'option2', 'The Fruit often known as an Orange', 'fruitRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Pear', 'option3', 'The Fruit often known as a Pear', 'fruitRadioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Potato', 'option4', 'Should be treated as a fruit for this question', 'fruitRadioGroup')}"></th:block>
+        </th:block>
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    <!-- Vertical with Extensible elements, using groupName -->
+    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', 'Now select your favourite Paradox Interactive Game from the following','fruitRadioGroup', ~{ :: radioInputs2})}">
+        <th:block th:fragment="radioInputs2" th:with="groupName='paradoxRadioGroup'">
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Crusader Kings', 'option1', 'A game about crusading (as a king)', ${groupName})}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Europa Universalis', 'option2', 'A game about the actually interesting part of history',  ${groupName})}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Stellaris', 'option3', 'A game about creating a space empire in the far future',  ${groupName})}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Hearts of Iron', 'option4', 'A game about fighting in world war 2',  ${groupName})}"></th:block>
+        </th:block>
+    </div>
+
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+
+    <!-- RADIOS EXAMPLES - Extensible -->
+    <!-- Vertical with conditional elements -->
+    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', 'Select your favourite fruit from the following','fruitRadioGroup2', ~{ :: radioInputs3})}">
+        <th:block th:fragment="radioInputs3">
+            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption ('Apple', 'option1', 'The Fruit often known as an Apple',  'fruitRadioGroup2')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput :: radioOptionWithTextBox ('Show Hidden','option2',null,'fruitRadioGroup2','Sample hint text',300, 2)}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput :: radioOptionWithDetail ('I have detail','option3','For example insolvency, forced withdrawl of banking services without alternative, significant data breaches/losses, incidents involving partner that materially affect the charity', 'fruitRadioGroup2', 'Help about: Other significant incidents', #{test.details.html})}"></th:block>
+        </th:block>
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    <!-- RADIOS EXAMPLES - Data Dynamic -->
+    <!-- Vertical with data dynamic elements - from data model -->
+    <div th:insert="~{fragments/lib/radioinput :: radioDynamic ('', 'This radio element is created from the model data', 'radioDynamic', ${radioData})}"></div>
+    <!-- Vertical with data dynamic elements 3 -->
+    <div th:insert="~{fragments/lib/radioinput :: radioDynamic ('', 'This radio element is created from the model data', 'radioDynamic', ${radioData})}">
+
+    </div>
+
+
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+
+    <h1 class="govuk-heading-l">Is this the correct charity?</h1>
+    <th:block th:insert="~{fragments/lib/tables :: charityTable('The Worthy Causes Charity', 12345678)}"></th:block>
+</div>
+</body>
+</html>

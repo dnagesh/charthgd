@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.controller.web;
+package com.smartsourcing.charitycommission.rsi.controller;
 
 
 import jakarta.servlet.http.HttpSession;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import uk.gov.ccew.rsi.exception.FlowException;
 import uk.gov.ccew.rsi.flow.model.UserStep;
 import uk.gov.ccew.rsi.flow.service.FlowSailorImpl;
-import uk.gov.ccew.rsi.validation.model.ErrorSummary;
 import uk.gov.ccew.rsi.validation.util.ErrorSummaryBuilder;
 import uk.gov.ccew.rsi.validation.validator.GenericFormValidator;
 

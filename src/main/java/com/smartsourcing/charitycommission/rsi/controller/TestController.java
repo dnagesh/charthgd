@@ -13,17 +13,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import java.io.IOException;
 import java.util.*;
+
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class TestController {
-
-
-
 
     private List<String> getPagesFileNames() throws IOException {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -51,11 +48,25 @@ public class TestController {
         return fileNames;
     }
 
+    private List<String> getPagesFileNamesEndpoint() throws IOException {
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+        Resource[] resources = resolver.getResources("classpath:/templates/forms/endpoint/*.html");
+
+        List<String> fileNames = new ArrayList<>();
+        for (Resource resource : resources) {
+            fileNames.add(resource.getFilename());
+        }
+
+        return fileNames;
+    }
+
 
     @GetMapping("/")
     public String home(Model model) throws IOException {
         model.addAttribute("initialPages", getPagesFileNames());
         model.addAttribute("update", getPagesFileNamesUpdate());
+        model.addAttribute("endpoint", getPagesFileNamesEndpoint());
         return "home";
     }
 
@@ -65,9 +76,11 @@ public class TestController {
     }
 
     @GetMapping("/forms/preview/update/{fileName}")
-    public String updatePage(@PathVariable String fileName) {
-        return "forms/update/" + fileName;
-    }
+    public String updatePage(@PathVariable String fileName) { return "forms/update/" + fileName; }
+
+    @GetMapping("/forms/preview/endpoint/{fileName}")
+    public String endpointPage(@PathVariable String fileName) { return "forms/endpoint/" + fileName; }
+
 
     @GetMapping("/test")
     public String test(Model model) {

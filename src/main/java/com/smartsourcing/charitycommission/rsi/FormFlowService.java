@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.service;
+package com.smartsourcing.charitycommission.rsi;
 
 
 import com.smartsourcing.charitycommission.rsi.navigation.model.Sections;
