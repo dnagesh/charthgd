@@ -10,6 +10,10 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
 
 server:
   port: 8080
@@ -19,6 +23,9 @@ server:
       timeout: 30m
       cookie:
         http-only: true
+  error:
+    include-message: always
+    include-binding-errors: always
 
 app:
   banner: You will be logged out after 30 minutes
@@ -47,6 +54,8 @@ wiremock:
 charity:
   api:
     base-url: http://localhost:8090
+    timeout: 5000
+    api-key: ""
 
 # Swagger Configuration
 springdoc:
@@ -72,3 +81,97 @@ logging:
     com.github.tomakehurst.wiremock: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Resilience4j Configuration
+resilience4j:
+  # Circuit Breaker Configuration
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 5s
+        recordExceptions:
+          - org.springframework.web.reactive.function.client.WebClientResponseException
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - com.smartsourcing.charitycommission.rsi.exception.APIException
+        ignoreExceptions:
+          - com.smartsourcing.charitycommission.rsi.exception.NotFoundException
+          - java.lang.IllegalArgumentException
+    instances:
+      charityService:
+        baseConfig: default
+
+  # Retry Configuration
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 1000ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
+          - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
+          - org.springframework.web.reactive.function.client.WebClientResponseException$GatewayTimeout
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+        ignoreExceptions:
+          - com.smartsourcing.charitycommission.rsi.exception.NotFoundException
+          - java.lang.IllegalArgumentException
+    instances:
+      charityService:
+        baseConfig: default
+
+  # Bulkhead Configuration
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 10
+        maxWaitDuration: 5s
+    instances:
+      charityService:
+        baseConfig: default
+
+  # Time Limiter Configuration
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+        cancelRunningFuture: true
+    instances:
+      charityService:
+        baseConfig: default
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,circuitbreakers,retries,env
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  health:
+    circuitbreakers:
+      enabled: true
+    diskspace:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true

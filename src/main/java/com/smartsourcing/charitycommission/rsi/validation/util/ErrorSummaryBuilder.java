@@ -1,8 +1,8 @@
-package uk.gov.ccew.rsi.validation.util;
+package com.smartsourcing.charitycommission.rsi.validation.util;
 
+import com.smartsourcing.charitycommission.rsi.validation.model.ErrorSummary;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import uk.gov.ccew.rsi.validation.model.ErrorSummary;
 
 import java.util.List;
 

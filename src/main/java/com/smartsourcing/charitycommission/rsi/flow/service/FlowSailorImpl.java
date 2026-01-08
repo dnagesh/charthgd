@@ -1,5 +1,7 @@
-package uk.gov.ccew.rsi.flow.service;
+package com.smartsourcing.charitycommission.rsi.flow.service;
 
+import com.smartsourcing.charitycommission.rsi.exception.ActiveFlowException;
+import com.smartsourcing.charitycommission.rsi.exception.FlowException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.FormService;
@@ -11,14 +13,12 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstanceQuery;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.stereotype.Service;
-import uk.gov.ccew.rsi.exception.ActiveFlowException;
-import uk.gov.ccew.rsi.exception.FlowException;
-import uk.gov.ccew.rsi.flow.model.UserStep;
+import com.smartsourcing.charitycommission.rsi.flow.model.UserStep;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-import static uk.gov.ccew.rsi.flow.util.FormDataUtil.cleanFormData;
+import static com.smartsourcing.charitycommission.rsi.flow.util.FormDataUtil.cleanFormData;
 
 @Slf4j
 @Service

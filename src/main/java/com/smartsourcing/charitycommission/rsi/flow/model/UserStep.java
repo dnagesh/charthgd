@@ -1,8 +1,6 @@
-package uk.gov.ccew.rsi.flow.model;
-
+package com.smartsourcing.charitycommission.rsi.flow.model;
 
 import java.util.Map;
-
 
 public record UserStep(String taskID,
                        String taskDefinitionKey,

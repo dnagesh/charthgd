@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.validation.model;
+package com.smartsourcing.charitycommission.rsi.validation.model;
 
 
 import lombok.AllArgsConstructor;

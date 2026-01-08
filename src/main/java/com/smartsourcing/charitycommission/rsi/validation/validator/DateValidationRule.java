@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.validation.validator;
+package com.smartsourcing.charitycommission.rsi.validation.validator;
 
 import org.springframework.validation.Errors;
 import java.time.LocalDate;

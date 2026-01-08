@@ -1,9 +1,9 @@
-package uk.gov.ccew.rsi.validation.annotation;
+package com.smartsourcing.charitycommission.rsi.validation.annotation;
 
 
+import com.smartsourcing.charitycommission.rsi.validation.validator.MandatoryFieldValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import uk.gov.ccew.rsi.validation.validator.MandatoryFieldValidator;
 
 import java.lang.annotation.*;
 

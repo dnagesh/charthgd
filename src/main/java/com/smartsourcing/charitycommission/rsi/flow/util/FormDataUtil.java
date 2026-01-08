@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.flow.util;
+package com.smartsourcing.charitycommission.rsi.flow.util;
 
 
 import java.util.Map;

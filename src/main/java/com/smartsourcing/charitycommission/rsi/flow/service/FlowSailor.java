@@ -1,6 +1,6 @@
-package uk.gov.ccew.rsi.flow.service;
+package com.smartsourcing.charitycommission.rsi.flow.service;
 
-import uk.gov.ccew.rsi.flow.model.UserStep;
+import com.smartsourcing.charitycommission.rsi.flow.model.UserStep;
 
 import java.util.Map;
 import java.util.Optional;
