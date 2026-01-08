@@ -42,10 +42,12 @@ public class FallbackService {
         // Try to get from cache first
         CharityResponse cached = getFallbackFromCache("number:" + charityNumber);
         if (cached != null) {
+            log.info("Returning cached data for charity number: {}", charityNumber);
             return cached;
         }
 
         // Return default response if no cache available
+        log.warn("No cache available, returning default response");
         return createDefaultResponse(charityNumber);
     }
 
@@ -57,10 +59,12 @@ public class FallbackService {
         // Try to get from cache first
         CharityResponse cached = getFallbackFromCache("name:" + charityName);
         if (cached != null) {
+            log.info("Returning cached data for charity name: {}", charityName);
             return cached;
         }
 
         // Return default response if no cache available
+        log.warn("No cache available, returning default response");
         return createDefaultResponse(charityName);
     }
 

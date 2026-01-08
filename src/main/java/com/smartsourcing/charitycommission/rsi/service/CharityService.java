@@ -27,7 +27,12 @@ public class CharityService {
             FallbackService fallbackService) {
         this.webClient = webClient;
         this.fallbackService = fallbackService;
+
         log.info("CharityService initialized with WebClient and FallbackService");
+
+        if (fallbackService == null) {
+            throw new IllegalStateException("FallbackService must not be null!");
+        }
     }
 
     /**
@@ -93,8 +98,7 @@ public class CharityService {
                             clientResponse -> clientResponse.createException().map(ex ->
                                     new NotFoundException("Charity not found with name: " + charityName, ex)))
                     .onStatus(HttpStatusCode::is5xxServerError,
-                            clientResponse -> clientResponse.createException().map(ex ->
-                                    new APIException("External API service error", ex)))
+                            clientResponse -> clientResponse.createException())
                     .bodyToMono(CharityResponse.class)
                     .block();
 
@@ -116,16 +120,38 @@ public class CharityService {
     }
 
     // Fallback method for getByNumber - Called when circuit is open or all retries are exhausted
-    private CharityResponse fallbackGetByNumber(String charityNumber, Throwable throwable) {
+    public CharityResponse fallbackGetByNumber(String charityNumber, Throwable throwable) {
         log.warn("FALLBACK: Using fallback for charity number: {}. Reason: {}",
                 charityNumber, throwable.getClass().getSimpleName());
+
+        if (fallbackService == null) {
+            log.error("CRITICAL: FallbackService is NULL in fallbackGetByNumber!");
+            return CharityResponse.builder()
+                    .charityName("ERROR: Fallback Service Unavailable")
+                    .charityNumber(charityNumber)
+                    .registeredCharityNumber("ERROR")
+                    .registrationStatus("SYSTEM_ERROR")
+                    .build();
+        }
+
         return fallbackService.fallbackForNumber(charityNumber, throwable);
     }
 
     // Fallback method for getByName - Called when circuit is open or all retries are exhausted
-    private CharityResponse fallbackGetByName(String charityName, Throwable throwable) {
+    public CharityResponse fallbackGetByName(String charityName, Throwable throwable) {
         log.warn("FALLBACK: Using fallback for charity name: {}. Reason: {}",
                 charityName, throwable.getClass().getSimpleName());
+
+        if (fallbackService == null) {
+            log.error("CRITICAL: FallbackService is NULL in fallbackGetByName!");
+            return CharityResponse.builder()
+                    .charityName("ERROR: Fallback Service Unavailable")
+                    .charityNumber("N/A")
+                    .registeredCharityNumber("ERROR")
+                    .registrationStatus("SYSTEM_ERROR")
+                    .build();
+        }
+
         return fallbackService.fallbackForName(charityName, throwable);
     }
 
