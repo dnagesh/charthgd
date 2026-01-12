@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+}
+
+group = 'uk.gov.ccew'
+version = '0.5.0'
+description = 'RSI'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+        vendor = JvmVendorSpec.AZUL
+    }
+}
+
+configurations {
+    compileOnly {extendsFrom annotationProcessor}
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation 'org.wiremock:wiremock-standalone:3.13.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.11.0'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.4.0'
+    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter:7.24.0'
+    implementation 'org.apache.commons:commons-lang3:3.19.0'
+    implementation 'org.apache.commons:commons-collections4:4.5.0'
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+
+
+    //Dev only, remove when building JAR
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+
+    //Annotations
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+
+    //Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.camunda.bpm:camunda-bpm-junit5:7.24.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly   'com.h2database:h2'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+}
+
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+
+}
+test{jvmArgs("-XX:+EnableDynamicAgentLoading")}
+
+tasks.named('bootJar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jacocoTestReport  {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = true
+    }
+}
