@@ -45,3 +45,4 @@ wiremock:
 charity:
   api:
     base-url: http://localhost:8089
+    timeout-seconds: 2
