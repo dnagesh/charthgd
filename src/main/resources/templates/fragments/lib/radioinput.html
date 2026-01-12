@@ -11,9 +11,18 @@ Params:
 ================================================================================
 */-->
 <div th:fragment="radioYesNo (hintText, radioGroupName)"
-     th:with="type='radioinput-yesno',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}" class="govuk-form-group">
-    <fieldset th:class="${'govuk-fieldset'}">
-        <div class="govuk-hint" th:id="${name + '-hint'}" th:text="${hintText} ?: ''"> </div>
+     th:with="type='radioinput-yesno',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnswer=${data},
+      fieldErrors=${errorSummary != null ? errorSummary.?[#strings.contains(fieldId, #vars.radioGroupName)]: null},
+      fieldHasError=${fieldErrors != null and fieldErrors.size() > 0}"
+     class="govuk-form-group"
+     th:classappend="${fieldHasError} ? ' govuk-form-group--error' : ''">
+
+    <fieldset class="govuk-fieldset" th:id="${radioGroupName}" th:aria-describedby="${ID + '-hint'}">
+        <legend class="govuk-heading-m" th:id="${name + '-hint'}" th:text="${hintText} ?: ''"></legend>
+
+        <!-- Inline error messages -->
+        <div th:replace="~{fragments/lib/errorSummary :: error-field-radio}"></div>
+
         <div class="govuk-radios govuk-radios"
              data-module="govuk-radios">
             <div class="govuk-radios__item">
@@ -21,7 +30,7 @@ Params:
                        value="yes"
                        th:id="${ID + '-yes'}"
                        th:name="${radioGroupName}"
-                       th:checked="${@formUtil.isChecked(radioGroupName,'yes',userAnwser)}">
+                       th:checked="${@formUtil.isChecked(radioGroupName,'yes',userAnswer)}">
                 <label class="govuk-label govuk-radios__label" th:for="${ID + '-yes'}"> Yes </label>
             </div>
             <div class="govuk-radios__item">
@@ -29,7 +38,7 @@ Params:
                        value="no"
                        th:id="${ID + '-no'}"
                        th:name="${radioGroupName}"
-                       th:checked="${@formUtil.isChecked(radioGroupName,'no',userAnwser)}">
+                       th:checked="${@formUtil.isChecked(radioGroupName,'no',userAnswer)}">
                 <label class="govuk-label govuk-radios__label" th:for="${ID + '-no'}"> No </label>
             </div>
         </div>
@@ -47,9 +56,18 @@ Params:
 ================================================================================
 */-->
 <div th:fragment="radioYesNoHorizontal (hintText, radioGroupName)"
-     th:with="type='radioinput-yesno-h',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}" class="govuk-form-group">
-    <fieldset th:class="${'govuk-fieldset'}">
-        <div class="govuk-hint" th:id="${name + '-hint'}" th:text="${hintText} ?: ''"> </div>
+     th:with="type='radioinput-yesno-h',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnswer=${data},
+      fieldErrors=${errorSummary != null ? errorSummary.?[#strings.contains(fieldId, #vars.radioGroupName)]: null},
+        fieldHasError=${fieldErrors != null and fieldErrors.size() > 0}"
+     class="govuk-form-group"
+     th:classappend="${fieldHasError} ? ' govuk-form-group--error' : ''">
+    <fieldset th:class="${'govuk-fieldset'}"   th:id="${radioGroupName}" th:aria-describedby="${ID + '-hint'}">
+
+    <div class="govuk-hint" th:id="${name + '-hint'}" th:text="${hintText} ?: ''"></div>
+
+        <!-- Inline error messages -->
+        <div th:replace="~{fragments/lib/errorSummary :: error-field-radio}"></div>
+
         <div class="govuk-radios govuk-radios--inline"
              data-module="govuk-radios">
             <div class="govuk-radios__item">
@@ -57,7 +75,7 @@ Params:
                        value="yes"
                        th:id="${ID + '-yes'}"
                        th:name="${radioGroupName}"
-                       th:checked="${@formUtil.isChecked(radioGroupName,'yes',userAnwser)}">
+                       th:checked="${@formUtil.isChecked(radioGroupName,'yes',userAnswer)}">
                 <label class="govuk-label govuk-radios__label" th:for="${ID + '-yes'}">Yes</label>
             </div>
             <div class="govuk-radios__item">
@@ -65,10 +83,88 @@ Params:
                        value="no"
                        th:id="${ID + '-no'}"
                        th:name="${radioGroupName}"
-                       th:checked="${@formUtil.isChecked(radioGroupName,'no',userAnwser)}">
+                       th:checked="${@formUtil.isChecked(radioGroupName,'no',userAnswer)}">
                 <label class="govuk-label govuk-radios__label" th:for="${ID + '-no'}">No</label>
             </div>
         </div>
+    </fieldset>
+</div>
+
+
+<!--/*
+================================================================================
+FRAGMENT: radioWrapper (legendText, hint, radioGroupName, radioItems)
+
+Params:
+- legendText = The H1 text that renders at the top of the radio group.
+- hint = The hint text for this radio group.
+- radioGroupName = The name of the radio group to hold all radio options
+- radioItems = A fragment reference containing all radioOption fragments
+================================================================================
+*/-->
+<div th:fragment="radioWrapper (legendText, hint, radioGroupName, radioItems)"
+     th:with="type='radioinput-wrapper',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnswer=${data},
+        fieldErrors=${errorSummary != null ? errorSummary.?[#strings.contains(fieldId, #vars.radioGroupName)]: null},
+        fieldHasError=${fieldErrors != null and fieldErrors.size() > 0}"
+     class="govuk-form-group"
+     th:classappend="${fieldHasError} ? ' govuk-form-group--error' : ''">
+
+    <fieldset class="govuk-fieldset" th:id="${radioGroupName}" th:aria-describedby="${ID + '-hint'}">
+
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading" th:text="${legendText}"></h1>
+        </legend>
+
+        <div class="govuk-hint" th:id="${ID + '-hint'}" th:text="${hint} ?: ''"></div>
+
+        <!-- Inline error messages -->
+        <div th:replace="~{fragments/lib/errorSummary :: error-field-radio}"></div>
+
+        <div class="govuk-radios" data-module="govuk-radios">
+            <th:block th:replace='${radioItems}'></th:block>
+
+            <!-- Hidden input to ensure field exists in map even when no radio is selected -->
+            <input type="hidden" th:name="${radioGroupName}" value=""/>
+        </div>
+
+    </fieldset>
+</div>
+
+<!--/*
+================================================================================
+FRAGMENT: radioDynamic (legendText, hint, radioGroupName, radioItems)
+
+Params:
+- legendText = The H1 text that renders at the top of the radio group.
+- hint = The hint text for this radio group.
+- radioGroupName = The name of the radio group to hold all radio options
+- radioItems = A list of maps containing label, value, and hint for each radio option
+================================================================================
+*/-->
+<div th:fragment="radioDynamic (legendText, hint, radioGroupName, radioItems)"
+     th:with="type='radioinput-dynamic',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnswer=${data},
+        fieldErrors=${errorSummary != null ? errorSummary.?[#strings.contains(fieldId, #vars.radioGroupName)]: null},
+        fieldHasError=${fieldErrors != null and fieldErrors.size() > 0}"
+     class="govuk-form-group"
+     th:classappend="${fieldHasError} ? ' govuk-form-group--error' : ''">
+
+    <fieldset class="govuk-fieldset"  th:id="${radioGroupName}" th:aria-describedby="${ID + '-hint'}">
+
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading" th:text="${legendText}"></h1>
+        </legend>
+
+        <div class="govuk-hint" th:id="${ID + '-hint'}" th:text="${hint} ?: ''"></div>
+
+        <!-- Inline error messages -->
+        <div th:replace="~{fragments/lib/errorSummary :: error-field-radio}"></div>
+
+        <div class="govuk-radios" data-module="govuk-radios">
+            <th:block th:each="radioItem : ${radioItems}">
+                <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (${radioItem.label}, ${radioItem.value}, ${radioItem.hint}, ${radioGroupName})}"></th:block>
+            </th:block>
+        </div>
+
     </fieldset>
 </div>
 
@@ -87,14 +183,14 @@ Params:
 ================================================================================
 */-->
 <div th:fragment="radioOption (label,value,hint, radioGroupName)"
-     th:with="type='radioinput-option',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}"
+     th:with="type='radioinput-option',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnswer=${data}"
      class="govuk-radios__item">
-    <input class="govuk-radios__input" 
-           th:id="${ID}" 
+    <input class="govuk-radios__input"
+           th:id="${ID}"
            th:name="${radioGroupName}"
-           th:value="${value}" 
+           th:value="${value}"
            type="radio"
-           th:checked="${@formUtil.isChecked(radioGroupName, value, userAnwser)}">
+           th:checked="${@formUtil.isChecked(radioGroupName, value, userAnswer)}">
     <label class="govuk-label govuk-radios__label" th:for="${ID}"
            th:text="${label}">
     </label>
@@ -103,61 +199,77 @@ Params:
     </div>
 </div>
 
+
 <!--/*
 ================================================================================
-FRAGMENT: radioWrapper (legendText, hint, radioItems)
+FRAGMENT: radioOptionWithDetail (label,value,hint, radioGroupName, labelText, contentText)
+This element should only be used inside the radioWrapper fragment.
+See the test page for an example implementation.
 
 Params:
-- legendText = The H1 text that renders at the top of the radio group.
-- hint = The hint text for this radio group.
-- radioItems = A fragment reference containing all radioOption fragments
+- label = The label of this radio option
+- value = The ref. value of this radio option
+- hint = The hint text to provide below this radio option
+- radioGroupName = The name of the radio group to hold all radio options
+- contentText = The content that populates the details box, this can be HTML.
+- labelText = The text displayed on the <span>
 ================================================================================
 */-->
-<div th:fragment="radioWrapper (legendText, hint, radioItems)"
-     th:with="type='radioinput-wrapper',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}"
-     class="govuk-form-group">
-    <fieldset class="govuk-fieldset" th:aria-describedby="${ID + '-hint'}">
-
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading" th:text="${legendText}"></h1>
-        </legend>
-
-        <div class="govuk-hint" th:id="${ID + '-hint'}" th:text="${hint} ?: ''"></div>
-
-        <div class="govuk-radios" data-module="govuk-radios">
-            <th:block th:replace='${radioItems}'></th:block>
-        </div>
-
-    </fieldset>
+<div th:fragment="radioOptionWithDetail (label,value,hint, radioGroupName, labelText, contentText)"
+     th:with="type='radioinput-option',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnswer=${data}"
+     class="govuk-radios__item">
+    <input class="govuk-radios__input"
+           th:id="${ID}"
+           th:name="${radioGroupName}"
+           th:value="${value}"
+           type="radio"
+           th:checked="${@formUtil.isChecked(radioGroupName, value, userAnswer)}">
+    <label class="govuk-label govuk-radios__label" th:for="${ID}"
+           th:text="${label}">
+    </label>
+    <div class="govuk-hint govuk-radios__hint" th:id="${ID + '-hint'}">
+        <p class="govuk-hint" th:text="${hint ?: ''}"></p>
+        <th:block th:insert="~{fragments/lib/details :: details(${labelText}, ${contentText})}"></th:block>
+    </div>
 </div>
 
+
 <!--/*
 ================================================================================
-FRAGMENT: radioDynamic (legendText, hint, radioGroupName, radioItems)
+FRAGMENT: radioOptionWithTextBox(label, value, hint, radioGroupName, hintText, characterCount, boxSize)
+This element should only be used inside the radioWrapper fragment.
+See the test page for an example implementation.
 
 Params:
-- legendText = The H1 text that renders at the top of the radio group.
-- hint = The hint text for this radio group.
+- label = The label of this radio option
+- value = The ref. value of this radio option
+- hint = The hint text to provide below this radio option
 - radioGroupName = The name of the radio group to hold all radio options
-- radioItems = A list of maps containing label, value, and hint for each radio option
+- hintText = This is for the textBox
+- characterCount = Char count displayed and used in the JS valdiation
+- boxSize the numbers of rows the text are will use, with default to 1
 ================================================================================
 */-->
-<div th:fragment="radioDynamic (legendText, hint, radioGroupName, radioItems)"
-     th:with="type='radioinput-dynamic',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type,pageName)},ID=${#ids.seq(name)}, userAnwser=${data}"
-     class="govuk-form-group">
-    <fieldset class="govuk-fieldset" th:aria-describedby="${ID + '-hint'}">
 
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading" th:text="${legendText}"></h1>
-        </legend>
+<div th:fragment="radioOptionWithTextBox(label, value, hint, radioGroupName, hintText, characterCount, boxSize)"
+     th:with="type='radioinput-option',pageName=${#execInfo.processedTemplateName},name=${@formUtil.generateName(type, pageName)},ID=${#ids.seq(name)},userAnswer=${data},conditionalId=${'conditional-' + ID},
+       textareaId=${conditionalId + '-textarea'},infoId=${textareaId + '-info'},hintId=${ID + '-hint'}">
 
-        <div class="govuk-hint" th:id="${ID + '-hint'}" th:text="${hint} ?: ''"></div>
+    <div class="govuk-radios__item">
+        <input class="govuk-radios__input"
+               th:id="${ID}"
+               th:name="${radioGroupName}"
+               th:value="${value}"
+               type="radio"
+               th:checked="${@formUtil.isChecked(radioGroupName, value, userAnswer)}"
+               th:attr="data-aria-controls=${conditionalId}">
+        <label class="govuk-label govuk-radios__label" th:for="${ID}" th:text="${label}"> </label>
 
-        <div class="govuk-radios" data-module="govuk-radios">
-            <th:block th:each="radioItem : ${radioItems}">
-                <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (${radioItem.label}, ${radioItem.value}, ${radioItem.hint}, ${radioGroupName})}"></th:block>
-            </th:block>
-        </div>
+        <div class="govuk-hint govuk-radios__hint" th:id="${ID + '-hint'}" th:text="${hint ?: ''}"></div>
+    </div>
 
-    </fieldset>
+
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" th:id="${conditionalId}">
+        <th:block th:insert="~{fragments/lib/textarea :: textarea (${hintText},${characterCount},${boxSize})}"></th:block>
+    </div>
 </div>

@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     public String handleNotFoundException(CharityNotFoundException ex, Model model) {
         log.error("Charity not found: {}", ex.getMessage());
         model.addAttribute("error", "Charity not found. Please check your input and try again.");
-        return "search";
+        return "search"; // redirect to error/charity-not-found page ---> return "redirect:/error/charity-not-found";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

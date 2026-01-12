@@ -106,6 +106,8 @@ public class FormController {
 
         genericFormValidator.validateWithPageContext(formData, errors, pageId);
 
+        // calling the search service
+
         if (errors.hasErrors()) {
             List<ErrorSummary> errorSummary = errorSummaryBuilder.buildErrorSummary(errors);
             model.addAttribute("errorSummary", errorSummary);
