@@ -1,177 +1,48 @@
 spring:
   application:
-    name: Charity Commission RSI
+    name: RSI Local
+
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=false;trustServerCertificate=true
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.SQLServerDialect
+      ddl-auto: update
+    show-sql: true
+
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start-and-stop
+      file: docker-compose.yaml
   thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    mode: HTML
-    encoding: UTF-8
     cache: false
-  web:
-    resources:
-      static-locations: classpath:/static/
-  cache:
-    type: caffeine
-    caffeine:
-      spec: maximumSize=500,expireAfterWrite=5m
+    encoding: UTF-8
 
-server:
-  port: 8080
-  servlet:
-    context-path: /
-    session:
-      timeout: 30m
-      cookie:
-        http-only: true
-  error:
-    include-message: always
-    include-binding-errors: always
-
-app:
-  banner: You will be logged out after 30 minutes
-  message:
-    liferay: Message
-  account:
-    liferay: Account
-  signout: Sign out
-
-#logging:
-#  level:
-#    root: INFO
-#    com:
-#      smartsourcing:
-#        charitycommission:
-#          rsi: DEBUG
-#  pattern:
-#    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-
+camunda:
+  bpm:
+    enabled: true
+    database:
+      schema-update: true
+    metrics:
+      enabled: false
+      db-reporter-activate: false
+    job-execution:
+      enabled: true
+    history-level: none
+    admin-user:
+      id: as
+      password: as
+      first-name: Dev
+    authorization:
+      enabled: false
+    filter:
+      create: All tasks
 wiremock:
   enabled: true
-  port: 8090
-  timeout: 5000
-  api-key: ""
-
+# Charity API base URL for local WireMock
 charity:
   api:
-    base-url: http://localhost:8090
-    timeout: 5000
-    api-key: ""
-
-# Swagger Configuration
-springdoc:
-  api-docs:
-    path: /api-docs
-    enabled: true
-  swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
-    tags-sorter: alpha
-    operations-sorter: alpha
-    display-request-duration: true
-    show-extensions: true
-    show-common-extensions: true
-    try-it-out-enabled: true
-  show-actuator: false
-
-logging:
-  level:
-    root: INFO
-    com.smartsourcing.charitycommission: DEBUG
-    org.springframework.web: INFO
-    com.github.tomakehurst.wiremock: INFO
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-
-# Resilience4j Configuration
-resilience4j:
-  # Circuit Breaker Configuration
-  circuitbreaker:
-    configs:
-      default:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 5
-        permittedNumberOfCallsInHalfOpenState: 3
-        automaticTransitionFromOpenToHalfOpenEnabled: true
-        waitDurationInOpenState: 30s
-        failureRateThreshold: 50
-        slowCallRateThreshold: 50
-        slowCallDurationThreshold: 5s
-        recordExceptions:
-          - org.springframework.web.reactive.function.client.WebClientResponseException
-          - java.io.IOException
-          - java.util.concurrent.TimeoutException
-          - com.smartsourcing.charitycommission.rsi.exception.APIException
-        ignoreExceptions:
-          - com.smartsourcing.charitycommission.rsi.exception.NotFoundException
-          - java.lang.IllegalArgumentException
-    instances:
-      charityService:
-        baseConfig: default
-
-  # Retry Configuration
-  retry:
-    configs:
-      default:
-        maxAttempts: 3
-        waitDuration: 1000ms
-        enableExponentialBackoff: true
-        exponentialBackoffMultiplier: 2
-        retryExceptions:
-          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
-          - org.springframework.web.reactive.function.client.WebClientResponseException$InternalServerError
-          - org.springframework.web.reactive.function.client.WebClientResponseException$GatewayTimeout
-          - java.io.IOException
-          - java.util.concurrent.TimeoutException
-        ignoreExceptions:
-          - com.smartsourcing.charitycommission.rsi.exception.NotFoundException
-          - java.lang.IllegalArgumentException
-    instances:
-      charityService:
-        baseConfig: default
-
-  # Bulkhead Configuration
-  bulkhead:
-    configs:
-      default:
-        maxConcurrentCalls: 10
-        maxWaitDuration: 5s
-    instances:
-      charityService:
-        baseConfig: default
-
-  # Time Limiter Configuration
-  timelimiter:
-    configs:
-      default:
-        timeoutDuration: 5s
-        cancelRunningFuture: true
-    instances:
-      charityService:
-        baseConfig: default
-
-# Actuator Configuration
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus,circuitbreakers,retries,env
-      base-path: /actuator
-  endpoint:
-    health:
-      show-details: always
-      show-components: always
-  health:
-    circuitbreakers:
-      enabled: true
-    diskspace:
-      enabled: true
-  metrics:
-    tags:
-      application: ${spring.application.name}
-    export:
-      prometheus:
-        enabled: true
-    distribution:
-      percentiles-histogram:
-        http.server.requests: true
+    base-url: http://localhost:8089
+    timeout-seconds: 2
