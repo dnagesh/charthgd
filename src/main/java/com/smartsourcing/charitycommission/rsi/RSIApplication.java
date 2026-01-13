@@ -1,5 +1,6 @@
 package com.smartsourcing.charitycommission.rsi;
 
+import com.smartsourcing.charitycommission.rsi.config.RsiProperties;
 import com.smartsourcing.charitycommission.rsi.config.WireMockConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@EnableConfigurationProperties(WireMockConfig.class)
+@EnableConfigurationProperties(RsiProperties.class)
 @EnableCaching
 @Slf4j
 public class RSIApplication {

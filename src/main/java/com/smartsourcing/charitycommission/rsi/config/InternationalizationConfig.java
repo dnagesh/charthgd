@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.config;
+package com.smartsourcing.charitycommission.rsi.config;
 
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.config;
+package com.smartsourcing.charitycommission.rsi.config;
 
 
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestClient;
  *    Uses the {@link RsiProperties} class to populate the necessary info from.
  * </p>
  *
- * When Wiremock is enabled it will provide the Wiremock Server created by {@link WiremockConfig}
+ * When Wiremock is enabled it will provide the Wiremock Server created by {@link WireMockConfig}
  * otherwise it uses the Middletier configuration provided on the profile.
  * */
 @Configuration

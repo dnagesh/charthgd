@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.config;
+package com.smartsourcing.charitycommission.rsi.config;
 
 
 import jakarta.validation.Valid;
