@@ -2,23 +2,29 @@ spring:
   application:
     name: RSI Local
 
-  datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=false;trustServerCertificate=true
-  jpa:
-    hibernate:
-      dialect: org.hibernate.dialect.SQLServerDialect
-      ddl-auto: update
-    show-sql: true
-
-  docker:
-    compose:
-      enabled: true
-      lifecycle-management: start-and-stop
-      file: docker-compose.yaml
+#  datasource:
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=false;trustServerCertificate=true
+#  jpa:
+#    hibernate:
+#      dialect: org.hibernate.dialect.SQLServerDialect
+#      ddl-auto: update
+#    show-sql: true
+#
+#  docker:
+#    compose:
+#      enabled: true
+#      lifecycle-management: start-and-stop
+#      file: docker-compose.yaml
   thymeleaf:
-    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
     encoding: UTF-8
+    cache: false
+
+server:
+  port: 8080
 
 camunda:
   bpm:
@@ -40,6 +46,7 @@ camunda:
     filter:
       create: All tasks
 wiremock:
+  port: 8089
   enabled: true
 # Charity API base URL for local WireMock
 charity:

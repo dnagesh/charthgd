@@ -8,11 +8,56 @@
 </head>
 <body>
 <div layout:fragment="form-content">
+<!--    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', null, 'P1.1-radioGroup', ~{ :: radioInputs1})}">-->
+<!--        <th:block th:fragment="radioInputs1">-->
+<!--            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option1}, 'option1', null,  'P1.1-radioGroup')}"></th:block>-->
+<!--            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'P1.1-radioGroup')}"></th:block>-->
+<!--            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-radioGroup')}"></th:block>-->
+<!--        </th:block>-->
+<!--    </div>-->
+
+    <div th:insert="~{fragments/lib/charitysearch :: charitySearchBox}"></div>
+
+    <!-- Show search error if exists -->
+    <div th:if="${searchError}" class="govuk-error-message" role="alert">
+        <span class="govuk-visually-hidden">Error:</span>
+        <span th:text="${searchError}"></span>
+    </div>
+
+    <!-- Show charity details if found -->
+    <div th:if="${charityData != null}" class="govuk-inset-text" style="margin-top: 20px;">
+        <h3 class="govuk-heading-s">Charity Found</h3>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Charity Name</dt>
+                <dd class="govuk-summary-list__value" th:text="${charityData.charityName}">Example Charity</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Charity Number</dt>
+                <dd class="govuk-summary-list__value" th:text="${charityData.charityNumber}">123456</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Registered Number</dt>
+                <dd class="govuk-summary-list__value" th:text="${charityData.registeredCharityNumber}">REG-123456</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Status</dt>
+                <dd class="govuk-summary-list__value">
+                    <strong class="govuk-tag"
+                            th:classappend="${charityData.registrationStatus == 'ACTIVE' ? 'govuk-tag--green' : 'govuk-tag--grey'}"
+                            th:text="${charityData.registrationStatus}">ACTIVE</strong>
+                </dd>
+            </div>
+        </dl>
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
     <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', null, 'P1.1-radioGroup', ~{ :: radioInputs1})}">
         <th:block th:fragment="radioInputs1">
-            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option1}, 'option1', null,  'P1.1-radioGroup')}"></th:block>
-            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'P1.1-radioGroup')}"></th:block>
-            <th:block th:insert="~{fragments/lib/radioinput  :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option1}, 'option1', null, 'P1.1-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'P1.1-radioGroup')}"></th:block>
+            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-radioGroup')}"></th:block>
         </th:block>
     </div>
 </div>

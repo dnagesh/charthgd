@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${errorTitle}">Error</title>
+    <!-- Add your GDS stylesheet here -->
+    <link rel="stylesheet" href="/assets/govuk-frontend.min.css">
+</head>
+<body class="govuk-template__body">
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <!-- Error Summary -->
+        <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1">
+            <h2 class="govuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+            <div class="govuk-error-summary__body">
+                <p th:text="${errorMessage}">Error message</p>
+            </div>
+        </div>
+
+        <!-- Error Details -->
+        <h1 class="govuk-heading-xl" th:text="${errorTitle}">Error Title</h1>
+
+        <p class="govuk-body" th:if="${query != null}">
+            You searched for: <strong th:text="${query}">query</strong>
+        </p>
+
+        <!-- Error Code Badge -->
+        <p class="govuk-body">
+            <span class="govuk-tag govuk-tag--red" th:text="'Error ' + ${errorCode}">Error 404</span>
+        </p>
+
+        <!-- Help Content -->
+        <div class="govuk-inset-text" th:switch="${errorCode}">
+                <span th:case="'404'">
+                    <h3 class="govuk-heading-s">Charity not found</h3>
+                    <p>This could be because:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>the charity number or name is incorrect</li>
+                        <li>the charity is not registered</li>
+                        <li>the charity has been removed from the register</li>
+                    </ul>
+                </span>
+            <span th:case="'400'">
+                    <h3 class="govuk-heading-s">Invalid input</h3>
+                    <p>Please enter:</p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>a charity number (numbers only)</li>
+                        <li>or a charity name (letters and hyphens only)</li>
+                    </ul>
+                </span>
+            <span th:case="'503'">
+                    <h3 class="govuk-heading-s">Service unavailable</h3>
+                    <p>The charity search service is temporarily unavailable. Please try again later.</p>
+                </span>
+        </div>
+
+        <!-- Actions -->
+        <h2 class="govuk-heading-m">What you can do</h2>
+
+        <div class="govuk-button-group">
+            <a th:href="@{/form/page}" class="govuk-button" data-module="govuk-button">
+                Try another search
+            </a>
+            <a th:href="@{/form/start}" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                Start over
+            </a>
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

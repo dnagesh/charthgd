@@ -1,0 +1,43 @@
+sections:
+  initial:
+    pages:
+      "1.1":
+        id: AreYouReportingNewSeriousIncidentOrUpdatingExistingOne
+        sectionTitle: Report a serious incident
+        text: What do you want to do?
+        type: radio
+        options:
+          - label: I am reporting a new serious incident
+            next: initial/1.3
+          - label: I am continuing previous report
+            next: initial/1.2
+          - label: I am updating an incident already reported to the Commission
+            next: initial/1.1
+
+      "1.2":
+        id: IncidentReportId
+        sectionTitle: Continue a previous report
+        text: Enter your unique reference code
+        type: text
+        next: initial/1.1
+
+      "1.3":
+        id: DoYouHaveAuthorityToReportIncidentsOnBehalfOfTheTrustees
+        sectionTitle: Authority to report incident
+        text: Do you have authority to report the incident(s) on behalf of the trustees?
+        type: radio
+        options:
+          - label: Yes
+            next: initial/1.4
+          - label: No
+            next: initial/1.3a
+      "1.3a":
+        id: DoYouHaveAuthorityToReportIncidentsOnBehalfOfTheTrustees
+        sectionTitle: Authority confirmation
+        text: Enter your unique reference code
+        type: radio
+        options:
+          - label: Yes
+            next: initial/1.4
+          - label: No
+            next: initial/1.3a

@@ -96,12 +96,13 @@ public class CharityService {
 
     private CharityResponse truncateCharityNameExceedsMaxLength(CharityResponse response) {
         if (response == null) return null;
-        var name = response.charityName();
+        var name = response.getCharityName();
         if (name != null && name.length() > MAX_CHARITY_NAME_LENGTH) {
             return new CharityResponse(
                     name.substring(0, MAX_CHARITY_NAME_LENGTH),
-                    response.charityNumber(),
-                    response.regCharityNumber()
+                    response.getCharityNumber(),
+                    response.getRegisteredCharityNumber(),
+                    response.getRegistrationStatus()
             );
         }
         return response;
