@@ -1,0 +1,38 @@
+<!--/*
+================================================================================
+FRAGMENT: Language Select
+
+Displays HMRC language toggle based on current locale
+================================================================================
+*/-->
+
+<nav class="hmrc-language-select" aria-label="Language switcher" th:fragment="languageSelect"
+     xmlns:th="http://www.w3.org/1999/xhtml">
+    <ul class="hmrc-language-select__list">
+        <li class="hmrc-language-select__list-item">
+            <span th:if="${#locale.language == 'en'}" aria-current="true">English</span>
+            <a th:if="${#locale.language != 'en'}"
+               th:href="@{''(lang='en')}"
+               hreflang="en"
+               lang="en"
+               rel="alternate"
+               class="govuk-link">
+                <span class="govuk-visually-hidden">Change the language to English</span>
+                <span aria-hidden="true">English</span>
+            </a>
+        </li>
+        <li class="hmrc-language-select__list-item">
+            <span th:if="${#locale.language == 'cy'}" aria-current="true">Cymraeg</span>
+            <a th:if="${#locale.language != 'cy'}"
+               th:href="@{''(lang='cy')}"
+               hreflang="cy"
+               lang="cy"
+               rel="alternate"
+               class="govuk-link"
+               data-journey-click="link - click:lang-select:Cymraeg">
+                <span class="govuk-visually-hidden">Newid yr iaith ir Gymraeg</span>
+                <span aria-hidden="true">Cymraeg</span>
+            </a>
+        </li>
+    </ul>
+</nav>
