@@ -1,0 +1,57 @@
+
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/countrylist",
+        "queryParameters": {
+          "lang": {
+            "equalTo": "en"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "countryListResponse-en.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/countrylist",
+        "queryParameters": {
+          "lang": {
+            "equalTo": "cy"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "countryListResponse-cy.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/countrylist"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "countryListResponse-en.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
