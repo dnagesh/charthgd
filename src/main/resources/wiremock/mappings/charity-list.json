@@ -1,0 +1,87 @@
+
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/charitydetails",
+        "queryParameters": {
+          "charityNumber": {
+            "equalTo": "123456"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "charityResponse-en.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/charitydetails",
+        "queryParameters": {
+          "charityName": {
+            "equalTo": "THE LEAGUE OF FRIENDS"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "charityResponse-en.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/charitydetails",
+        "queryParameters": {
+          "charityNumber": {
+            "equalTo": "123456"
+          },
+          "lang": {
+            "equalTo": "cy"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "charityResponse-cy.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/api/charitydetails",
+        "queryParameters": {
+          "charityName": {
+            "equalTo": "CYMDEITHAS FFRAINDIAU"
+          },
+          "lang": {
+            "equalTo": "cy"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "charityResponse-cy.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
