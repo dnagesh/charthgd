@@ -45,9 +45,9 @@ camunda:
       enabled: false
     filter:
       create: All tasks
-wiremock:
-  port: 8089
-  enabled: true
+rsi:
+  wiremock:
+    enabled: false
 # Charity API base URL for local WireMock
 charity:
   api:
