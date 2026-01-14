@@ -1,0 +1,12 @@
+[
+  {
+    "charityName": "THE LEAGUE OF FRIENDS OF THE BERWICK HOSPITALS",
+    "organisationNumber": "",
+    "regCharityNumber": "123456"
+  },
+  {
+    "charityName": "This Is A Very Long Charity Name That Exceeds The Maximum Length Limit Of Fifty Characters And Should Be Truncated Because The System Requires That Charity Names Do Not Exceed A Certain Limit. To test the truncation logic, we need a string that is much longer than the allowed maximum. Therefore, we are adding more descriptive text to ensure the total length is well over two hundred and fifty-five characters. This should be sufficient for any validation or truncation test in your application.",
+    "organisationNumber": "ORG-111111",
+    "regCharityNumber": "111111"
+  }
+]
