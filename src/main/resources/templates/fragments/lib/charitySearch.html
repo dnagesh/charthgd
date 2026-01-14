@@ -11,32 +11,29 @@ A search box for looking up charity information by number or name.
 <div th:fragment="charitySearchBox" class="govuk-form-group">
     <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            <h2 class="govuk-fieldset__heading">
-                Search for a Charity
-            </h2>
+            <h2 class="govuk-fieldset__heading">Search for a Charity</h2>
         </legend>
 
         <div class="govuk-hint">
             Enter a charity number (e.g., 123456) or charity name (e.g., oxfam)
         </div>
 
-        <form method="post" th:action="@{/form/search-charity}" id="charitySearchForm">
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="charityInput">
-                    Charity Number or Name
-                </label>
-                <input class="govuk-input govuk-input--width-20"
-                       id="charityInput"
-                       name="charityInput"
-                       type="text"
-                       placeholder="Enter charity number or name"
-                       required>
-            </div>
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="charityInput">
+                Charity Number or Name
+            </label>
+            <input class="govuk-input govuk-input--width-20"
+                   id="charityInput"
+                   name="charityInput"
+                   type="text">
+        </div>
 
-            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                Search Charity
-            </button>
-        </form>
+        <button type="submit"
+                class="govuk-button govuk-button--secondary"
+                formaction="/form/search-charity"
+                formmethod="post">
+            Search Charity
+        </button>
     </fieldset>
 </div>
 

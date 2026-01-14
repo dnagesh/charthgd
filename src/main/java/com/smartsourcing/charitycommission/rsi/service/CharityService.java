@@ -35,7 +35,7 @@ public class CharityService {
     public CharityResponse getByNumber(String charityNumber) {
         try {
             log.debug("Attempting to fetch charity by number: {}", charityNumber);
-            String url = baseApiUrl + "/charitydetails?charityNumber=" + charityNumber;
+            String url = baseApiUrl + "/charity/number/" + charityNumber;
             CharityResponse response = restClient.get()
                     .uri(url)
                     .retrieve()
@@ -66,7 +66,7 @@ public class CharityService {
     public CharityResponse getByName(String charityName) {
         try {
             log.debug("Attempting to fetch charity by name: {}", charityName);
-            String url = baseApiUrl + "/charitydetails?charityName=" + charityName;
+            String url = baseApiUrl + "/charity/name/" + charityName;
             CharityResponse response = restClient.get()
                     .uri(url)
                     .retrieve()

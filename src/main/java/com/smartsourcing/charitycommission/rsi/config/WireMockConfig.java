@@ -245,7 +245,7 @@ public class WireMockConfig {
                             .withBody("Internal Server Error")));
 
             // 5. Service unavailable
-            mockServer.stubFor(get(urlPathMatching("/charity/number/500.*"))
+            mockServer.stubFor(get(urlPathMatching("/charity/number/500500"))
                     .willReturn(aResponse()
                             .withStatus(503)
                             .withBody("Service Unavailable")));

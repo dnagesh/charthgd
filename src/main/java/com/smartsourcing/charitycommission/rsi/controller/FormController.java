@@ -1,6 +1,7 @@
 package com.smartsourcing.charitycommission.rsi.controller;
 
 
+import com.smartsourcing.charitycommission.rsi.exception.CharityApiException;
 import com.smartsourcing.charitycommission.rsi.exception.CharityNotFoundException;
 import com.smartsourcing.charitycommission.rsi.exception.FlowException;
 import com.smartsourcing.charitycommission.rsi.model.CharityResponse;
@@ -155,7 +156,7 @@ public class FormController {
             log.error("Bad request: {}", e.getMessage());
             return "redirect:/error/invalid-input?query=" + charityInput;
 
-        } catch (WebClientResponseException.InternalServerError |
+        } catch (CharityApiException | WebClientResponseException.InternalServerError |
                  WebClientResponseException.ServiceUnavailable e) {
             log.error("Server error: {}", e.getMessage());
             return "redirect:/error/service-unavailable";
