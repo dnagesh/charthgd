@@ -1,111 +1,88 @@
-package com.smartsourcing.charitycommission.rsi.service;
+package uk.gov.ccew.rsi.service;
 
-import com.smartsourcing.charitycommission.rsi.exception.CharityApiException;
-import com.smartsourcing.charitycommission.rsi.exception.CharityNotFoundException;
-import com.smartsourcing.charitycommission.rsi.model.CharityResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
-import org.springframework.http.client.JdkClientHttpRequestFactory;
-import java.time.Duration;
+import uk.gov.ccew.rsi.exception.CharityApiException;
+import uk.gov.ccew.rsi.exception.CharityNotFoundException;
+import uk.gov.ccew.rsi.model.dto.CharityDTO;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CharityService {
 
     private static final int MAX_CHARITY_NAME_LENGTH = 255;
 
-    private final String baseApiUrl;
     private final RestClient restClient;
 
+    public List<CharityDTO> getCharitiesByNumber(Integer charityNumber, String lang) {
 
-    public CharityService(@Value("${charity.api.base-url}") String baseApiUrl,
-                          @Value("${charity.api.timeout-seconds}") int timeoutSeconds) {
-        this.baseApiUrl = baseApiUrl;
-        var factory = new JdkClientHttpRequestFactory();
-        factory.setReadTimeout(Duration.ofSeconds(timeoutSeconds));
-        this.restClient = RestClient.builder()
-               .requestFactory(factory)
-                .build();
-    }
+        log.debug("Attempting to fetch charity by number: {}", charityNumber);
+        String uri = String.format("/api/charitydetails?charityNumber=%s",  charityNumber);
+        List<CharityDTO> charityResponse = getCharityResponse(lang, uri);
 
-    public CharityResponse getByNumber(String charityNumber) {
-        try {
-            log.debug("Attempting to fetch charity by number: {}", charityNumber);
-            String url = baseApiUrl + "/charity/number/" + charityNumber;
-            CharityResponse response = restClient.get()
-                    .uri(url)
-                    .retrieve()
-                    .body(CharityResponse.class);
-            if (response == null) {
-                throw new CharityNotFoundException("Charity not found with number: " + charityNumber);
-            }
-            log.debug("Successfully retrieved charity details from charityNumber : {}", response);
-            return truncateCharityNameExceedsMaxLength(response);
-        } catch (HttpClientErrorException.BadRequest ex) {
-            log.error("Invalid charity number format", ex);
-            throw new IllegalArgumentException("Invalid charity number format", ex);
-        } catch (HttpClientErrorException.NotFound ex) {
-            log.error("Charity not found with number: {}", charityNumber, ex);
-            throw new CharityNotFoundException("Charity not found with number: " + charityNumber, ex);
-        } catch (HttpServerErrorException ex) {
-            log.error("External API service error", ex);
-            throw new CharityApiException("External API service error", ex);
-        } catch (IllegalArgumentException | CharityNotFoundException ex) {
-            log.error("Client error for charity number {}: {}", charityNumber, ex.getMessage());
-            throw ex;
-        } catch (Exception ex) {
-            log.error("Unexpected error fetching charity by number", ex);
-            throw new CharityApiException("Unexpected error occurred while fetching charity", ex);
+        if (charityResponse == null) {
+            throw new CharityNotFoundException("Charity not found with number: " + charityNumber);
         }
+        log.debug("Successfully retrieved charity details from charityNumber : {}", charityResponse);
+        return truncateCharityNameExceedsMaxLength(charityResponse);
     }
 
-    public CharityResponse getByName(String charityName) {
-        try {
+    public List<CharityDTO> getCharitiesByName(String charityName, String lang) {
+
             log.debug("Attempting to fetch charity by name: {}", charityName);
-            String url = baseApiUrl + "/charity/name/" + charityName;
-            CharityResponse response = restClient.get()
-                    .uri(url)
-                    .retrieve()
-                    .body(CharityResponse.class);
-            if (response == null) {
+            String uri = String.format("/api/charitydetails?charityName=%s", charityName);
+            List<CharityDTO> charityResponse =  getCharityResponse(lang, uri);
+
+            if (charityResponse == null || charityResponse.isEmpty()) {
                 throw new CharityNotFoundException("Charity not found with name: " + charityName);
             }
-            log.debug("Successfully retrieved charity details from charityName: {}", response);
-            return truncateCharityNameExceedsMaxLength(response);
-        } catch (HttpClientErrorException.BadRequest ex) {
-            log.error("Invalid charity name format", ex);
-            throw new IllegalArgumentException("Invalid charity name format", ex);
-        } catch (HttpClientErrorException.NotFound ex) {
-            log.error("Charity not found with name: {}", charityName, ex);
-            throw new CharityNotFoundException("Charity not found with name: " + charityName, ex);
-        } catch (HttpServerErrorException ex) {
-            log.error("External API service error", ex);
-            throw new CharityApiException("External API service error", ex);
-        } catch (IllegalArgumentException | CharityNotFoundException ex) {
-            log.error("Client error for charity name {}: {}", charityName, ex.getMessage());
-            throw ex;
-        } catch (Exception ex) {
-            log.error("Unexpected error fetching charity by name", ex);
-            throw new CharityApiException("Unexpected error occurred while fetching charity", ex);
-        }
+            log.debug("Successfully retrieved charity details from charityName: {}", charityResponse);
+            return truncateCharityNameExceedsMaxLength(charityResponse);
+
     }
 
-    private CharityResponse truncateCharityNameExceedsMaxLength(CharityResponse response) {
-        if (response == null) return null;
-        var name = response.getCharityName();
-        if (name != null && name.length() > MAX_CHARITY_NAME_LENGTH) {
-            return new CharityResponse(
-                    name.substring(0, MAX_CHARITY_NAME_LENGTH),
-                    response.getCharityNumber(),
-                    response.getRegisteredCharityNumber(),
-                    response.getRegistrationStatus()
-            );
+    private List<CharityDTO> getCharityResponse(String lang, String uri) {
+        if (lang != null && !lang.isBlank()) {
+            uri += String.format("&lang=%s", lang);
         }
-        return response;
+
+        return restClient.get()
+                .uri(uri)
+                .retrieve()
+                .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+                    throw new CharityApiException("Middletier error, the server responded with internal error" + response.getBody());
+                })
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    throw new CharityApiException("Middletier error, the server responded with client error: " + response.getStatusCode() + " Body -> " + response.getBody() + " using the following URI: " + request.getMethod() + " " +request.getURI());
+                })
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    private List<CharityDTO> truncateCharityNameExceedsMaxLength(List<CharityDTO> responseList) {
+        if (responseList == null) {
+            return Collections.emptyList();
+        }
+        return responseList.stream()
+                .map(response -> {
+                    String name = response.charityName();
+                    if (name != null && name.length() > MAX_CHARITY_NAME_LENGTH) {
+                        return new CharityDTO(
+                                name.substring(0, MAX_CHARITY_NAME_LENGTH),
+                                response.organisationNumber(),
+                                response.regCharityNumber()
+                        );
+                    }
+                    return response;
+                })
+                .toList();
     }
 }
 
