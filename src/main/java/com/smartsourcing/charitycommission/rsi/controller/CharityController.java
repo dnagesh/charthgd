@@ -20,12 +20,6 @@ public class CharityController {
 
     private final CharityService charityService;
 
-    @GetMapping("/search")
-    public String showSearchForm() {
-        log.debug("Displaying charity search form");
-        return "search";
-    }
-
     @PostMapping("/search")
     public String handleSearch(@RequestParam("input") String input,
                                @RequestParam(value = "lang", required = false, defaultValue = "en") String lang,

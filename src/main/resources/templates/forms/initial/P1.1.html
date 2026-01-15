@@ -17,12 +17,7 @@
 <!--    </div>-->
 
     <div th:insert="~{fragments/lib/charitySearch :: charitySearchBox}"></div>
-
-    <!-- Show search error if exists -->
-    <div th:if="${searchError}" class="govuk-error-message" role="alert">
-        <span class="govuk-visually-hidden">Error:</span>
-        <span th:text="${searchError}"></span>
-    </div>
+    <input type="hidden" name="processInstanceId" value="dummy">
 
     <!-- Show charity details if found -->
     <div th:if="${charities != null}" class="govuk-inset-text" style="margin-top:20px;">
@@ -57,13 +52,13 @@
 
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', null, 'P1.1-radioGroup', ~{ :: radioInputs1})}">
-        <th:block th:fragment="radioInputs1">
-            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option1}, 'option1', null, 'P1.1-radioGroup')}"></th:block>
-            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'P1.1-radioGroup')}"></th:block>
-            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-radioGroup')}"></th:block>
-        </th:block>
-    </div>
+<!--    <div th:insert="~{fragments/lib/radioinput :: radioWrapper ('', null, 'P1.1-radioGroup', ~{ :: radioInputs1})}">-->
+<!--        <th:block th:fragment="radioInputs1">-->
+<!--            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option1}, 'option1', null, 'P1.1-radioGroup')}"></th:block>-->
+<!--            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option2}, 'option2', null, 'P1.1-radioGroup')}"></th:block>-->
+<!--            <th:block th:insert="~{fragments/lib/radioinput :: radioOption (#{P1_1.radio.option3}, 'option3', null, 'P1.1-radioGroup')}"></th:block>-->
+<!--        </th:block>-->
+<!--    </div>-->
 </div>
 
 </body>

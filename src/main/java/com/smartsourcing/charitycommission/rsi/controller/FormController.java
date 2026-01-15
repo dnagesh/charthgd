@@ -109,10 +109,12 @@ public class FormController {
     }
 
     @PostMapping("/search-charity")
-    public String searchCharity(@RequestParam String charityInput,
-                                @RequestParam(value = "lang", required = false, defaultValue = "en") String lang,
+    public String searchCharity(@RequestParam Map<String, String> formData,
                                 Model model,
                                 HttpSession session) {
+        String charityInput = formData.get("charityInput");
+        String lang = formData.getOrDefault("lang", "en");
+
         log.info("Charity search request received: '{}', lang: '{}'", charityInput, lang);
 
         String businessKey = (String) session.getAttribute(BUSINESS_KEY);
@@ -121,12 +123,23 @@ public class FormController {
             return "redirect:/form/start";
         }
 
-        // Validate input
-        if (charityInput == null || charityInput.trim().isEmpty()) {
-            log.warn("Search attempted with empty input");
-            model.addAttribute("searchError", "Please enter a charity number or name");
-            UserStep currentStep = flowService.getCurrentStep(businessKey)
-                    .orElseThrow(() -> new FlowException("Unable to get current step"));
+        formData.put("processInstanceId", "charitySearch-" + businessKey);
+
+        UserStep currentStep = flowService.getCurrentStep(businessKey)
+                .orElseThrow(() -> new FlowException("Unable to get current step"));
+
+        Errors errors = new MapBindingResult(formData, "formData");
+        genericFormValidator.validateWithPageContext(formData, errors, currentStep.formKey());
+
+        if (errors.hasErrors()) {
+            log.warn("Validation errors during charity search");
+
+            List<ErrorSummary> errorSummary = errorSummaryBuilder.buildErrorSummary(errors);
+
+            model.addAttribute("errorSummary", errorSummary);
+            model.addAttribute("errors", errors);
+            model.addAttribute("hasErrors", true);
+
             return getView(currentStep);
         }
 
@@ -137,34 +150,47 @@ public class FormController {
                 log.info("Searching by charity number: {}", charityInput);
                 Integer charityNumber = Integer.parseInt(charityInput);
                 charities = charityService.getCharitiesByNumber(charityNumber, lang);
-            } else if (charityInput.matches("[A-Za-z0-9 '&.-]+")) {
+            } else {
                 String normalizedName = charityInput.toUpperCase();
                 log.info("Searching by charity name: {}", normalizedName);
                 charities = charityService.getCharitiesByName(normalizedName, lang);
-            } else {
-                log.warn("Invalid input format: '{}'", charityInput);
-                model.addAttribute("searchError", "Invalid input. Use only numbers or letters (spaces and hyphens allowed).");
-                UserStep currentStep = flowService.getCurrentStep(businessKey)
-                        .orElseThrow(() -> new FlowException("Unable to get current step"));
-                return getView(currentStep);
             }
 
             // Store charity data in session (store first result or entire list as needed)
-            if (!charities.isEmpty()) {
-                session.setAttribute(CHARITY_DATA, charities);
-                model.addAttribute("charityData", charities.get(0));
-                model.addAttribute("charities", charities);
-                model.addAttribute("searchSuccess", true);
-                log.info("Charity search successful. Found {} result(s)", charities.size());
-            } else {
+            if (charities.isEmpty()) {
                 log.warn("No charities found for input: '{}'", charityInput);
                 throw new CharityNotFoundException("No charities found matching: " + charityInput);
             }
 
+            session.setAttribute(CHARITY_DATA, charities);
+            model.addAttribute("charities", charities);
+            model.addAttribute("searchSuccess", true);
+
+            String taskDefinitionID = currentStep.taskDefinitionKey();
+            Optional<UserStep> nextStep = flowService.next(businessKey, Map.of(
+                    "charitySearchCompleted", "true"
+            ));
+
+            if (nextStep.isEmpty()) {
+                log.info("Process completed for businessKey: {}", businessKey);
+                session.invalidate();
+                return "redirect:/";
+            }
+
+            model.addAttribute("hasErrors", false);
+
+            log.info("Moving to next page: {}", nextStep.get().formKey());
+            session.setAttribute(LAST_PAGE, taskDefinitionID);
+
+            log.info("Charity search successful. Found {} result(s)", charities.size());
+
+            return "redirect:/form/page";
+
             // Return to the same page with charity data
-            UserStep currentStep = flowService.getCurrentStep(businessKey)
-                    .orElseThrow(() -> new FlowException("Unable to get current step"));
-            return getView(currentStep);
+//            UserStep currentStep = flowService.getCurrentStep(businessKey)
+//                    .orElseThrow(() -> new FlowException("Unable to get current step"));
+//            return getView(currentStep);
+
 
         } catch (CharityNotFoundException e) {
             log.error("Charity not found: '{}', lang: '{}'", charityInput, lang, e);

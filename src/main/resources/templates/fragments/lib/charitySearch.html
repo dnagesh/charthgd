@@ -11,10 +11,18 @@
             Enter a charity number (e.g., 123456) or charity name (e.g., Oxfam)
         </div>
 
-        <div class="govuk-form-group">
+        <div class="govuk-form-group" th:classappend="${errors != null and errors.hasFieldErrors('charityInput')}
+                      ? 'govuk-form-group--error'">
             <label class="govuk-label" for="charityInput">
                 Charity number or name
             </label>
+
+            <p class="govuk-error-message"
+               th:if="${errors != null and errors.hasFieldErrors('charityInput')}">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span th:text="${errors.getFieldError('charityInput').defaultMessage}">This field is required</span>
+            </p>
+
             <input class="govuk-input govuk-input--width-20"
                    id="charityInput"
                    name="charityInput"
