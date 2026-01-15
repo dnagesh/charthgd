@@ -1,14 +1,14 @@
-package uk.gov.ccew.rsi.service;
+package com.smartsourcing.charitycommission.rsi.service;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.smartsourcing.charitycommission.rsi.exception.CharityApiException;
+import com.smartsourcing.charitycommission.rsi.model.CharityDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
-import uk.gov.ccew.rsi.exception.CharityApiException;
-import uk.gov.ccew.rsi.model.dto.CharityDTO;
 
 import java.util.List;
 

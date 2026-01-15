@@ -1,14 +1,15 @@
-package uk.gov.ccew.rsi.service;
+package com.smartsourcing.charitycommission.rsi.service;
 
+import com.smartsourcing.charitycommission.rsi.exception.CharityApiException;
+import com.smartsourcing.charitycommission.rsi.exception.CharityNotFoundException;
+import com.smartsourcing.charitycommission.rsi.model.CharityDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import uk.gov.ccew.rsi.exception.CharityApiException;
-import uk.gov.ccew.rsi.exception.CharityNotFoundException;
-import uk.gov.ccew.rsi.model.dto.CharityDTO;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,14 @@ public class CharityService {
     public List<CharityDTO> getCharitiesByNumber(Integer charityNumber, String lang) {
 
         log.debug("Attempting to fetch charity by number: {}", charityNumber);
-        String uri = String.format("/api/charitydetails?charityNumber=%s",  charityNumber);
+//        String uri = String.format("/api/charitydetails?charityNumber=%s",  charityNumber);
+
+        String uri = UriComponentsBuilder
+                .fromPath("/api/charitydetails")
+                .queryParam("charityNumber", charityNumber)
+                .build()
+                .toUriString();
+
         List<CharityDTO> charityResponse = getCharityResponse(lang, uri);
 
         if (charityResponse == null) {
@@ -38,7 +46,14 @@ public class CharityService {
     public List<CharityDTO> getCharitiesByName(String charityName, String lang) {
 
             log.debug("Attempting to fetch charity by name: {}", charityName);
-            String uri = String.format("/api/charitydetails?charityName=%s", charityName);
+//            String uri = String.format("/api/charitydetails?charityName=%s", charityName);
+
+            String uri = UriComponentsBuilder
+                    .fromPath("/api/charitydetails")
+                    .queryParam("charityName", charityName)
+                    .build()
+                    .toUriString();
+
             List<CharityDTO> charityResponse =  getCharityResponse(lang, uri);
 
             if (charityResponse == null || charityResponse.isEmpty()) {
@@ -57,12 +72,30 @@ public class CharityService {
         return restClient.get()
                 .uri(uri)
                 .retrieve()
-                .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-                    throw new CharityApiException("Middletier error, the server responded with internal error" + response.getBody());
-                })
-                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-                    throw new CharityApiException("Middletier error, the server responded with client error: " + response.getStatusCode() + " Body -> " + response.getBody() + " using the following URI: " + request.getMethod() + " " +request.getURI());
-                })
+                .onStatus(
+                        status -> status.value() == 404,
+                        (request, response) -> {
+                            throw new CharityNotFoundException(
+                                    "Charity not found for request: " + request.getURI()
+                            );
+                        }
+                )
+                .onStatus(
+                        status -> status.is4xxClientError(),
+                        (request, response) -> {
+                            throw new CharityApiException(
+                                    "Client error from middletier. Status=" + response.getStatusCode() + ", URI=" + request.getURI()
+                            );
+                        }
+                )
+                .onStatus(
+                        HttpStatusCode::is5xxServerError,
+                        (request, response) -> {
+                            throw new CharityApiException(
+                                    "Server error from middletier. Status=" + response.getStatusCode() + ", URI=" + request.getURI()
+                            );
+                        }
+                )
                 .body(new ParameterizedTypeReference<>() {});
     }
 

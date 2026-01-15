@@ -25,28 +25,32 @@
     </div>
 
     <!-- Show charity details if found -->
-    <div th:if="${charityData != null}" class="govuk-inset-text" style="margin-top: 20px;">
-        <h3 class="govuk-heading-s">Charity Found</h3>
-        <dl class="govuk-summary-list">
+    <div th:if="${charities != null}" class="govuk-inset-text" style="margin-top:20px;">
+        <h3 class="govuk-heading-s">
+            Charity search results
+        </h3>
+
+        <p class="govuk-body">
+            <span th:text="${#lists.size(charities)}"></span> result(s) found
+        </p>
+
+        <dl class="govuk-summary-list" th:each="charity : ${charities}">
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Charity Name</dt>
-                <dd class="govuk-summary-list__value" th:text="${charityData.charityName}">Example Charity</dd>
+                <dt class="govuk-summary-list__key">Charity name</dt>
+                <dd class="govuk-summary-list__value"
+                    th:text="${charity.charityName()}">Charity Name</dd>
             </div>
+
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Charity Number</dt>
-                <dd class="govuk-summary-list__value" th:text="${charityData.charityNumber}">123456</dd>
+                <dt class="govuk-summary-list__key">Organisation number</dt>
+                <dd class="govuk-summary-list__value"
+                    th:text="${charity.organisationNumber()}">123456</dd>
             </div>
+
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Registered Number</dt>
-                <dd class="govuk-summary-list__value" th:text="${charityData.registeredCharityNumber}">REG-123456</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Status</dt>
-                <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag"
-                            th:classappend="${charityData.registrationStatus == 'ACTIVE' ? 'govuk-tag--green' : 'govuk-tag--grey'}"
-                            th:text="${charityData.registrationStatus}">ACTIVE</strong>
-                </dd>
+                <dt class="govuk-summary-list__key">Registered charity number</dt>
+                <dd class="govuk-summary-list__value"
+                    th:text="${charity.regCharityNumber()}">REG-123456</dd>
             </div>
         </dl>
     </div>

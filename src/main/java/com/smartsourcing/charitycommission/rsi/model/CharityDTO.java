@@ -1,4 +1,4 @@
-package uk.gov.ccew.rsi.model.dto;
+package com.smartsourcing.charitycommission.rsi.model;
 
 public record CharityDTO(
         String charityName,

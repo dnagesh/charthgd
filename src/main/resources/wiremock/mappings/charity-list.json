@@ -62,6 +62,40 @@
       }
     },
     {
+      "priority": 3,
+      "request": {
+        "method": "GET",
+        "urlPath": "/api/charitydetails",
+        "queryParameters": {
+          "charityNumber": {
+            "equalTo": "500000"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{ \"error\": \"Internal server error\" }",
+        "headers": { "Content-Type": "application/json" }
+      }
+    },
+    {
+      "priority": 2,
+      "request": {
+        "method": "GET",
+        "urlPath": "/api/charitydetails",
+        "queryParameters": {
+          "charityNumber": {
+            "equalTo": "999999"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{ \"message\": \"Charity not found\" }",
+        "headers": { "Content-Type": "application/json" }
+      }
+    },
+    {
       "priority": 1,
       "request": {
         "method": "GET",

@@ -4,6 +4,7 @@ package com.smartsourcing.charitycommission.rsi.controller;
 import com.smartsourcing.charitycommission.rsi.exception.CharityApiException;
 import com.smartsourcing.charitycommission.rsi.exception.CharityNotFoundException;
 import com.smartsourcing.charitycommission.rsi.exception.FlowException;
+import com.smartsourcing.charitycommission.rsi.model.CharityDTO;
 import com.smartsourcing.charitycommission.rsi.model.CharityResponse;
 import com.smartsourcing.charitycommission.rsi.service.CharityService;
 import com.smartsourcing.charitycommission.rsi.validation.model.ErrorSummary;
@@ -73,9 +74,17 @@ public class FormController {
         UserStep step = flowService.getCurrentStep(businessKey).orElseThrow(() -> new FlowException("Unable to get current step for businessKey: " + businessKey));
         // If errors or formData are present in the model, they will be displayed
 
-        CharityResponse charityData = (CharityResponse) session.getAttribute(CHARITY_DATA);
-        if (charityData != null) {
+//        CharityResponse charityData = (CharityResponse) session.getAttribute(CHARITY_DATA);
+//        if (charityData != null) {
+//            model.addAttribute("charityData", charityData);
+//        }
+
+        @SuppressWarnings("unchecked")
+        List<CharityDTO> charityData = (List<CharityDTO>) session.getAttribute(CHARITY_DATA);
+        if (charityData != null && !charityData.isEmpty()) {
+            model.addAttribute("charities", charityData);
             model.addAttribute("charityData", charityData);
+            log.debug("Added {} charities to model", charityData.size());
         }
 
         log.info("Page found with key: {} and last pageKey: {}", step.formKey(), session.getAttribute(LAST_PAGE));
@@ -101,9 +110,10 @@ public class FormController {
 
     @PostMapping("/search-charity")
     public String searchCharity(@RequestParam String charityInput,
+                                @RequestParam(value = "lang", required = false, defaultValue = "en") String lang,
                                 Model model,
                                 HttpSession session) {
-        log.info("Charity search request received: {}", charityInput);
+        log.info("Charity search request received: '{}', lang: '{}'", charityInput, lang);
 
         String businessKey = (String) session.getAttribute(BUSINESS_KEY);
         if (businessKey == null) {
@@ -113,6 +123,7 @@ public class FormController {
 
         // Validate input
         if (charityInput == null || charityInput.trim().isEmpty()) {
+            log.warn("Search attempted with empty input");
             model.addAttribute("searchError", "Please enter a charity number or name");
             UserStep currentStep = flowService.getCurrentStep(businessKey)
                     .orElseThrow(() -> new FlowException("Unable to get current step"));
@@ -120,28 +131,35 @@ public class FormController {
         }
 
         try {
-            CharityResponse charity;
+            List<CharityDTO> charities;
 
-            // Determine if input is number or name
             if (charityInput.matches("\\d+")) {
                 log.info("Searching by charity number: {}", charityInput);
-                charity = charityService.getByNumber(charityInput);
-            } else if (charityInput.matches("[A-Za-z-]+")) {
-                log.info("Searching by charity name: {}", charityInput);
-                charity = charityService.getByName(charityInput);
+                Integer charityNumber = Integer.parseInt(charityInput);
+                charities = charityService.getCharitiesByNumber(charityNumber, lang);
+            } else if (charityInput.matches("[A-Za-z0-9 '&.-]+")) {
+                String normalizedName = charityInput.toUpperCase();
+                log.info("Searching by charity name: {}", normalizedName);
+                charities = charityService.getCharitiesByName(normalizedName, lang);
             } else {
-                model.addAttribute("searchError", "Invalid input. Use only numbers or letters (hyphens allowed).");
+                log.warn("Invalid input format: '{}'", charityInput);
+                model.addAttribute("searchError", "Invalid input. Use only numbers or letters (spaces and hyphens allowed).");
                 UserStep currentStep = flowService.getCurrentStep(businessKey)
                         .orElseThrow(() -> new FlowException("Unable to get current step"));
                 return getView(currentStep);
             }
 
-            // Store charity data in session
-            session.setAttribute(CHARITY_DATA, charity);
-            model.addAttribute("charityData", charity);
-            model.addAttribute("searchSuccess", true);
-
-            log.info("Charity found: {}", charity.getCharityName());
+            // Store charity data in session (store first result or entire list as needed)
+            if (!charities.isEmpty()) {
+                session.setAttribute(CHARITY_DATA, charities);
+                model.addAttribute("charityData", charities.get(0));
+                model.addAttribute("charities", charities);
+                model.addAttribute("searchSuccess", true);
+                log.info("Charity search successful. Found {} result(s)", charities.size());
+            } else {
+                log.warn("No charities found for input: '{}'", charityInput);
+                throw new CharityNotFoundException("No charities found matching: " + charityInput);
+            }
 
             // Return to the same page with charity data
             UserStep currentStep = flowService.getCurrentStep(businessKey)
@@ -149,20 +167,21 @@ public class FormController {
             return getView(currentStep);
 
         } catch (CharityNotFoundException e) {
-            log.error("Charity not found: {}", charityInput);
+            log.error("Charity not found: '{}', lang: '{}'", charityInput, lang, e);
             return "redirect:/error/charity-not-found?query=" + charityInput;
 
         } catch (IllegalArgumentException e) {
-            log.error("Bad request: {}", e.getMessage());
+            log.error("Bad request for input: '{}', lang: '{}': {}", charityInput, lang, e.getMessage(), e);
             return "redirect:/error/invalid-input?query=" + charityInput;
 
-        } catch (CharityApiException | WebClientResponseException.InternalServerError |
-                 WebClientResponseException.ServiceUnavailable e) {
-            log.error("Server error: {}", e.getMessage());
+        } catch (CharityApiException e) {
+            log.error("API error during charity search for input: '{}', lang: '{}': {}",
+                    charityInput, lang, e.getMessage(), e);
             return "redirect:/error/service-unavailable";
 
         } catch (Exception e) {
-            log.error("Unexpected error during charity search", e);
+            log.error("Unexpected error during charity search for input: '{}', lang: '{}'",
+                    charityInput, lang, e);
             return "redirect:/error/general-error";
         }
     }
@@ -195,8 +214,11 @@ public class FormController {
             model.addAttribute("errorSummary", errorSummary);
             model.addAttribute("hasErrors", true);
 
-            CharityResponse charityData = (CharityResponse) session.getAttribute(CHARITY_DATA);
+            // Re-add charity data if exists
+            @SuppressWarnings("unchecked")
+            List<CharityDTO> charityData = (List<CharityDTO>) session.getAttribute(CHARITY_DATA);
             if (charityData != null) {
+                model.addAttribute("charities", charityData);
                 model.addAttribute("charityData", charityData);
             }
 

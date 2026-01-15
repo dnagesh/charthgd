@@ -47,9 +47,15 @@ camunda:
       create: All tasks
 rsi:
   wiremock:
+    enabled: true
+    port: 0
+  middletier:
     enabled: false
+    base-url: http://localhost:8089
+    client-id: dummy-client-id
+    client-secret: dummy-client-secret
 # Charity API base URL for local WireMock
 charity:
   api:
     base-url: http://localhost:8089
-    timeout-seconds: 2
+    timeout-seconds: 5
