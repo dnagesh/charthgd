@@ -2,6 +2,20 @@ spring:
   application:
     name: RSI Local
 
+  mvc:
+    favicon:
+      enabled: false
+
+  # Enable retry
+  retry:
+    enabled: true
+
+  # Cache configuration
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=10m
+
 #  datasource:
 #    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 #    url: jdbc:sqlserver://localhost:1434;databaseName=master;encrypt=false;trustServerCertificate=true
@@ -22,6 +36,152 @@ spring:
     mode: HTML
     encoding: UTF-8
     cache: false
+
+resilience4j:
+
+  # Circuit Breaker Configuration
+  circuitbreaker:
+    configs:
+      default:
+        # Number of calls to record when circuit is closed
+        slidingWindowSize: 10
+        # Minimum number of calls before calculating error rate
+        minimumNumberOfCalls: 5
+        # Failure rate threshold to open circuit (50%)
+        failureRateThreshold: 50
+        # Time circuit stays open before switching to half-open
+        waitDurationInOpenState: 30s
+        # Number of calls allowed in half-open state
+        permittedNumberOfCallsInHalfOpenState: 3
+        # Automatically transition from open to half-open
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        # Record these exceptions as failures
+        recordExceptions:
+          - com.smartsourcing.charitycommission.rsi.exception.CharityApiException
+          - org.springframework.web.client.HttpServerErrorException
+          - org.springframework.web.client.ResourceAccessException
+        # Ignore these exceptions (don't count as failures)
+        ignoreExceptions:
+          - com.smartsourcing.charitycommission.rsi.exception.CharityNotFoundException
+          - java.lang.IllegalArgumentException
+
+    instances:
+      charityService:
+        baseConfig: default
+        slidingWindowSize: 15
+        failureRateThreshold: 40
+        waitDurationInOpenState: 60s
+
+      middletierService:
+        baseConfig: default
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+
+  # Retry Configuration
+  retry:
+    configs:
+      default:
+        # Maximum number of retry attempts
+        maxAttempts: 3
+        # Wait duration between retries
+        waitDuration: 5s
+        # Enable exponential backoff
+        enableExponentialBackoff: true
+        # Backoff multiplier
+        exponentialBackoffMultiplier: 2
+        # Retry on these exceptions
+        retryExceptions:
+          - com.smartsourcing.charitycommission.rsi.exception.CharityApiException
+          - org.springframework.web.client.ResourceAccessException
+          - java.net.SocketTimeoutException
+        # Don't retry on these exceptions
+        ignoreExceptions:
+          - com.smartsourcing.charitycommission.rsi.exception.CharityNotFoundException
+          - java.lang.IllegalArgumentException
+
+    instances:
+      charityService:
+        baseConfig: default
+        maxAttempts: 3
+        waitDuration: 2s
+
+      middletierService:
+        baseConfig: default
+        maxAttempts: 2
+        waitDuration: 1s
+
+  # Time Limiter Configuration
+#  timelimiter:
+#    configs:
+#      default:
+#        timeoutDuration: 5s
+#        cancelRunningFuture: true
+#
+#    instances:
+#      charityService:
+#        baseConfig: default
+#        timeoutDuration: 10s
+#
+#      middletierService:
+#        baseConfig: default
+#        timeoutDuration: 8s
+
+  # Rate Limiter Configuration
+  ratelimiter:
+    configs:
+      default:
+        # Maximum number of permissions available during refresh period
+        limitForPeriod: 50
+        # Period after which limit refreshes
+        limitRefreshPeriod: 1s
+        # Time thread waits for permission
+        timeoutDuration: 500ms
+
+    instances:
+      charityService:
+        baseConfig: default
+        limitForPeriod: 30
+        limitRefreshPeriod: 1s
+
+  # Bulkhead Configuration (limits concurrent calls)
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 25
+        maxWaitDuration: 1s
+
+    instances:
+      charityService:
+        baseConfig: default
+        maxConcurrentCalls: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus,circuitbreakers,retries,ratelimiters
+
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        resilience4j.circuitbreaker.calls: true
+
 
 server:
   port: 8080
@@ -59,3 +219,8 @@ charity:
   api:
     base-url: http://localhost:8089
     timeout-seconds: 5
+
+logging:
+  level:
+    io.github.resilience4j.retry: DEBUG
+

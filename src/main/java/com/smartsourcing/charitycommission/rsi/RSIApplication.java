@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableConfigurationProperties(RsiProperties.class)
-@EnableCaching
 @Slf4j
 public class RSIApplication {
 

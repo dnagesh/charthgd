@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import com.smartsourcing.charitycommission.rsi.flow.model.UserStep;
 import com.smartsourcing.charitycommission.rsi.flow.service.FlowSailorImpl;
 import com.smartsourcing.charitycommission.rsi.validation.validator.GenericFormValidator;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
 import java.util.Map;
@@ -157,39 +156,37 @@ public class FormController {
             }
 
             // Store charity data in session (store first result or entire list as needed)
-            if (charities.isEmpty()) {
-                log.warn("No charities found for input: '{}'", charityInput);
-                throw new CharityNotFoundException("No charities found matching: " + charityInput);
-            }
+//            if (charities.isEmpty()) {
+//                log.warn("No charities found for input: '{}'", charityInput);
+//                throw new CharityNotFoundException("No charities found matching: " + charityInput);
+//            }
 
             session.setAttribute(CHARITY_DATA, charities);
             model.addAttribute("charities", charities);
             model.addAttribute("searchSuccess", true);
 
-            String taskDefinitionID = currentStep.taskDefinitionKey();
-            Optional<UserStep> nextStep = flowService.next(businessKey, Map.of(
-                    "charitySearchCompleted", "true"
-            ));
+//            String taskDefinitionID = currentStep.taskDefinitionKey();
+//            Optional<UserStep> nextStep = flowService.next(businessKey, Map.of(
+//                    "charitySearchCompleted", "true"
+//            ));
 
-            if (nextStep.isEmpty()) {
-                log.info("Process completed for businessKey: {}", businessKey);
-                session.invalidate();
-                return "redirect:/";
-            }
-
-            model.addAttribute("hasErrors", false);
-
-            log.info("Moving to next page: {}", nextStep.get().formKey());
-            session.setAttribute(LAST_PAGE, taskDefinitionID);
-
-            log.info("Charity search successful. Found {} result(s)", charities.size());
-
-            return "redirect:/form/page";
+//            if (nextStep.isEmpty()) {
+//                log.info("Process completed for businessKey: {}", businessKey);
+//                session.invalidate();
+//                return "redirect:/";
+//            }
+//
+//            model.addAttribute("hasErrors", false);
+//
+//            log.info("Moving to next page: {}", nextStep.get().formKey());
+//            session.setAttribute(LAST_PAGE, taskDefinitionID);
+//
+//            log.info("Charity search successful. Found {} result(s)", charities.size());
+//
+//            return "redirect:/form/page";
 
             // Return to the same page with charity data
-//            UserStep currentStep = flowService.getCurrentStep(businessKey)
-//                    .orElseThrow(() -> new FlowException("Unable to get current step"));
-//            return getView(currentStep);
+            return getView(currentStep);
 
 
         } catch (CharityNotFoundException e) {
